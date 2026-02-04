@@ -85,9 +85,9 @@ class OpenGovScraper:
         time.sleep(3)
         
         # Step 1: Click "Active" status filter
-        print("  Step 1: Selecting 'Active' filter...")
-        if not self._select_active_filter():
-            print("  ⚠ Could not find Active filter, continuing anyway...")
+        # print("  Step 1: Selecting 'Active' filter...")
+        # if not self._select_active_filter():
+        #     print("  ⚠ Could not find Active filter, continuing anyway...")
         
         # Step 2: Sort by Release Date (newest first = double click)
         print("  Step 2: Sorting by Release Date (newest first)...")
@@ -111,8 +111,20 @@ class OpenGovScraper:
     
     def _select_active_filter(self) -> bool:
         """Click the Active status filter"""
+        # Check if already active
+        try:
+            current_status = self.browser.find_elements(By.XPATH, "//div[contains(@class, 'react-select__single-value')]")
+            for status in current_status:
+                if "Active" in status.text:
+                    print("    ✓ Filter is already set to 'Active'")
+                    return True
+        except Exception:
+            pass
+            
         # Try multiple selectors for the Active button/checkbox
         selectors = [
+            # React Select Control (click to open if needed, but we might just need to verify)
+            "//div[contains(@class, 'react-select__control')]//div[contains(text(), 'Active')]",
             # Button with text "Active"
             "//button[contains(text(), 'Active')]",
             "//span[contains(text(), 'Active')]/parent::button",
@@ -131,12 +143,15 @@ class OpenGovScraper:
         for selector in selectors:
             try:
                 elements = self.browser.find_elements(By.XPATH, selector)
+                print(f"    Searching for Active filter with: {selector}")
                 for elem in elements:
                     if elem.is_displayed():
+                        print(f"    ✓ Found and clicking: {selector}")
                         elem.click()
                         time.sleep(1)
                         return True
-            except Exception:
+            except Exception as e:
+                print(f"    ⚠ Error checking selector {selector}: {e}")
                 continue
         
         return False
@@ -144,6 +159,14 @@ class OpenGovScraper:
     def _sort_by_release_date(self) -> bool:
         """Double-click Release Date header to sort descending"""
         selectors = [
+            # specific React Table structure (User Verified)
+            "//div[@role='columnheader' and .//div[contains(text(), 'Release Date')]]",
+            # Specific React Table structure (Found in debug HTML)
+            "//div[contains(@class, 'rt-resizable-header-content') and text()='Release Date']",
+            "//div[contains(@class, 'rt-th')][.//div[text()='Release Date']]",
+            "//div[@role='columnheader']//div[text()='Release Date']",
+            # Fallback
+            "//div[contains(@class, 'rt-resizable-header-content') and contains(text(), 'Release Date')]",
             # Table header
             "//th[contains(text(), 'Release')]",
             "//th[contains(text(), 'release')]",
@@ -157,17 +180,80 @@ class OpenGovScraper:
         
         for selector in selectors:
             try:
-                elements = self.browser.find_elements(By.XPATH, selector)
-                for elem in elements:
-                    if elem.is_displayed():
-                        # Double click for descending sort
-                        elem.click()
-                        time.sleep(0.5)
-                        elem.click()
-                        time.sleep(1)
-                        return True
-            except Exception:
-                continue
+                print(f"    Checking selector: {selector}")
+                # Retry loop for StaleElementReferenceException
+                for attempt in range(3):
+                    try:
+                        elements = self.browser.find_elements(By.XPATH, selector)
+                        if not elements:
+                            if attempt == 0:
+                                print(f"      - No elements found")
+                            break
+                        
+                        found_visible = False
+                        for i, elem in enumerate(elements):
+                            if elem.is_displayed():
+                                found_visible = True
+                                print(f"      ✓ Element {i} is displayed attempting click (Attempt {attempt+1})...")
+                                # Double click for descending sort
+                                try:
+                                    print("      ✓ Click 1...")
+                                    elem.click()
+                                    time.sleep(1) # Wait for potential re-render
+                                    
+                                    # Re-find element for 2nd click because DOM likely updated
+                                    print("      ✓ Re-finding element for Click 2...")
+                                    elements_retry = self.browser.find_elements(By.XPATH, selector)
+                                    if elements_retry and len(elements_retry) > i:
+                                        elem_retry = elements_retry[i]
+                                        print("      ✓ Click 2...")
+                                        elem_retry.click()
+                                    else:
+                                        print("      ⚠ Could not re-find element for 2nd click")
+                                    
+                                    time.sleep(1)
+                                    print("      ✓ Sorted by release date")
+                                    return True
+                                except Exception as click_err:
+                                    print(f"      ⚠ Standard click failed: {click_err}. Trying JS click...")
+                                    try:
+                                        # JS Click 1
+                                        self.browser.driver.execute_script("arguments[0].click();", elem)
+                                        time.sleep(1)
+                                        
+                                        # Re-find for JS Click 2
+                                        elements_retry = self.browser.find_elements(By.XPATH, selector)
+                                        if elements_retry and len(elements_retry) > i:
+                                            elem_retry = elements_retry[i]
+                                            self.browser.driver.execute_script("arguments[0].click();", elem_retry)
+                                        
+                                        time.sleep(1)
+                                        print("      ✓ Sorted by release date (via JS)")
+                                        return True
+                                    except Exception as js_err:
+                                        print(f"      ⚠ JS click failed: {js_err}")
+                                        # Re-raise to trigger the retry loop which will re-find the element
+                                        raise js_err
+                                        # Re-raise to trigger the retry loop which will re-find the element
+                                        raise js_err
+                        
+                        if not found_visible:
+                             if attempt == 0:
+                                print(f"      - Elements found but none displayed")
+                             break
+
+                    except Exception as e:
+                        if "stale" in str(e).lower():
+                            print(f"      ⚠ Stale element on attempt {attempt+1}, retrying...")
+                            time.sleep(1)
+                            continue
+                        else:
+                            # If it's not a stale element error, it might be something else we can't recover from easily in this loop
+                            print(f"      ⚠ Error on attempt {attempt+1}: {e}")
+                            break
+            except Exception as e:
+                 print(f"    ⚠ Error on selector {selector}: {e}")
+                 continue
         
         return False
     
