@@ -1,0 +1,16 @@
+2026-02-04 00:04:17,024 - INFO - Looking for token at: /Users/tannerhochberg/Desktop/ProjectFinder/token.json
+2026-02-04 00:04:17,024 - INFO - Looking for credentials at: /Users/tannerhochberg/Desktop/ProjectFinder/credentials.json
+2026-02-04 00:04:17,025 - INFO - Token found. Valid: True, Expired: False
+2026-02-04 00:04:17,025 - INFO - file_cache is only supported with oauth2client<4.0.0
+2026-02-04 00:04:17,026 - INFO - Sending email...
+2026-02-04 00:04:17,027 - DEBUG - URL being requested: POST https://gmail.googleapis.com/gmail/v1/users/me/messages/send?alt=json
+2026-02-04 00:04:17,237 - WARNING - Encountered 403 Forbidden with reason "accessNotConfigured"
+2026-02-04 00:04:17,238 - ERROR - Failed to send email: <HttpError 403 when requesting https://gmail.googleapis.com/gmail/v1/users/me/messages/send?alt=json returned "Gmail API has not been used in project 138337632732 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/gmail.googleapis.com/overview?project=138337632732 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.". Details: "[{'message': 'Gmail API has not been used in project 138337632732 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/gmail.googleapis.com/overview?project=138337632732 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.', 'domain': 'usageLimits', 'reason': 'accessNotConfigured', 'extendedHelp': 'https://console.developers.google.com'}]">
+2026-02-04 00:06:21,262 - INFO - Looking for token at: /Users/tannerhochberg/Desktop/ProjectFinder/token.json
+2026-02-04 00:06:21,262 - INFO - Looking for credentials at: /Users/tannerhochberg/Desktop/ProjectFinder/credentials.json
+2026-02-04 00:06:21,262 - INFO - Token found. Valid: True, Expired: False
+2026-02-04 00:06:21,263 - INFO - file_cache is only supported with oauth2client<4.0.0
+2026-02-04 00:06:21,264 - INFO - Sending email...
+2026-02-04 00:06:21,264 - DEBUG - URL being requested: POST https://gmail.googleapis.com/gmail/v1/users/me/messages/send?alt=json
+2026-02-04 00:06:21,594 - INFO - SUCCESS! Email sent!
+2026-02-04 00:06:21,595 - INFO - Message ID: 19c2779376a84509

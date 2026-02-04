@@ -16,41 +16,40 @@ from scraper.browser import StealthBrowser
 
 @dataclass
 class Project:
-    """Represents a procurement project"""
+    """Represents a procurement project - simplified to only track essential data"""
     id: str
     title: str
-    release_date: str
-    status: str
-    portal: str
+    portal: str  # Portal key (e.g., 'phoenix', 'surpriseaz')
+
     url: Optional[str] = None
+    release_date: Optional[datetime] = None
     
     def to_dict(self) -> dict:
         return {
             "id": self.id,
             "title": self.title,
-            "release_date": self.release_date,
-            "status": self.status,
             "portal": self.portal,
             "url": self.url,
+            "release_date": self.release_date.isoformat() if self.release_date else None,
         }
     
     @classmethod
     def from_dict(cls, data: dict) -> "Project":
-        return cls(**data)
-    
-    def is_from_today(self) -> bool:
-        """Check if this project was released today"""
-        try:
-            # Parse common date formats
-            for fmt in ["%m/%d/%Y", "%Y-%m-%d", "%m-%d-%Y", "%B %d, %Y"]:
-                try:
-                    release = datetime.strptime(self.release_date, fmt).date()
-                    return release == date.today()
-                except ValueError:
-                    continue
-            return False
-        except Exception:
-            return False
+        # Handle old data format that may have extra fields
+        release_date = None
+        if data.get("release_date"):
+            try:
+                release_date = datetime.fromisoformat(data["release_date"])
+            except ValueError:
+                pass
+                
+        return cls(
+            id=data["id"],
+            title=data["title"],
+            portal=data["portal"],
+            url=data.get("url"),
+            release_date=release_date,
+        )
 
 
 class OpenGovScraper:
@@ -230,7 +229,7 @@ class OpenGovScraper:
         return projects
     
     def _parse_project_row(self, row, portal_key: str) -> Optional[Project]:
-        """Parse a single project row"""
+        """Parse a single project row - simplified to only extract title and ID"""
         try:
             # Get all text content
             text = row.text.strip()
@@ -252,21 +251,31 @@ class OpenGovScraper:
             # First line is usually the title
             title = lines[0] if lines else text[:100]
             
+
             # Try to find a project ID (usually numeric or alphanumeric pattern)
             id_match = re.search(r'(?:ID|#|Project)\s*:?\s*(\d+[-\w]*)', text, re.IGNORECASE)
             project_id = id_match.group(1) if id_match else f"_{hash(text) % 100000}"
             
-            # Try to find a date
-            date_match = re.search(r'(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})', text)
-            release_date = date_match.group(1) if date_match else "Unknown"
+            # Extract Release Date
+            # Common formats: "Feb 3, 2026", "February 3, 2026", "Mar 12, 2024"
+            release_date = None
+            date_match = re.search(r'([A-Z][a-z]+ \d{1,2}, \d{4})', text)
+            if date_match:
+                try:
+                    date_str = date_match.group(1)
+                    release_date = datetime.strptime(date_str, "%b %d, %Y")
+                except ValueError:
+                    try:
+                        release_date = datetime.strptime(date_str, "%B %d, %Y")
+                    except ValueError:
+                        pass
             
             return Project(
                 id=project_id,
                 title=title[:200],
-                release_date=release_date,
-                status="Active",
                 portal=portal_key,
                 url=url,
+                release_date=release_date,
             )
         except Exception as e:
             return None
@@ -291,12 +300,12 @@ class OpenGovScraper:
                 else:
                     title, project_id = match, str(len(projects))
                 
+
                 projects.append(Project(
                     id=project_id,
                     title=title,
-                    release_date="Unknown",
-                    status="Active",
                     portal=portal_key,
+                    release_date=datetime.now(), # Fallback for source extraction
                 ))
         
         return projects

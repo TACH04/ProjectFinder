@@ -77,12 +77,29 @@ def main():
     
     # Check for new projects
     if all_projects:
-        new_projects, todays_projects = check_for_new_projects(all_projects)
-        summary = notify_new_projects(new_projects, todays_projects)
+        new_projects, _ = check_for_new_projects(all_projects)
+        summary = notify_new_projects(new_projects, [])
+        
+        # Send email if enabled and there are relevant projects
+        from config import EMAIL_CONFIG
+        from scraper.email_notifier import send_email_notification
+        
+        if EMAIL_CONFIG["enabled"] and new_projects:
+            try:
+                # Pass empty list for todays_projects as it's no longer used
+                send_email_notification(
+                    new_projects, 
+                    [],
+                    EMAIL_CONFIG["sender_email"],
+                    EMAIL_CONFIG["sender_password"],
+                    EMAIL_CONFIG["receiver_email"]
+                )
+            except Exception as e:
+                print(f"  ✗ Failed to send email: {e}")
         
         # Exit code based on results
-        if todays_projects:
-            return 2  # New projects today
+        if new_projects:
+            return 2  # New projects found
         return 0
     else:
         print("\n⚠ No projects found. The website structure may have changed.")

@@ -1,0 +1,8 @@
+.env
+.envrc
+__pycache__
+/.venv
+credentials.json
+token.json
+tanner_scheduler_instructions.md
+setup_email_oauth.py

@@ -49,13 +49,12 @@ def check_for_new_projects(projects: List[Project]) -> Tuple[List[Project], List
     Compare current projects against previously seen ones
     
     Returns:
-        Tuple of (new_projects, todays_projects)
+        Tuple of (new_projects, []) - keeping tuple format for compatibility
     """
     seen_data = load_seen_projects()
     seen_keys: Set[str] = set(seen_data["projects"].keys())
     
     new_projects = []
-    todays_projects = []
     
     for project in projects:
         key = get_project_key(project)
@@ -68,15 +67,11 @@ def check_for_new_projects(projects: List[Project]) -> Tuple[List[Project], List
                 "first_seen": datetime.now().isoformat(),
                 "data": project.to_dict(),
             }
-        
-        # Check if released today
-        if project.is_from_today():
-            todays_projects.append(project)
     
     # Save updated seen projects
     save_seen_projects(seen_data)
     
-    return new_projects, todays_projects
+    return new_projects, []
 
 
 def notify_new_projects(new_projects: List[Project], todays_projects: List[Project]):
@@ -87,30 +82,13 @@ def notify_new_projects(new_projects: List[Project], todays_projects: List[Proje
     print("=" * 60)
     print(f"Checked at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
-    # Today's projects
-    if todays_projects:
-        print(f"\n🆕 PROJECTS RELEASED TODAY ({len(todays_projects)}):")
-        print("-" * 40)
-        for p in todays_projects:
-            print(f"  • [{p.portal}] {p.title}")
-            print(f"    Release Date: {p.release_date}")
-            if p.url:
-                print(f"    URL: {p.url}")
-            print()
-    else:
-        print("\n✓ No new projects released today.")
-    
     # New projects (first time seeing them)
     if new_projects:
         print(f"\n📌 NEW PROJECTS DETECTED ({len(new_projects)}):")
         print("-" * 40)
         for p in new_projects:
             print(f"  • [{p.portal}] {p.title}")
-            print(f"    ID: {p.id} | Status: {p.status}")
-            if p.release_date != "Unknown":
-                print(f"    Release Date: {p.release_date}")
-            if p.url:
-                print(f"    URL: {p.url}")
+            print(f"    ID: {p.id}")
             print()
     else:
         print("\n✓ No previously unseen projects found.")
@@ -120,7 +98,7 @@ def notify_new_projects(new_projects: List[Project], todays_projects: List[Proje
     # Return summary
     return {
         "new_count": len(new_projects),
-        "today_count": len(todays_projects),
+        "today_count": 0,
         "new_projects": [p.to_dict() for p in new_projects],
-        "todays_projects": [p.to_dict() for p in todays_projects],
+        "todays_projects": [],
     }
