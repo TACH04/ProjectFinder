@@ -21,7 +21,7 @@ def main():
     
     # 1. Scrape all portals
     try:
-        with StealthBrowser(headless=False) as browser:
+        with StealthBrowser(headless=True) as browser:
             scraper = OpenGovScraper(browser)
             
             for portal_key, portal_config in PORTALS.items():

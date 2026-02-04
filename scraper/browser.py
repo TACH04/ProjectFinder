@@ -20,20 +20,19 @@ class StealthBrowser:
     
 
     def __init__(self, headless: bool = None):
-        print(f"  🔧 Initializing StealthBrowser (headless={headless})...")
         self.headless = headless if headless is not None else BROWSER_SETTINGS["headless"]
         self.driver = None
         self.wait_timeout = BROWSER_SETTINGS["wait_timeout"]
         
-
     def start(self):
         """Initialize the undetected Chrome browser"""
-        print("  🚀 Starting Chrome driver...")
         options = uc.ChromeOptions()
         
         if self.headless:
-            print("  👻 Setting headless mode...")
-            options.add_argument("--headless=new")
+            print("  👻 Setting background mode (window off-screen)...")
+            # We avoid true headless mode because Cloudflare detects it easily.
+            # Instead, we run a normal window but move it off-screen.
+            options.add_argument("--window-position=-10000,0")
         
         # Human-like settings
         options.add_argument("--window-size=1920,1080")
@@ -42,20 +41,20 @@ class StealthBrowser:
         
         # Use project-local data directory
         user_data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".chrome_profile")
-        print(f"  📂 Using Chrome profile at: {user_data_dir}")
         os.makedirs(user_data_dir, exist_ok=True)
         
-        try:
-            print("  ⚙️ Creating uc.Chrome instance (this may take a moment)...")
-            self.driver = uc.Chrome(
-                options=options,
-                user_data_dir=user_data_dir,
-                use_subprocess=True,
-            )
-            print("  ✅ Chrome driver started successfully!")
-        except Exception as e:
-            print(f"  ❌ Failed to start Chrome driver: {e}")
-            raise e
+        self.driver = uc.Chrome(
+            options=options,
+            user_data_dir=user_data_dir,
+            use_subprocess=True,
+        )
+        
+        # Force window off-screen if in background mode
+        if self.headless:
+            try:
+                self.driver.set_window_position(-10000, 0)
+            except Exception:
+                pass
         
         return self
     
