@@ -46,12 +46,13 @@ def main():
     print(f"\n🔍 Filtering for projects released after {cutoff_date.strftime('%Y-%m-%d')}...")
     
     for p in all_projects:
+        url_status = "✓ URL" if p.url else "✗ No URL"
         if p.release_date:
-            print(f"  • {p.title[:50]}... ({p.release_date.strftime('%Y-%m-%d')})")
+            print(f"  • {p.title[:50]}... ({p.release_date.strftime('%Y-%m-%d')}) [{url_status}]")
             if p.release_date >= cutoff_date:
                 recent_projects.append(p)
         else:
-            print(f"  • {p.title[:50]}... (No date found)")
+            print(f"  • {p.title[:50]}... (No date found) [{url_status}]")
             
     print(f"\n📋 Found {len(recent_projects)} recent projects.")
     

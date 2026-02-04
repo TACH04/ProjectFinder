@@ -130,10 +130,11 @@ def send_email_notification(
             .header {{ background-color: #2c3e50; color: white; padding: 15px; text-align: center; border-radius: 5px 5px 0 0; }}
             .content {{ padding: 20px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 5px 5px; }}
             .project-list {{ list-style: none; padding: 0; margin: 0; }}
-            .project-item {{ padding: 12px 0; border-bottom: 1px solid #eee; }}
+            .project-item {{ padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: flex-start; }}
             .project-item:last-child {{ border-bottom: none; }}
-            .city {{ font-weight: bold; color: #2c3e50; display: inline-block; min-width: 140px; }}
-            .project-name {{ color: #2980b9; }}
+            .city {{ font-weight: bold; color: #2c3e50; min-width: 140px; flex-shrink: 0; }}
+            .project-name {{ color: #2980b9; text-decoration: none; }}
+            a.project-name:hover {{ text-decoration: underline; }}
             .section-title {{ color: #2c3e50; border-bottom: 2px solid #e74c3c; padding-bottom: 5px; margin-bottom: 15px; }}
             .section-title.today {{ border-color: #2ecc71; }}
             .footer {{ margin-top: 20px; font-size: 12px; color: #95a5a6; text-align: center; }}
@@ -166,10 +167,14 @@ def send_email_notification(
         
         for p in new_projects:
             city_name = get_city_name(p.portal)
+            if p.url:
+                project_link = f'<a href="{p.url}" class="project-name">{p.title}</a>'
+            else:
+                project_link = f'<span class="project-name">{p.title}</span>'
             html += f"""
                 <li class="project-item">
                     <span class="city">{city_name}</span>
-                    <span class="project-name">{p.title}</span>
+                    {project_link}
                 </li>
             """
         
@@ -186,10 +191,14 @@ def send_email_notification(
         
         for p in active_today_not_new:
             city_name = get_city_name(p.portal)
+            if p.url:
+                project_link = f'<a href="{p.url}" class="project-name">{p.title}</a>'
+            else:
+                project_link = f'<span class="project-name">{p.title}</span>'
             html += f"""
                 <li class="project-item">
                     <span class="city">{city_name}</span>
-                    <span class="project-name">{p.title}</span>
+                    {project_link}
                 </li>
             """
         

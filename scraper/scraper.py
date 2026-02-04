@@ -253,8 +253,34 @@ class OpenGovScraper:
             
 
             # Try to find a project ID (usually numeric or alphanumeric pattern)
-            id_match = re.search(r'(?:ID|#|Project)\s*:?\s*(\d+[-\w]*)', text, re.IGNORECASE)
-            project_id = id_match.group(1) if id_match else f"_{hash(text) % 100000}"
+            # 1. Look for labeled ID: "ID: 123", "#123", "Project #123"
+            id_match = re.search(r'(?:ID|#|Project|Number)\s*:?\s*([A-Za-z0-9-]+)', text, re.IGNORECASE)
+            
+            if id_match:
+                project_id = id_match.group(1)
+            else:
+                # 2. Look for formatted IDs (e.g., "IFB-25-001")
+                formatted_id = re.search(r'\b([A-Z]{2,}-\d{2,}-[\w-]+)\b', text)
+                if formatted_id:
+                    project_id = formatted_id.group(1)
+                else:
+                    # 3. Last resort: Find any 3-6 digit number that ISN'T a year (2024-2027)
+                    # We look for a number that is NOT 202x
+                    numbers = re.findall(r'\b(\d{3,6})\b', text)
+                    project_id = None
+                    for num in numbers:
+                        # Skip likely years
+                        if not (2020 <= int(num) <= 2030):
+                            project_id = num
+                            break
+                    
+                    if not project_id:
+                        project_id = f"_{hash(text) % 100000}"
+            
+            # Construct URL if extraction failed or returned dummy '#'
+            if (not url or url == "#" or "javascript" in url) and not project_id.startswith("_"):
+                # Construct standard OpenGov project URL
+                url = f"https://procurement.opengov.com/portal/{portal_key}/projects/{project_id}"
             
             # Extract Release Date
             # Common formats: "Feb 3, 2026", "February 3, 2026", "Mar 12, 2024"
@@ -285,27 +311,61 @@ class OpenGovScraper:
         projects = []
         source = self.browser.get_page_source()
         
-        # Look for JSON data embedded in the page
-        json_patterns = [
-            r'"title"\s*:\s*"([^"]+)".*?"id"\s*:\s*"?(\d+)"?',
-            r'"projectTitle"\s*:\s*"([^"]+)"',
-            r'"solicitation(?:Title|Name)"\s*:\s*"([^"]+)"',
+        # Look for JSON object patterns common in OpenGov
+        # DEBUG: Print snippets to see what we're working with
+        if "id" in source and "title" in source:
+            print("  🔍 Debug: Found 'id' and 'title' in source. Check structure:")
+            idx = source.find('"id"')
+            if idx != -1:
+                print(f"    Snippet around first 'id': {source[idx:idx+300]}")
+            
+        # Look for JSON object patterns common in OpenGov
+        # Pattern 1: {"id":12345,"title":"..."} or {"id":12345,..."title":"..."}
+        # We enforce strict proximity (e.g. within 600 chars) to ensure we don't cross object boundaries
+        # We use . instead of [^}] because there might be nested objects (like "template":{...}) between title and id
+        patterns = [
+            # Title ... ID (Most common based on debug output)
+            r'"title"\s*:\s*"([^"]+)".{0,600}?"id"\s*:\s*(\d+)',
+            # ID ... Title
+            r'"id"\s*:\s*(\d+).{0,600}?"title"\s*:\s*"([^"]+)"',
+             # Alternative format with 'jobTitle'
+            r'"id"\s*:\s*(\d+).{0,600}?"jobTitle"\s*:\s*"([^"]+)"',
         ]
         
-        for pattern in json_patterns:
-            matches = re.findall(pattern, source, re.IGNORECASE)
-            for match in matches[:20]:  # Limit to 20 projects
-                if isinstance(match, tuple):
-                    title, project_id = match[0], match[1] if len(match) > 1 else str(len(projects))
+        seen_ids = set()
+        
+        for pattern in patterns:
+            matches = re.findall(pattern, source)
+            for match in matches:
+                # Handle tuple unpacking based on which group is which
+                if pattern.startswith(r'"title"'):
+                    title, pid = match
                 else:
-                    title, project_id = match, str(len(projects))
-                
+                    pid, title = match
+                    
+                if pid in seen_ids:
+                    continue
+                    
+                # Basic validation
+                if len(title) < 3 or len(pid) < 3:
+                    continue
+                    
+                # Check if it looks like a project (has status)
+                # This is a heuristic to avoid random other IDs
+                if '"status":' not in source[source.find(pid):source.find(pid)+500]:
+                     # If we can't verify it's a project, skip generic small IDs
+                     if len(pid) < 4: continue
 
+                seen_ids.add(pid)
+                
+                url = f"https://procurement.opengov.com/portal/{portal_key}/projects/{pid}"
+                
                 projects.append(Project(
-                    id=project_id,
+                    id=pid,
                     title=title,
                     portal=portal_key,
-                    release_date=datetime.now(), # Fallback for source extraction
+                    url=url,
+                    release_date=datetime.now(), # Fallback date
                 ))
         
         return projects

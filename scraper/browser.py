@@ -47,6 +47,7 @@ class StealthBrowser:
             options=options,
             user_data_dir=user_data_dir,
             use_subprocess=True,
+            version_main=144,  # Match Chrome version 144
         )
         
         # Force window off-screen if in background mode
