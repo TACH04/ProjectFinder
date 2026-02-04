@@ -91,8 +91,8 @@ def main():
                     new_projects, 
                     [],
                     EMAIL_CONFIG["sender_email"],
-                    EMAIL_CONFIG["sender_password"],
-                    EMAIL_CONFIG["receiver_email"]
+                    EMAIL_CONFIG["receiver_email"],
+                    EMAIL_CONFIG["sender_password"]
                 )
             except Exception as e:
                 print(f"  ✗ Failed to send email: {e}")
