@@ -18,16 +18,21 @@ from config import BROWSER_SETTINGS
 class StealthBrowser:
     """Browser wrapper with Cloudflare bypass capabilities using undetected-chromedriver"""
     
+
     def __init__(self, headless: bool = None):
+        print(f"  🔧 Initializing StealthBrowser (headless={headless})...")
         self.headless = headless if headless is not None else BROWSER_SETTINGS["headless"]
         self.driver = None
         self.wait_timeout = BROWSER_SETTINGS["wait_timeout"]
         
+
     def start(self):
         """Initialize the undetected Chrome browser"""
+        print("  🚀 Starting Chrome driver...")
         options = uc.ChromeOptions()
         
         if self.headless:
+            print("  👻 Setting headless mode...")
             options.add_argument("--headless=new")
         
         # Human-like settings
@@ -37,13 +42,20 @@ class StealthBrowser:
         
         # Use project-local data directory
         user_data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".chrome_profile")
+        print(f"  📂 Using Chrome profile at: {user_data_dir}")
         os.makedirs(user_data_dir, exist_ok=True)
         
-        self.driver = uc.Chrome(
-            options=options,
-            user_data_dir=user_data_dir,
-            use_subprocess=True,
-        )
+        try:
+            print("  ⚙️ Creating uc.Chrome instance (this may take a moment)...")
+            self.driver = uc.Chrome(
+                options=options,
+                user_data_dir=user_data_dir,
+                use_subprocess=True,
+            )
+            print("  ✅ Chrome driver started successfully!")
+        except Exception as e:
+            print(f"  ❌ Failed to start Chrome driver: {e}")
+            raise e
         
         return self
     
