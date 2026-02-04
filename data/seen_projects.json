@@ -1,0 +1,159 @@
+{
+  "projects": {
+    "phoenix:1913": {
+      "first_seen": "2026-02-03T22:58:35.845341",
+      "data": {
+        "id": "1913",
+        "title": "W-9 Form",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "phoenix:174424": {
+      "first_seen": "2026-02-03T22:58:35.847065",
+      "data": {
+        "id": "174424",
+        "title": "Court Foreign Language Interpretation and Translation Services",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "phoenix:197597": {
+      "first_seen": "2026-02-03T22:58:35.847096",
+      "data": {
+        "id": "197597",
+        "title": "HVAC Filter Maintenance and Repair",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "phoenix:202846": {
+      "first_seen": "2026-02-03T22:58:35.847105",
+      "data": {
+        "id": "202846",
+        "title": "Automatic Transfer Switch Testing, Maintenance, and Repair Services",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "phoenix:226677": {
+      "first_seen": "2026-02-03T22:58:35.847126",
+      "data": {
+        "id": "226677",
+        "title": "Comprehensive Community Needs Assessment",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "phoenix:222013": {
+      "first_seen": "2026-02-03T22:58:35.847133",
+      "data": {
+        "id": "222013",
+        "title": "Small Equipment Repair Services",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "phoenix:204125": {
+      "first_seen": "2026-02-03T22:58:35.847140",
+      "data": {
+        "id": "204125",
+        "title": "Occupational Medicine Staffing Services and Electronic Health Records Management",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "phoenix:230908": {
+      "first_seen": "2026-02-03T22:58:35.847147",
+      "data": {
+        "id": "230908",
+        "title": "PHOENIX SKY HARBOR INTERNATIONAL AIRPORT TERMINAL 3 NORTH CONCOURSE 2 APRON",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "phoenix:192446": {
+      "first_seen": "2026-02-03T22:58:35.847154",
+      "data": {
+        "id": "192446",
+        "title": "Employee Health Clinic Services",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "phoenix:213178": {
+      "first_seen": "2026-02-03T22:58:35.847160",
+      "data": {
+        "id": "213178",
+        "title": "Lease of High-Volume Digital Color Production Press",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "phoenix:230434": {
+      "first_seen": "2026-02-03T22:58:35.847174",
+      "data": {
+        "id": "230434",
+        "title": "PHOENIX SKY HARBOR INTERNATIONAL AIRPORT TERMINAL 4 ROOF REPLACEMENT N2 CONCOURSE, N3 CONCOURSE, AND CONNECTOR BRIDGES",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "phoenix",
+        "url": null
+      }
+    },
+    "surpriseaz:764": {
+      "first_seen": "2026-02-03T22:58:35.847181",
+      "data": {
+        "id": "764",
+        "title": "W-9 Form",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "surpriseaz",
+        "url": null
+      }
+    },
+    "surpriseaz:9797": {
+      "first_seen": "2026-02-03T22:58:35.847188",
+      "data": {
+        "id": "9797",
+        "title": "Special Interest Classes (Continuous Selection)",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "surpriseaz",
+        "url": null
+      }
+    },
+    "surpriseaz:217905": {
+      "first_seen": "2026-02-03T22:58:35.847195",
+      "data": {
+        "id": "217905",
+        "title": "Single & Dual-Purpose Police Canine (K-9) Dogs",
+        "release_date": "Unknown",
+        "status": "Active",
+        "portal": "surpriseaz",
+        "url": null
+      }
+    }
+  },
+  "last_check": "2026-02-03T22:58:35.847237"
+}
