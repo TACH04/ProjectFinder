@@ -20,11 +20,8 @@ cat > "$PLIST_PATH" << EOF
     <key>Label</key>
     <string>$PLIST_NAME</string>
     
-    <key>ProgramArguments</key>
-    <array>
         <string>$PROJECT_DIR/.venv/bin/python3</string>
-        <string>$PROJECT_DIR/main.py</string>
-        <string>--headless</string>
+        <string>$PROJECT_DIR/run_scraper.py</string>
     </array>
     
     <key>WorkingDirectory</key>

@@ -16,7 +16,7 @@ schtasks /delete /tn "%TASK_NAME%" /f 2>nul
 REM Create the scheduled task
 schtasks /create ^
     /tn "%TASK_NAME%" ^
-    /tr "\"%PROJECT_DIR%.venv\Scripts\python.exe\" \"%PROJECT_DIR%main.py\" --headless" ^
+    /tr "\"%PROJECT_DIR%.venv\Scripts\python.exe\" \"%PROJECT_DIR%run_scraper.py\"" ^
     /sc daily ^
     /st 07:00 ^
     /rl highest
