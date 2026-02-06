@@ -7,11 +7,12 @@ Scrapes projects and emails ONLY if new projects are detected.
 import os
 import sys
 import logging
+import time
 from datetime import datetime
 
 from config import PORTALS, BROWSER_SETTINGS, DATA_DIR, EMAIL_CONFIG
 from scraper.browser import StealthBrowser
-from scraper.scraper import OpenGovScraper
+from scraper.scraper import OpenGovScraper, PortalScrapingError
 from scraper.notifications import check_for_new_projects, notify_new_projects
 from scraper.email_notifier import send_email_notification
 
@@ -47,15 +48,26 @@ def main():
         with StealthBrowser(headless=headless) as browser:
             scraper = OpenGovScraper(browser)
 
+
             for portal_key, portal_config in PORTALS.items():
-                try:
-                    logger.info(f"Reading portal: {portal_config['name']} ({portal_key})")
-                    projects = scraper.scrape_portal(portal_key, portal_config)
-                    logger.info(f"  ✓ Found {len(projects)} active projects for {portal_key}")
-                    all_projects.extend(projects)
-                except Exception as e:
-                    logger.error(f"  ✗ Error scraping {portal_key}: {e}", exc_info=True)
-                    continue
+                max_retries = 3
+                for attempt in range(max_retries):
+                    try:
+                        logger.info(f"Reading portal: {portal_config['name']} ({portal_key})")
+                        projects = scraper.scrape_portal(portal_key, portal_config)
+                        logger.info(f"  ✓ Found {len(projects)} active projects for {portal_key}")
+                        all_projects.extend(projects)
+                        break  # Success, exit retry loop
+                    except PortalScrapingError as e:
+                        if attempt < max_retries - 1:
+                            wait_time = (attempt + 1) * 30  # 30s, 60s wait
+                            logger.warning(f"  ⚠ Attempt {attempt+1} failed ({e}). Retrying in {wait_time}s...")
+                            time.sleep(wait_time)
+                        else:
+                            logger.error(f"  ✗ All {max_retries} attempts failed for {portal_key}: {e}")
+                    except Exception as e:
+                        logger.error(f"  ✗ Unexpected error scraping {portal_key}: {e}", exc_info=True)
+                        break  # Don't retry unexpected errors
 
     except Exception as e:
         logger.error(f"✗ Browser/Scraper validation error: {e}", exc_info=True)

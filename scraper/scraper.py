@@ -52,6 +52,12 @@ class Project:
         )
 
 
+
+class PortalScrapingError(Exception):
+    """Raised when scraping a portal fails (e.g. timeout, Cloudflare block)"""
+    pass
+
+
 class OpenGovScraper:
     """Scraper for OpenGov Procurement portals"""
     
@@ -78,8 +84,9 @@ class OpenGovScraper:
         
         # Navigate to portal
         if not self.browser.navigate(url):
-            print(f"  ✗ Failed to load portal: {portal_name}")
-            return []
+            error_msg = f"Failed to load portal: {portal_name}"
+            print(f"  ✗ {error_msg}")
+            raise PortalScrapingError(error_msg)
         
         # Give the React app time to fully load
         time.sleep(3)
