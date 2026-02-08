@@ -8,6 +8,8 @@ import os
 import sys
 import logging
 import time
+import argparse
+import subprocess
 from datetime import datetime
 
 from config import PORTALS, BROWSER_SETTINGS, DATA_DIR, EMAIL_CONFIG
@@ -36,8 +38,65 @@ console_handler.setFormatter(logging.Formatter('%(message)s'))  # Keep console c
 logger.addHandler(console_handler)
 
 
+def generate_popup_notification(new_projects, all_projects):
+    """
+    Generate a text file with new projects and open it directly
+    to serve as a 'popup' notification.
+    """
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    filename = "latest_projects.txt"
+    
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write("=" * 60 + "\n")
+        f.write("📋 PROJECT FINDER ALERTS\n")
+        f.write(f"Checked at: {timestamp}\n")
+        f.write("=" * 60 + "\n\n")
+        
+        if new_projects:
+            f.write(f"🚨 FOUND {len(new_projects)} NEW PROJECTS:\n")
+            f.write("-" * 40 + "\n")
+            for p in new_projects:
+                f.write(f"• [{p.portal}] {p.title}\n")
+                if p.url:
+                    f.write(f"  Link: {p.url}\n")
+                f.write("\n")
+        else:
+            f.write("✓ No new projects found since last check.\n")
+            
+        f.write("\n" + "=" * 60 + "\n")
+        f.write(f"Total Active Projects Scanned: {len(all_projects)}\n")
+
+    # Open the file with default application
+    try:
+        if sys.platform == 'win32':
+            os.startfile(filename)
+        elif sys.platform == 'darwin':
+            subprocess.call(('open', filename))
+        else:
+            subprocess.call(('xdg-open', filename))
+        logger.info(f"  ✓ Popup notification opened: {filename}")
+        return True
+    except Exception as e:
+        logger.error(f"  ✗ Failed to open popup file: {e}")
+        return False
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Run ProjectFinder Scraper")
+    parser.add_argument(
+        "--notify", 
+        choices=["email", "popup"], 
+        default="email",
+        help="Notification method: 'email' (default) or 'popup' (opens text file)"
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_arguments()
+    
     logger.info(f"🚀 Starting Scraper Run at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"   Notification Mode: {args.notify}")
 
     all_projects = []
 
@@ -89,27 +148,41 @@ def main():
     else:
         logger.info("No new projects found.")
 
-    # 4. Send Email if there are new projects
-    if new_projects:
-        if not EMAIL_CONFIG["enabled"]:
-            logger.info("📧 Email notifications disabled; skipping email send.")
-        elif not EMAIL_CONFIG["sender_email"] or not EMAIL_CONFIG["receiver_email"]:
-            logger.error("📧 Missing sender/receiver email in .env; skipping email send.")
-        else:
-            logger.info(f"📧 Sending email notification for {len(new_projects)} new projects...")
-            success = send_email_notification(
-                new_projects,
-                all_projects,
-                EMAIL_CONFIG["sender_email"],
-                EMAIL_CONFIG["receiver_email"],
-            )
-
-            if success:
-                logger.info("  ✓ Email notification sent successfully!")
-            else:
-                logger.error("  ✗ Failed to send email notification.")
+    # 4. Handle Notification
+    if args.notify == "popup":
+        # Always generate popup if mode is popup, even if no new projects (to confirm run)
+        # OR should we only popup if new? The request says "get the output as a pop-up notes file"
+        # usually manual runs expect feedback.
+        # But if we automate it via scheduler with popup flag? No, scheduler is typically email.
+        # Let's fallback to: if new projects -> popup. If not -> maybe just log?
+        # "My client wants the option to run the scraper manually ... and get the output as a pop-up notes file"
+        # If I run manually, I want to know it finished.
+        # I'll generate the file regardless, showing "No new projects" if empty.
+        logger.info("📝 Generating popup notification...")
+        generate_popup_notification(new_projects, all_projects)
+        
     else:
-        logger.info("😴 No new projects to notify about.")
+        # Email mode (Default)
+        if new_projects:
+            if not EMAIL_CONFIG["enabled"]:
+                logger.info("📧 Email notifications disabled; skipping email send.")
+            elif not EMAIL_CONFIG["sender_email"] or not EMAIL_CONFIG["receiver_email"]:
+                logger.error("📧 Missing sender/receiver email in .env; skipping email send.")
+            else:
+                logger.info(f"📧 Sending email notification for {len(new_projects)} new projects...")
+                success = send_email_notification(
+                    new_projects,
+                    all_projects,
+                    EMAIL_CONFIG["sender_email"],
+                    EMAIL_CONFIG["receiver_email"],
+                )
+
+                if success:
+                    logger.info("  ✓ Email notification sent successfully!")
+                else:
+                    logger.error("  ✗ Failed to send email notification.")
+        else:
+            logger.info("😴 No new projects to notify about.")
 
     logger.info("✅ Run completed.")
     return 0
