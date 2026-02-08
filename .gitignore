@@ -50,3 +50,8 @@ chromedriver.exe
 # Output Data
 data/*
 !data/seen_projects.json
+
+#temp
+.tmp/
+.tmp_uv_cache/
+

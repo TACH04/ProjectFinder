@@ -1,4 +1,185 @@
 {
-  "projects": {},
-  "last_check": null
+  "projects": {
+    "phoenix:174424": {
+      "first_seen": "2026-02-07T07:43:19.746898",
+      "data": {
+        "id": "174424",
+        "title": "Court Foreign Language Interpretation and Translation Services",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/174424",
+        "release_date": "2026-02-07T07:41:37.206433"
+      }
+    },
+    "phoenix:197597": {
+      "first_seen": "2026-02-07T07:43:19.746905",
+      "data": {
+        "id": "197597",
+        "title": "HVAC Filter Maintenance and Repair",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/197597",
+        "release_date": "2026-02-07T07:41:37.206551"
+      }
+    },
+    "phoenix:202846": {
+      "first_seen": "2026-02-07T07:43:19.746908",
+      "data": {
+        "id": "202846",
+        "title": "Automatic Transfer Switch Testing, Maintenance, and Repair Services",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/202846",
+        "release_date": "2026-02-07T07:41:37.206679"
+      }
+    },
+    "phoenix:226677": {
+      "first_seen": "2026-02-07T07:43:19.746910",
+      "data": {
+        "id": "226677",
+        "title": "Comprehensive Community Needs Assessment",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/226677",
+        "release_date": "2026-02-07T07:41:37.206800"
+      }
+    },
+    "phoenix:222013": {
+      "first_seen": "2026-02-07T07:43:19.746911",
+      "data": {
+        "id": "222013",
+        "title": "Small Equipment Repair Services",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/222013",
+        "release_date": "2026-02-07T07:41:37.206939"
+      }
+    },
+    "phoenix:232831": {
+      "first_seen": "2026-02-07T07:43:19.746913",
+      "data": {
+        "id": "232831",
+        "title": "AVIATION ARCHITECTURAL CONSTRUCTION",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/232831",
+        "release_date": "2026-02-07T07:41:37.207079"
+      }
+    },
+    "phoenix:204125": {
+      "first_seen": "2026-02-07T07:43:19.746915",
+      "data": {
+        "id": "204125",
+        "title": "Occupational Medicine Staffing Services and Electronic Health Records Management",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/204125",
+        "release_date": "2026-02-07T07:41:37.207229"
+      }
+    },
+    "phoenix:202858": {
+      "first_seen": "2026-02-07T07:43:19.746916",
+      "data": {
+        "id": "202858",
+        "title": "Alco-Sensor Equipment, Parts and Supplies",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/202858",
+        "release_date": "2026-02-07T07:41:37.207381"
+      }
+    },
+    "phoenix:233347": {
+      "first_seen": "2026-02-07T07:43:19.746918",
+      "data": {
+        "id": "233347",
+        "title": "PHOENIX GOODYEAR AIRPORT NEW APRON AND TAXIWAY CONNECTOR",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/233347",
+        "release_date": "2026-02-07T07:41:37.207538"
+      }
+    },
+    "phoenix:229784": {
+      "first_seen": "2026-02-07T07:43:19.746919",
+      "data": {
+        "id": "229784",
+        "title": "PHOENIX SKY HARBOR INTERNATIONAL AIRPORT LAND REUSE AREA CULTURAL CORRIDOR",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/229784",
+        "release_date": "2026-02-07T07:41:37.207703"
+      }
+    },
+    "phoenix:1913": {
+      "first_seen": "2026-02-07T07:43:19.746920",
+      "data": {
+        "id": "1913",
+        "title": "Court Foreign Language Interpretation and Translation Services",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/1913",
+        "release_date": "2026-02-07T07:41:37.210394"
+      }
+    },
+    "phoenix:1909": {
+      "first_seen": "2026-02-07T07:43:19.746922",
+      "data": {
+        "id": "1909",
+        "title": "HVAC Filter Maintenance and Repair",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/1909",
+        "release_date": "2026-02-07T07:41:37.210523"
+      }
+    },
+    "phoenix:1902": {
+      "first_seen": "2026-02-07T07:43:19.746924",
+      "data": {
+        "id": "1902",
+        "title": "Automatic Transfer Switch Testing, Maintenance, and Repair Services",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/1902",
+        "release_date": "2026-02-07T07:41:37.210665"
+      }
+    },
+    "phoenix:1906": {
+      "first_seen": "2026-02-07T07:43:19.746925",
+      "data": {
+        "id": "1906",
+        "title": "Comprehensive Community Needs Assessment",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/1906",
+        "release_date": "2026-02-07T07:41:37.210810"
+      }
+    },
+    "phoenix:1578": {
+      "first_seen": "2026-02-07T07:43:19.746927",
+      "data": {
+        "id": "1578",
+        "title": "Small Equipment Repair Services",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/1578",
+        "release_date": "2026-02-07T07:41:37.210956"
+      }
+    },
+    "phoenix:2201": {
+      "first_seen": "2026-02-07T07:43:19.746928",
+      "data": {
+        "id": "2201",
+        "title": "AVIATION ARCHITECTURAL CONSTRUCTION",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/2201",
+        "release_date": "2026-02-07T07:41:37.211109"
+      }
+    },
+    "surpriseaz:9797": {
+      "first_seen": "2026-02-07T07:43:19.746930",
+      "data": {
+        "id": "9797",
+        "title": "Special Interest Classes (Continuous Selection)",
+        "portal": "surpriseaz",
+        "url": "https://procurement.opengov.com/portal/surpriseaz/projects/9797",
+        "release_date": "2026-02-07T07:43:19.743544"
+      }
+    },
+    "surpriseaz:764": {
+      "first_seen": "2026-02-07T07:43:19.746931",
+      "data": {
+        "id": "764",
+        "title": "Special Interest Classes (Continuous Selection)",
+        "portal": "surpriseaz",
+        "url": "https://procurement.opengov.com/portal/surpriseaz/projects/764",
+        "release_date": "2026-02-07T07:43:19.745084"
+      }
+    }
+  },
+  "last_check": "2026-02-08T13:47:50.311991"
 }
