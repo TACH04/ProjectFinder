@@ -15,6 +15,7 @@ from datetime import datetime
 from config import PORTALS, BROWSER_SETTINGS, DATA_DIR, EMAIL_CONFIG
 from scraper.browser import StealthBrowser
 from scraper.scraper import OpenGovScraper, PortalScrapingError
+from scraper.bonfire_scraper import BonfireScraper
 from scraper.notifications import check_for_new_projects, notify_new_projects
 from scraper.email_notifier import send_email_notification
 
@@ -104,8 +105,13 @@ def main():
     try:
         headless = BROWSER_SETTINGS["headless"]
 
+        # Only initialize browser if we have OpenGov portals (or others needing it)
+        # But for simplicity, we keep the structure.
+        # We can pass browser to BonfireScraper too (it ignores it or uses it as fallback)
+        
         with StealthBrowser(headless=headless) as browser:
-            scraper = OpenGovScraper(browser)
+            opengov_scraper = OpenGovScraper(browser)
+            bonfire_scraper = BonfireScraper(browser)
 
 
             for portal_key, portal_config in PORTALS.items():
@@ -113,7 +119,13 @@ def main():
                 for attempt in range(max_retries):
                     try:
                         logger.info(f"Reading portal: {portal_config['name']} ({portal_key})")
-                        projects = scraper.scrape_portal(portal_key, portal_config)
+                        
+                        portal_type = portal_config.get("type", "opengov")
+                        if portal_type == "bonfire":
+                            projects = bonfire_scraper.scrape_portal(portal_key, portal_config)
+                        else:
+                            projects = opengov_scraper.scrape_portal(portal_key, portal_config)
+                            
                         logger.info(f"  ✓ Found {len(projects)} active projects for {portal_key}")
                         all_projects.extend(projects)
                         break  # Success, exit retry loop

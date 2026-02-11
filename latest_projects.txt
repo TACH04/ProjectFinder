@@ -1,9 +1,115 @@
 ============================================================
 📋 PROJECT FINDER ALERTS
-Checked at: 2026-02-08 14:07:08
+Checked at: 2026-02-10 20:38:58
 ============================================================
 
-✓ No new projects found since last check.
+🚨 FOUND 35 NEW PROJECTS:
+----------------------------------------
+• [tucsonaz] Qualified Vendor List (QVL) for Green Stormwater Infrastructure (GSI) Landscape Maintenance
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/154188
+
+• [tucsonaz] Qualified Vendor List for Psychological & Psychiatric Services for the Tucson Police Department
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/42649
+
+• [tucsonaz] Qualified Vendor List (QVL) for the Purchase of New Vehicles
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/24977
+
+• [tucsonaz] LEGAL SERVICES FOR INDIGENT DEFENDANTS
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/16446
+
+• [tucsonaz] Request for Information - Redevelopment Ideas for the Joel D. Valdez Main Library
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/227492
+
+• [tucsonaz] Temporary Employment and Staffing Services
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/224975
+
+• [tucsonaz] Amphi Housing Resource Center (HRC) Design Build
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/225663
+
+• [tucsonaz] Heavy Equipment & Tool Rentals and Related Services (AXIA)
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/208758
+
+• [tucsonaz] Sampling Bottles, Vials and Related Items for Tucson Water Quality Lab
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/226752
+
+• [tucsonaz] Landscape Maintenance Services for Medians and Roadsides
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/227239
+
+• [tucsonaz] Qualified Vendor List (QVL) for Green Stormwater Infrastructure (GSI) Landscape Maintenance
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/366
+
+• [tucsonaz] Qualified Vendor List for Psychological & Psychiatric Services for the Tucson Police Department
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/219
+
+• [tucsonaz] Qualified Vendor List (QVL) for the Purchase of New Vehicles
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/225
+
+• [tucsonaz] Temporary Employment and Staffing Services
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/506
+
+• [tucsonaz] Amphi Housing Resource Center (HRC) Design Build
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/216
+
+• [tucsonaz] Heavy Equipment & Tool Rentals and Related Services (AXIA)
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/1309
+
+• [tucsonaz] Landscape Maintenance Services for Medians and Roadsides
+  Link: https://procurement.opengov.com/portal/tucsonaz/projects/367
+
+• [buckeyeaz] State Route 85 & Southern Traffic Signals and Turn Lanes
+  Link: https://buckeyeaz.bonfirehub.com/opportunities/217173
+
+• [buckeyeaz] Airfield Electrical Upgrades
+  Link: https://buckeyeaz.bonfirehub.com/opportunities/219000
+
+• [buckeyeaz] Job Order Contracting Traffic Signal and ITS Construction Services
+  Link: https://buckeyeaz.bonfirehub.com/opportunities/219739
+
+• [goodyearaz] 26-0073 Corgett North Digest Tank Rehab and Maintenance
+  Link: https://goodyearaz.bonfirehub.com/opportunities/218681
+
+• [scottsdaleaz] POLICE PSYCHOLOGICAL COUNSELING SERVICES
+  Link: https://scottsdaleaz.bonfirehub.com/opportunities/214675
+
+• [scottsdaleaz] LIBRARY PRINT AND AUDIO VISUAL MATERIALS AND ELECTRONIC SERVICES AND RESOURCES
+  Link: https://scottsdaleaz.bonfirehub.com/opportunities/206180
+
+• [scottsdaleaz] ELECTRICAL LIGHTING PARTS
+  Link: https://scottsdaleaz.bonfirehub.com/opportunities/209762
+
+• [scottsdaleaz] 911 AI TO IDENTIFY SWATTING CALLS
+  Link: https://scottsdaleaz.bonfirehub.com/opportunities/166667
+
+• [scottsdaleaz] CITY COURT PUBLIC DEFENDER SERVICES
+  Link: https://scottsdaleaz.bonfirehub.com/opportunities/176689
+
+• [peoriaaz] Brooms and Brushes for Street Sweepers
+  Link: https://peoriaaz.bonfirehub.com/opportunities/217882
+
+• [tempe] Graffiti Abatement Services for Commercial Properties
+  Link: https://tempe-gov.bonfirehub.com/opportunities/217915
+
+• [tempe] Phlebotomy and Urine Collection Services
+  Link: https://tempe-gov.bonfirehub.com/opportunities/218504
+
+• [tempe] Mental Health Crisis Response Partnership
+  Link: https://tempe-gov.bonfirehub.com/opportunities/215558
+
+• [tempe] Library Patron Cards and Key Tabs
+  Link: https://tempe-gov.bonfirehub.com/opportunities/219702
+
+• [tempe] Rowing Barge
+  Link: https://tempe-gov.bonfirehub.com/opportunities/221386
+
+• [tempe] PRESSURE WASHER AND TRAILER
+  Link: https://tempe-gov.bonfirehub.com/opportunities/220701
+
+• [tempe] Refrigerated Liquid Carbon Dioxide
+  Link: https://tempe-gov.bonfirehub.com/opportunities/220930
+
+• [tempe] VEHICLE TOWING SERVICES
+  Link: https://tempe-gov.bonfirehub.com/opportunities/220647
+
 
 ============================================================
-Total Active Projects Scanned: 18
+Total Active Projects Scanned: 54

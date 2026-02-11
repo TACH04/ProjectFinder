@@ -179,7 +179,367 @@
         "url": "https://procurement.opengov.com/portal/surpriseaz/projects/764",
         "release_date": "2026-02-07T07:43:19.745084"
       }
+    },
+    "sedona:219807": {
+      "first_seen": "2026-02-10T20:32:19.152374",
+      "data": {
+        "id": "219807",
+        "title": "Secondary Clarifier Rehabilitation",
+        "portal": "sedona",
+        "url": "https://sedonaaz.bonfirehub.com/opportunities/219807",
+        "release_date": "2026-02-25T21:00:00"
+      }
+    },
+    "tucsonaz:154188": {
+      "first_seen": "2026-02-10T20:38:58.753044",
+      "data": {
+        "id": "154188",
+        "title": "Qualified Vendor List (QVL) for Green Stormwater Infrastructure (GSI) Landscape Maintenance",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/154188",
+        "release_date": "2026-02-10T20:38:47.985451"
+      }
+    },
+    "tucsonaz:42649": {
+      "first_seen": "2026-02-10T20:38:58.753059",
+      "data": {
+        "id": "42649",
+        "title": "Qualified Vendor List for Psychological & Psychiatric Services for the Tucson Police Department",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/42649",
+        "release_date": "2026-02-10T20:38:47.985576"
+      }
+    },
+    "tucsonaz:24977": {
+      "first_seen": "2026-02-10T20:38:58.753065",
+      "data": {
+        "id": "24977",
+        "title": "Qualified Vendor List (QVL) for the Purchase of New Vehicles",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/24977",
+        "release_date": "2026-02-10T20:38:47.985704"
+      }
+    },
+    "tucsonaz:16446": {
+      "first_seen": "2026-02-10T20:38:58.753069",
+      "data": {
+        "id": "16446",
+        "title": "LEGAL SERVICES FOR INDIGENT DEFENDANTS",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/16446",
+        "release_date": "2026-02-10T20:38:47.985851"
+      }
+    },
+    "tucsonaz:227492": {
+      "first_seen": "2026-02-10T20:38:58.753073",
+      "data": {
+        "id": "227492",
+        "title": "Request for Information - Redevelopment Ideas for the Joel D. Valdez Main Library",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/227492",
+        "release_date": "2026-02-10T20:38:47.986016"
+      }
+    },
+    "tucsonaz:224975": {
+      "first_seen": "2026-02-10T20:38:58.753076",
+      "data": {
+        "id": "224975",
+        "title": "Temporary Employment and Staffing Services",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/224975",
+        "release_date": "2026-02-10T20:38:47.986159"
+      }
+    },
+    "tucsonaz:225663": {
+      "first_seen": "2026-02-10T20:38:58.753080",
+      "data": {
+        "id": "225663",
+        "title": "Amphi Housing Resource Center (HRC) Design Build",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/225663",
+        "release_date": "2026-02-10T20:38:47.986313"
+      }
+    },
+    "tucsonaz:208758": {
+      "first_seen": "2026-02-10T20:38:58.753083",
+      "data": {
+        "id": "208758",
+        "title": "Heavy Equipment & Tool Rentals and Related Services (AXIA)",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/208758",
+        "release_date": "2026-02-10T20:38:47.986459"
+      }
+    },
+    "tucsonaz:226752": {
+      "first_seen": "2026-02-10T20:38:58.753086",
+      "data": {
+        "id": "226752",
+        "title": "Sampling Bottles, Vials and Related Items for Tucson Water Quality Lab",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/226752",
+        "release_date": "2026-02-10T20:38:47.986627"
+      }
+    },
+    "tucsonaz:227239": {
+      "first_seen": "2026-02-10T20:38:58.753089",
+      "data": {
+        "id": "227239",
+        "title": "Landscape Maintenance Services for Medians and Roadsides",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/227239",
+        "release_date": "2026-02-10T20:38:47.986782"
+      }
+    },
+    "tucsonaz:366": {
+      "first_seen": "2026-02-10T20:38:58.753093",
+      "data": {
+        "id": "366",
+        "title": "Qualified Vendor List (QVL) for Green Stormwater Infrastructure (GSI) Landscape Maintenance",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/366",
+        "release_date": "2026-02-10T20:38:47.989694"
+      }
+    },
+    "tucsonaz:219": {
+      "first_seen": "2026-02-10T20:38:58.753096",
+      "data": {
+        "id": "219",
+        "title": "Qualified Vendor List for Psychological & Psychiatric Services for the Tucson Police Department",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/219",
+        "release_date": "2026-02-10T20:38:47.989868"
+      }
+    },
+    "tucsonaz:225": {
+      "first_seen": "2026-02-10T20:38:58.753099",
+      "data": {
+        "id": "225",
+        "title": "Qualified Vendor List (QVL) for the Purchase of New Vehicles",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/225",
+        "release_date": "2026-02-10T20:38:47.990043"
+      }
+    },
+    "tucsonaz:506": {
+      "first_seen": "2026-02-10T20:38:58.753102",
+      "data": {
+        "id": "506",
+        "title": "Temporary Employment and Staffing Services",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/506",
+        "release_date": "2026-02-10T20:38:47.990443"
+      }
+    },
+    "tucsonaz:216": {
+      "first_seen": "2026-02-10T20:38:58.753105",
+      "data": {
+        "id": "216",
+        "title": "Amphi Housing Resource Center (HRC) Design Build",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/216",
+        "release_date": "2026-02-10T20:38:47.990654"
+      }
+    },
+    "tucsonaz:1309": {
+      "first_seen": "2026-02-10T20:38:58.753108",
+      "data": {
+        "id": "1309",
+        "title": "Heavy Equipment & Tool Rentals and Related Services (AXIA)",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/1309",
+        "release_date": "2026-02-10T20:38:47.990824"
+      }
+    },
+    "tucsonaz:367": {
+      "first_seen": "2026-02-10T20:38:58.753111",
+      "data": {
+        "id": "367",
+        "title": "Landscape Maintenance Services for Medians and Roadsides",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucsonaz/projects/367",
+        "release_date": "2026-02-10T20:38:47.991034"
+      }
+    },
+    "buckeyeaz:217173": {
+      "first_seen": "2026-02-10T20:38:58.753115",
+      "data": {
+        "id": "217173",
+        "title": "State Route 85 & Southern Traffic Signals and Turn Lanes",
+        "portal": "buckeyeaz",
+        "url": "https://buckeyeaz.bonfirehub.com/opportunities/217173",
+        "release_date": "2026-02-18T17:00:00"
+      }
+    },
+    "buckeyeaz:219000": {
+      "first_seen": "2026-02-10T20:38:58.753118",
+      "data": {
+        "id": "219000",
+        "title": "Airfield Electrical Upgrades",
+        "portal": "buckeyeaz",
+        "url": "https://buckeyeaz.bonfirehub.com/opportunities/219000",
+        "release_date": "2026-03-03T22:00:00"
+      }
+    },
+    "buckeyeaz:219739": {
+      "first_seen": "2026-02-10T20:38:58.753121",
+      "data": {
+        "id": "219739",
+        "title": "Job Order Contracting Traffic Signal and ITS Construction Services",
+        "portal": "buckeyeaz",
+        "url": "https://buckeyeaz.bonfirehub.com/opportunities/219739",
+        "release_date": "2026-03-11T22:00:00"
+      }
+    },
+    "goodyearaz:218681": {
+      "first_seen": "2026-02-10T20:38:58.753125",
+      "data": {
+        "id": "218681",
+        "title": "26-0073 Corgett North Digest Tank Rehab and Maintenance",
+        "portal": "goodyearaz",
+        "url": "https://goodyearaz.bonfirehub.com/opportunities/218681",
+        "release_date": "2026-03-11T22:00:00"
+      }
+    },
+    "scottsdaleaz:214675": {
+      "first_seen": "2026-02-10T20:38:58.753128",
+      "data": {
+        "id": "214675",
+        "title": "POLICE PSYCHOLOGICAL COUNSELING SERVICES",
+        "portal": "scottsdaleaz",
+        "url": "https://scottsdaleaz.bonfirehub.com/opportunities/214675",
+        "release_date": "2026-02-17T21:00:00"
+      }
+    },
+    "scottsdaleaz:206180": {
+      "first_seen": "2026-02-10T20:38:58.753131",
+      "data": {
+        "id": "206180",
+        "title": "LIBRARY PRINT AND AUDIO VISUAL MATERIALS AND ELECTRONIC SERVICES AND RESOURCES",
+        "portal": "scottsdaleaz",
+        "url": "https://scottsdaleaz.bonfirehub.com/opportunities/206180",
+        "release_date": "2026-02-18T21:00:00"
+      }
+    },
+    "scottsdaleaz:209762": {
+      "first_seen": "2026-02-10T20:38:58.753134",
+      "data": {
+        "id": "209762",
+        "title": "ELECTRICAL LIGHTING PARTS",
+        "portal": "scottsdaleaz",
+        "url": "https://scottsdaleaz.bonfirehub.com/opportunities/209762",
+        "release_date": "2026-02-26T21:00:00"
+      }
+    },
+    "scottsdaleaz:166667": {
+      "first_seen": "2026-02-10T20:38:58.753138",
+      "data": {
+        "id": "166667",
+        "title": "911 AI TO IDENTIFY SWATTING CALLS",
+        "portal": "scottsdaleaz",
+        "url": "https://scottsdaleaz.bonfirehub.com/opportunities/166667",
+        "release_date": "2026-02-27T23:00:00"
+      }
+    },
+    "scottsdaleaz:176689": {
+      "first_seen": "2026-02-10T20:38:58.753140",
+      "data": {
+        "id": "176689",
+        "title": "CITY COURT PUBLIC DEFENDER SERVICES",
+        "portal": "scottsdaleaz",
+        "url": "https://scottsdaleaz.bonfirehub.com/opportunities/176689",
+        "release_date": "2026-06-25T21:00:00"
+      }
+    },
+    "peoriaaz:217882": {
+      "first_seen": "2026-02-10T20:38:58.753143",
+      "data": {
+        "id": "217882",
+        "title": "Brooms and Brushes for Street Sweepers",
+        "portal": "peoriaaz",
+        "url": "https://peoriaaz.bonfirehub.com/opportunities/217882",
+        "release_date": "2026-02-12T21:00:00"
+      }
+    },
+    "tempe:217915": {
+      "first_seen": "2026-02-10T20:38:58.753147",
+      "data": {
+        "id": "217915",
+        "title": "Graffiti Abatement Services for Commercial Properties",
+        "portal": "tempe",
+        "url": "https://tempe-gov.bonfirehub.com/opportunities/217915",
+        "release_date": "2026-02-11T22:00:00"
+      }
+    },
+    "tempe:218504": {
+      "first_seen": "2026-02-10T20:38:58.753149",
+      "data": {
+        "id": "218504",
+        "title": "Phlebotomy and Urine Collection Services",
+        "portal": "tempe",
+        "url": "https://tempe-gov.bonfirehub.com/opportunities/218504",
+        "release_date": "2026-02-13T22:30:00"
+      }
+    },
+    "tempe:215558": {
+      "first_seen": "2026-02-10T20:38:58.753152",
+      "data": {
+        "id": "215558",
+        "title": "Mental Health Crisis Response Partnership",
+        "portal": "tempe",
+        "url": "https://tempe-gov.bonfirehub.com/opportunities/215558",
+        "release_date": "2026-02-16T22:00:00"
+      }
+    },
+    "tempe:219702": {
+      "first_seen": "2026-02-10T20:38:58.753154",
+      "data": {
+        "id": "219702",
+        "title": "Library Patron Cards and Key Tabs",
+        "portal": "tempe",
+        "url": "https://tempe-gov.bonfirehub.com/opportunities/219702",
+        "release_date": "2026-02-18T22:30:00"
+      }
+    },
+    "tempe:221386": {
+      "first_seen": "2026-02-10T20:38:58.753157",
+      "data": {
+        "id": "221386",
+        "title": "Rowing Barge",
+        "portal": "tempe",
+        "url": "https://tempe-gov.bonfirehub.com/opportunities/221386",
+        "release_date": "2026-02-25T22:30:00"
+      }
+    },
+    "tempe:220701": {
+      "first_seen": "2026-02-10T20:38:58.753160",
+      "data": {
+        "id": "220701",
+        "title": "PRESSURE WASHER AND TRAILER",
+        "portal": "tempe",
+        "url": "https://tempe-gov.bonfirehub.com/opportunities/220701",
+        "release_date": "2026-02-27T22:30:00"
+      }
+    },
+    "tempe:220930": {
+      "first_seen": "2026-02-10T20:38:58.753162",
+      "data": {
+        "id": "220930",
+        "title": "Refrigerated Liquid Carbon Dioxide",
+        "portal": "tempe",
+        "url": "https://tempe-gov.bonfirehub.com/opportunities/220930",
+        "release_date": "2026-03-05T22:00:00"
+      }
+    },
+    "tempe:220647": {
+      "first_seen": "2026-02-10T20:38:58.753165",
+      "data": {
+        "id": "220647",
+        "title": "VEHICLE TOWING SERVICES",
+        "portal": "tempe",
+        "url": "https://tempe-gov.bonfirehub.com/opportunities/220647",
+        "release_date": "2026-03-12T22:00:00"
+      }
     }
   },
-  "last_check": "2026-02-10T07:56:57.172818"
+  "last_check": "2026-02-10T20:38:58.753191"
 }
