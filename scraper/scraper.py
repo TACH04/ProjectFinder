@@ -205,6 +205,7 @@ class OpenGovScraper:
                 elements_retry = self.browser.find_elements(By.XPATH, selector)
                 visible_elements_retry = [e for e in elements_retry if e.is_displayed()]
                 
+
                 if visible_elements_retry:
                     target = visible_elements_retry[0]
                     try:
@@ -217,6 +218,16 @@ class OpenGovScraper:
             except Exception as e:
                 # print(f"    ⚠ Error on selector {selector}: {e}")
                 continue
+                
+        # Check if the table is empty (No records found)
+        # If so, we can consider the sort "successful" (or at least not a failure) to avoid the warning
+        try:
+            source = self.browser.get_page_source()
+            if "No records found" in source or "No active projects" in source:
+                print("      ✓ No active projects found - skipping sort")
+                return True
+        except Exception:
+            pass
         
         return False
     
@@ -362,11 +373,6 @@ class OpenGovScraper:
         
         # Look for JSON object patterns common in OpenGov
         # DEBUG: Print snippets to see what we're working with
-        if "id" in source and "title" in source:
-            print("  🔍 Debug: Found 'id' and 'title' in source. Check structure:")
-            idx = source.find('"id"')
-            if idx != -1:
-                print(f"    Snippet around first 'id': {source[idx:idx+300]}")
             
         # Look for JSON object patterns common in OpenGov
         # Pattern 1: {"id":12345,"title":"..."} or {"id":12345,..."title":"..."}
