@@ -83,18 +83,15 @@ class OpenGovScraper:
         print(f"{'='*50}")
         
         # Navigate to portal
+        # Navigate to portal
         if not self.browser.navigate(url):
             error_msg = f"Failed to load portal: {portal_name}"
             print(f"  ✗ {error_msg}")
             raise PortalScrapingError(error_msg)
         
-        # Give the React app time to fully load
-        time.sleep(3)
-        
-        # Step 1: Click "Active" status filter
-        # print("  Step 1: Selecting 'Active' filter...")
-        # if not self._select_active_filter():
-        #     print("  ⚠ Could not find Active filter, continuing anyway...")
+        # Give the React app time to fully load - wait for search bar or table
+        if not self.browser.wait_for_element(By.XPATH, "//input[@aria-label='Search']|//button[contains(text(), 'Search')]|//div[@role='row']"):
+            print("  ⚠ Timed out waiting for portal to load main elements")
         
         # Step 2: Sort by Release Date (newest first = double click)
         print("  Step 2: Sorting by Release Date (newest first)...")
@@ -106,8 +103,11 @@ class OpenGovScraper:
         if not self._click_search():
             print("  ⚠ Could not click search, continuing anyway...")
         
-        # Wait for results to load
-        time.sleep(2)
+        # Wait for results to load - wait for rows to be present
+        # self.browser.wait_for_element(By.XPATH, "//div[@role='row']|//tr") 
+        # Actually, since we might have just sorted/searched, we should probably wait for stale or just a short delay
+        # But let's trust that _extract_projects will wait or retry if needed
+        time.sleep(1) # Short sleep to allow UI update
         
         # Step 4: Extract projects
         print("  Step 4: Extracting projects...")
@@ -165,102 +165,58 @@ class OpenGovScraper:
     
     def _sort_by_release_date(self) -> bool:
         """Double-click Release Date header to sort descending"""
+        # Prioritize the most common selectors found in OpenGov
         selectors = [
-            # specific React Table structure (User Verified)
-            "//div[@role='columnheader' and .//div[contains(text(), 'Release Date')]]",
-            # Specific React Table structure (Found in debug HTML)
-            "//div[contains(@class, 'rt-resizable-header-content') and text()='Release Date']",
-            "//div[contains(@class, 'rt-th')][.//div[text()='Release Date']]",
-            "//div[@role='columnheader']//div[text()='Release Date']",
-            # Fallback
+            # 1. Standard Opengov React Table Header
+            "//div[@role='columnheader']//div[contains(text(), 'Release Date')]",
             "//div[contains(@class, 'rt-resizable-header-content') and contains(text(), 'Release Date')]",
-            # Table header
-            "//th[contains(text(), 'Release')]",
-            "//th[contains(text(), 'release')]",
-            "//div[contains(@class, 'header') and contains(text(), 'Release')]",
-            # Sortable column
-            "//*[contains(@class, 'sort') and contains(text(), 'Release')]",
+            # 2. Button/Sortable Header
             "//button[contains(text(), 'Release Date')]",
-            # Generic clickable
+            "//th[contains(text(), 'Release')]",
+            # 3. Generic fallback
             "//*[contains(text(), 'Release Date')]",
         ]
         
         for selector in selectors:
             try:
-                print(f"    Checking selector: {selector}")
-                # Retry loop for StaleElementReferenceException
-                for attempt in range(3):
+                # print(f"    Checking selector: {selector}")
+                elements = self.browser.find_elements(By.XPATH, selector)
+                
+                # Filter for visible elements
+                visible_elements = [e for e in elements if e.is_displayed()]
+                
+                if not visible_elements:
+                    continue
+                    
+                target = visible_elements[0]
+                print(f"      ✓ Found visible header")
+                
+                # Click 1
+                try:
+                    target.click()
+                except Exception:
+                    self.browser.driver.execute_script("arguments[0].click();", target)
+                
+                # Small delay between clicks for UI to register double click intent or sort change
+                time.sleep(0.5) 
+                
+                # Re-find for Click 2
+                # We re-find because the DOM might have updated slightly, or to be safe
+                elements_retry = self.browser.find_elements(By.XPATH, selector)
+                visible_elements_retry = [e for e in elements_retry if e.is_displayed()]
+                
+                if visible_elements_retry:
+                    target = visible_elements_retry[0]
                     try:
-                        elements = self.browser.find_elements(By.XPATH, selector)
-                        if not elements:
-                            if attempt == 0:
-                                print(f"      - No elements found")
-                            break
-                        
-                        found_visible = False
-                        for i, elem in enumerate(elements):
-                            if elem.is_displayed():
-                                found_visible = True
-                                print(f"      ✓ Element {i} is displayed attempting click (Attempt {attempt+1})...")
-                                # Double click for descending sort
-                                try:
-                                    print("      ✓ Click 1...")
-                                    elem.click()
-                                    time.sleep(1) # Wait for potential re-render
-                                    
-                                    # Re-find element for 2nd click because DOM likely updated
-                                    print("      ✓ Re-finding element for Click 2...")
-                                    elements_retry = self.browser.find_elements(By.XPATH, selector)
-                                    if elements_retry and len(elements_retry) > i:
-                                        elem_retry = elements_retry[i]
-                                        print("      ✓ Click 2...")
-                                        elem_retry.click()
-                                    else:
-                                        print("      ⚠ Could not re-find element for 2nd click")
-                                    
-                                    time.sleep(1)
-                                    print("      ✓ Sorted by release date")
-                                    return True
-                                except Exception as click_err:
-                                    print(f"      ⚠ Standard click failed: {click_err}. Trying JS click...")
-                                    try:
-                                        # JS Click 1
-                                        self.browser.driver.execute_script("arguments[0].click();", elem)
-                                        time.sleep(1)
-                                        
-                                        # Re-find for JS Click 2
-                                        elements_retry = self.browser.find_elements(By.XPATH, selector)
-                                        if elements_retry and len(elements_retry) > i:
-                                            elem_retry = elements_retry[i]
-                                            self.browser.driver.execute_script("arguments[0].click();", elem_retry)
-                                        
-                                        time.sleep(1)
-                                        print("      ✓ Sorted by release date (via JS)")
-                                        return True
-                                    except Exception as js_err:
-                                        print(f"      ⚠ JS click failed: {js_err}")
-                                        # Re-raise to trigger the retry loop which will re-find the element
-                                        raise js_err
-                                        # Re-raise to trigger the retry loop which will re-find the element
-                                        raise js_err
-                        
-                        if not found_visible:
-                             if attempt == 0:
-                                print(f"      - Elements found but none displayed")
-                             break
-
-                    except Exception as e:
-                        if "stale" in str(e).lower():
-                            print(f"      ⚠ Stale element on attempt {attempt+1}, retrying...")
-                            time.sleep(1)
-                            continue
-                        else:
-                            # If it's not a stale element error, it might be something else we can't recover from easily in this loop
-                            print(f"      ⚠ Error on attempt {attempt+1}: {e}")
-                            break
+                        target.click()
+                    except Exception:
+                         self.browser.driver.execute_script("arguments[0].click();", target)
+                    print("      ✓ Sorted by release date (Double Clicked)")
+                    return True
+                
             except Exception as e:
-                 print(f"    ⚠ Error on selector {selector}: {e}")
-                 continue
+                # print(f"    ⚠ Error on selector {selector}: {e}")
+                continue
         
         return False
     

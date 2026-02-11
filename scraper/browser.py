@@ -87,19 +87,33 @@ class StealthBrowser:
     
     def _wait_for_cloudflare(self) -> bool:
         """Wait for Cloudflare verification to complete"""
+        # Quick check: if we are not on a Cloudflare page, return immediately without delay
+        # This assumes driver.get() has mostly loaded the page or at least the title
+        try:
+            title = self.driver.title.lower()
+            if "just a moment" not in title and "checking" not in title:
+                return True
+        except Exception:
+            pass
+
         max_wait = BROWSER_SETTINGS["cloudflare_wait"]
         start_time = time.time()
         
+        print("  Checking for Cloudflare...")
+        
         while time.time() - start_time < max_wait:
-            title = self.driver.title.lower()
-            # Check if we're past Cloudflare
-            if "just a moment" not in title and "checking" not in title:
-                print("  ✓ Cloudflare bypassed")
-                self._human_delay(2, 3)  # Let page fully settle
-                return True
+            try:
+                title = self.driver.title.lower()
+                # Check if we're past Cloudflare
+                if "just a moment" not in title and "checking" not in title:
+                    print("  ✓ Cloudflare bypassed")
+                    self._human_delay(1, 2)  # Let page fully settle after a bypass
+                    return True
+            except Exception:
+                pass
             
             print("  Waiting for Cloudflare verification...")
-            time.sleep(3)
+            time.sleep(1)
         
         print("  ✗ Cloudflare bypass timeout - try running without --headless")
         return False
@@ -122,7 +136,7 @@ class StealthBrowser:
             element = WebDriverWait(self.driver, timeout).until(
                 EC.element_to_be_clickable((by, value))
             )
-            self._human_delay(0.3, 0.8)
+            self._human_delay(0.1, 0.3)
             element.click()
             return True
         except TimeoutException:
@@ -143,4 +157,5 @@ class StealthBrowser:
     
     def _human_delay(self, min_seconds: float = 0.5, max_seconds: float = 1.5):
         """Add random delay to simulate human behavior"""
+        # Reduced default delay to be faster
         time.sleep(random.uniform(min_seconds, max_seconds))
