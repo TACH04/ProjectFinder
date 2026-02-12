@@ -5,7 +5,6 @@ fix cloudflare verifycation on windows
 push updates to him directly
 
 
-TONIGHT: 
 
 Not supported: 
 

@@ -95,6 +95,12 @@ PORTALS = {
         "url": "https://www.mesaaz.gov/Business-Development/Engineering/Architectural-Engineering-Design-Opportunities",
         "type": "mesa_engineering"
     },
+    # Glendale AZ
+    "glendaleaz": {
+        "name": "City of Glendale",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "type": "glendale"
+    },
 }
 
 # Browser settings
@@ -109,7 +115,7 @@ EMAIL_CONFIG = {
     "enabled": os.getenv("EMAIL_ENABLED", "false").lower() == "true",
     "sender_email": os.getenv("SENDER_EMAIL", ""),
     "sender_password": os.getenv("SENDER_PASSWORD", ""),
-    "receiver_email": os.getenv("RECEIVER_EMAIL", "03dustint@gmail.com,tanner.hochberg@gmail.com"),
+    "receiver_email": os.getenv("RECEIVER_EMAIL", "03dustint@gmail.com,tanner.hochberg@gmail.com").replace("RECEIVER_EMAIL=", "").strip(),
 }
 
 # Data storage

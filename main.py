@@ -109,7 +109,6 @@ def main():
                 # Pass empty list for todays_projects as it's no longer used
                 send_email_notification(
                     new_projects, 
-                    [],
                     EMAIL_CONFIG["sender_email"],
                     EMAIL_CONFIG["receiver_email"],
                     EMAIL_CONFIG["sender_password"]

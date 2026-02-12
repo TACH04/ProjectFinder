@@ -1009,7 +1009,127 @@
         "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/on-call-landscape-architect-rfq.pdf",
         "release_date": "2025-02-13T00:00:00"
       }
+    },
+    "glendaleaz:42200005": {
+      "first_seen": "2026-02-12T10:49:44.743751",
+      "data": {
+        "id": "42200005",
+        "title": "RSOQ 22-15 CONTRACTORS FOR HOUSING REHABILITATION AND DEMOLITION CONSTRUCTION SERVICES",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2026-07-28T14:00:00"
+      }
+    },
+    "glendaleaz:42600017": {
+      "first_seen": "2026-02-12T10:49:44.743758",
+      "data": {
+        "id": "42600017",
+        "title": "RFP 26-18 OPERATIONS, MAINTENACE AND MONITORING SERVICES FOR THE LANDFILL METHANE GAS COLLECTION SYSTEM",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2026-02-23T14:00:00"
+      }
+    },
+    "glendaleaz:42600029": {
+      "first_seen": "2026-02-12T10:49:44.743761",
+      "data": {
+        "id": "42600029",
+        "title": "RSOQ 26-24 PROPERTY ABATEMENT SERVICES",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2026-02-19T14:00:00"
+      }
+    },
+    "glendaleaz:42600036": {
+      "first_seen": "2026-02-12T10:49:44.743762",
+      "data": {
+        "id": "42600036",
+        "title": "JOB ORDER CONTRACTING FOR WATER/WASTEWATER TREATMENT FACILITIES CONTRACTING SERVICES",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2026-02-12T14:00:00"
+      }
+    },
+    "glendaleaz:42600037": {
+      "first_seen": "2026-02-12T10:49:44.743764",
+      "data": {
+        "id": "42600037",
+        "title": "RFP 26-31 LANDSCAPING SERVICES FOR RIGHT-OF-WAY",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2026-02-18T14:00:00"
+      }
+    },
+    "glendaleaz:42600038": {
+      "first_seen": "2026-02-12T10:49:44.743765",
+      "data": {
+        "id": "42600038",
+        "title": "RFP 26-32 PRE-EMPLOYMENT POLYGRAPH EXAM SERVICES",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2026-02-27T14:00:00"
+      }
+    },
+    "glendaleaz:42600039": {
+      "first_seen": "2026-02-12T10:49:44.743766",
+      "data": {
+        "id": "42600039",
+        "title": "RFP 26-22 LANDSCAPING SERVICES (GRPSTC)",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2026-02-20T14:00:00"
+      }
+    },
+    "phoenix:222537": {
+      "first_seen": "2026-02-12T11:03:58.384289",
+      "data": {
+        "id": "222537",
+        "title": "POSITIVE OFFSETS WITH FLASHING YELLOW ARROWS 5 LOCATIONS",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/222537",
+        "release_date": "2026-02-12T11:03:36.693663"
+      }
+    },
+    "phoenix:234511": {
+      "first_seen": "2026-02-12T11:03:58.384295",
+      "data": {
+        "id": "234511",
+        "title": "PHOENIX DEER VALLEY AIRPORT TERMINAL MODERNIZATION PROFESSIONAL SERVICES",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/234511",
+        "release_date": "2026-02-12T11:03:36.693984"
+      }
+    },
+    "phoenix:235295": {
+      "first_seen": "2026-02-12T11:03:58.384297",
+      "data": {
+        "id": "235295",
+        "title": "PHOENIX DEER VALLEY AIRPORT TERMINAL MODERNIZATION CMAR",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/235295",
+        "release_date": "2026-02-12T11:03:36.694112"
+      }
+    },
+    "phoenix:225604": {
+      "first_seen": "2026-02-12T11:03:58.384298",
+      "data": {
+        "id": "225604",
+        "title": "WATER SERVICES DEPARTMENT WASTEWATER INFRASTRUCTURE IMPROVEMENTS ENGINEERING ON-CALL SERVICES",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/225604",
+        "release_date": "2026-02-12T11:03:36.694345"
+      }
+    },
+    "tollesonaz:228218": {
+      "first_seen": "2026-02-12T11:03:58.384301",
+      "data": {
+        "id": "228218",
+        "title": "Financial Auditing Services RFP",
+        "portal": "tollesonaz",
+        "url": "https://procurement.opengov.com/portal/tollesonaz/projects/228218",
+        "release_date": "2026-02-12T11:03:45.226141"
+      }
     }
   },
-  "last_check": "2026-02-12T00:58:01.324417"
+  "last_check": "2026-02-12T11:20:03.832476"
 }

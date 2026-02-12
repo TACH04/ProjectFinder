@@ -75,7 +75,6 @@ def get_gmail_service():
 
 def send_email_notification(
     new_projects: List[Project], 
-    todays_projects: List[Project],
     sender_email: str,
     receiver_email: str,
     sender_password: str = None  # Kept for backward compatibility but unused
@@ -85,7 +84,6 @@ def send_email_notification(
     
     Args:
         new_projects: List of projects detected for the first time
-        todays_projects: List of projects released today
         sender_email: Gmail address to send from
         receiver_email: Email address(es) to receive notifications (comma-separated for multiple)
         sender_password: Unused (legacy argument)
@@ -93,8 +91,8 @@ def send_email_notification(
     Returns:
         bool: True if sent successfully
     """
-    if not new_projects and not todays_projects:
-        print("  ℹ No projects to notify about.")
+    if not new_projects:
+        print("  ℹ No new projects to notify about.")
         return False
         
     print(f"  📧 Sending email notification to {receiver_email}...")
@@ -112,12 +110,7 @@ def send_email_notification(
     
     # Subject line
     count_new = len(new_projects)
-    count_today = len(todays_projects)
-    
-    if count_new > 0:
-        subject = f"🎯 {count_new} New Project{'s' if count_new != 1 else ''} Found!"
-    else:
-        subject = f"📋 Daily Summary: {count_today} Active Project{'s' if count_today != 1 else ''}"
+    subject = f"🎯 {count_new} New Project{'s' if count_new != 1 else ''} Found!"
         
     msg['Subject'] = subject
     
@@ -136,7 +129,6 @@ def send_email_notification(
             .project-name {{ color: #2980b9; text-decoration: none; }}
             a.project-name:hover {{ text-decoration: underline; }}
             .section-title {{ color: #2c3e50; border-bottom: 2px solid #e74c3c; padding-bottom: 5px; margin-bottom: 15px; }}
-            .section-title.today {{ border-color: #2ecc71; }}
             .footer {{ margin-top: 20px; font-size: 12px; color: #95a5a6; text-align: center; }}
         </style>
     </head>
@@ -159,50 +151,25 @@ def send_email_notification(
         return portal_key.title()
     
     # Section 1: New Projects (First time seen)
-    if new_projects:
-        html += f"""
-            <h3 class="section-title">🚨 New Projects ({len(new_projects)})</h3>
-            <ul class="project-list">
-        """
-        
-        for p in new_projects:
-            city_name = get_city_name(p.portal)
-            if p.url:
-                project_link = f'<a href="{p.url}" class="project-name">{p.title}</a>'
-            else:
-                project_link = f'<span class="project-name">{p.title}</span>'
-            html += f"""
-                <li class="project-item">
-                    <span class="city">{city_name}</span>
-                    {project_link}
-                </li>
-            """
-        
-        html += "</ul>"
-            
-    # Section 2: Released Today (that aren't already in new projects)
-    active_today_not_new = [p for p in todays_projects if p not in new_projects]
+    html += f"""
+        <h3 class="section-title">🚨 New Projects ({len(new_projects)})</h3>
+        <ul class="project-list">
+    """
     
-    if active_today_not_new:
+    for p in new_projects:
+        city_name = get_city_name(p.portal)
+        if p.url:
+            project_link = f'<a href="{p.url}" class="project-name">{p.title}</a>'
+        else:
+            project_link = f'<span class="project-name">{p.title}</span>'
         html += f"""
-            <h3 class="section-title today" style="margin-top: 25px;">📅 Released Today ({len(active_today_not_new)})</h3>
-            <ul class="project-list">
+            <li class="project-item">
+                <span class="city">{city_name}</span>
+                {project_link}
+            </li>
         """
-        
-        for p in active_today_not_new:
-            city_name = get_city_name(p.portal)
-            if p.url:
-                project_link = f'<a href="{p.url}" class="project-name">{p.title}</a>'
-            else:
-                project_link = f'<span class="project-name">{p.title}</span>'
-            html += f"""
-                <li class="project-item">
-                    <span class="city">{city_name}</span>
-                    {project_link}
-                </li>
-            """
-        
-        html += "</ul>"
+    
+    html += "</ul>"
             
     html += """
             <div class="footer">

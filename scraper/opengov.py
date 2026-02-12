@@ -384,6 +384,18 @@ class OpenGovScraper(BaseScraper):
                     
                 if pid in seen_ids:
                     continue
+                
+                # Check for "department" ID (common false positive)
+                # Look at the text immediately preceding the ID match in the source
+                # If we see "department":{"id":, then it's a department, not a project
+                start_index = source.find(f'"id":{pid}')
+                if start_index == -1:
+                    start_index = source.find(f'"id": {pid}')
+                
+                if start_index > 0:
+                     preceding_text = source[max(0, start_index-20):start_index]
+                     if '"department":{' in preceding_text or '"department": {' in preceding_text:
+                         continue
                     
                 # Basic validation
                 if len(title) < 3 or len(pid) < 3:

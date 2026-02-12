@@ -241,7 +241,6 @@ def main():
                 logger.info(f"📧 Sending email notification for {len(new_projects)} new projects...")
                 success = send_email_notification(
                     new_projects,
-                    all_projects,
                     EMAIL_CONFIG["sender_email"],
                     EMAIL_CONFIG["receiver_email"],
                 )
