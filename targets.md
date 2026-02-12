@@ -32,3 +32,9 @@ https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids
 
 
 https://www.gilbertaz.gov/departments/finance-mgmt-services/purchasing-division/rfp-cip-open-bids/ 
+
+
+https://procurement.opengov.com/portal/embed/avondaleaz/project-list
+
+https://www.mesaaz.gov/Business-Development/Engineering/Architectural-Engineering-Design-Opportunities
+

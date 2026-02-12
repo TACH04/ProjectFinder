@@ -41,6 +41,11 @@ PORTALS = {
         "url": "https://procurement.opengov.com/portal/queencreekaz",
         "type": "opengov"
     },
+    "avondaleaz": {
+        "name": "City of Avondale",
+        "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list",
+        "type": "opengov"
+    },
     # New Bonfire Targets
     "buckeyeaz": {
         "name": "City of Buckeye",
@@ -84,6 +89,12 @@ PORTALS = {
         "url": "https://www.gilbertaz.gov/departments/finance-mgmt-services/purchasing-division/rfp-cip-open-bids/-selsta-4/-sortn-RFPClosing/-sortd-desc#RFPClosing_363_1213_313",
         "type": "gilbert"
     },
+    # Mesa AZ Engineering
+    "mesa_engineering": {
+        "name": "City of Mesa - Engineering RFQs",
+        "url": "https://www.mesaaz.gov/Business-Development/Engineering/Architectural-Engineering-Design-Opportunities",
+        "type": "mesa_engineering"
+    },
 }
 
 # Browser settings
@@ -98,7 +109,7 @@ EMAIL_CONFIG = {
     "enabled": os.getenv("EMAIL_ENABLED", "false").lower() == "true",
     "sender_email": os.getenv("SENDER_EMAIL", ""),
     "sender_password": os.getenv("SENDER_PASSWORD", ""),
-    "receiver_email": os.getenv("RECEIVER_EMAIL", ""),
+    "receiver_email": os.getenv("RECEIVER_EMAIL", "03dustint@gmail.com,tanner.hochberg@gmail.com"),
 }
 
 # Data storage

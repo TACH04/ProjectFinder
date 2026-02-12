@@ -709,7 +709,267 @@
         "url": "https://www.gilbertaz.gov/Home/Components/RFP/RFP/2070/155?selsta=4&sortn=RFPClosing&sortd=desc",
         "release_date": "2026-02-18T14:00:00"
       }
+    },
+    "avondaleaz:148532": {
+      "first_seen": "2026-02-11T20:45:50.188145",
+      "data": {
+        "id": "148532",
+        "title": "NFS 25-064 On-Call Housing Rehabilitation",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/148532",
+        "release_date": "2026-02-11T20:45:49.481785"
+      }
+    },
+    "avondaleaz:232322": {
+      "first_seen": "2026-02-11T20:45:50.188150",
+      "data": {
+        "id": "232322",
+        "title": "Program Instructor Application - February 2026",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/232322",
+        "release_date": "2026-02-11T20:45:49.481898"
+      }
+    },
+    "avondaleaz:214862": {
+      "first_seen": "2026-02-11T20:45:50.188152",
+      "data": {
+        "id": "214862",
+        "title": "PW 26-023 Tree Inventory and Software",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/214862",
+        "release_date": "2026-02-11T20:45:49.482005"
+      }
+    },
+    "avondaleaz:209609": {
+      "first_seen": "2026-02-11T20:45:50.188154",
+      "data": {
+        "id": "209609",
+        "title": "EN 26-025 Phase VI Old Town Las Ligas ADA Sidewalks",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/209609",
+        "release_date": "2026-02-11T20:45:49.482108"
+      }
+    },
+    "avondaleaz:236472": {
+      "first_seen": "2026-02-11T20:45:50.188155",
+      "data": {
+        "id": "236472",
+        "title": "PR 26-047 Surplus Offers to Purchase - Park Benches",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/236472",
+        "release_date": "2026-02-11T20:45:49.482223"
+      }
+    },
+    "avondaleaz:227483": {
+      "first_seen": "2026-02-11T20:45:50.188156",
+      "data": {
+        "id": "227483",
+        "title": "Water Efficiency Upgrade Project",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/227483",
+        "release_date": "2026-02-11T20:45:49.482335"
+      }
+    },
+    "avondaleaz:216572": {
+      "first_seen": "2026-02-11T20:45:50.188157",
+      "data": {
+        "id": "216572",
+        "title": "PW 26-001 Motor, Pump, Well Repair and Replacement Services",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/216572",
+        "release_date": "2026-02-11T20:45:49.482448"
+      }
+    },
+    "avondaleaz:205738": {
+      "first_seen": "2026-02-11T20:45:50.188159",
+      "data": {
+        "id": "205738",
+        "title": "PW 26-018 Fleet Management Software",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/205738",
+        "release_date": "2026-02-11T20:45:49.482562"
+      }
+    },
+    "avondaleaz:228262": {
+      "first_seen": "2026-02-11T20:45:50.188160",
+      "data": {
+        "id": "228262",
+        "title": "PW 26-039 PFAS Treatment Infrastructure Program Manager",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/228262",
+        "release_date": "2026-02-11T20:45:49.482684"
+      }
+    },
+    "avondaleaz:5683": {
+      "first_seen": "2026-02-11T20:45:50.188161",
+      "data": {
+        "id": "5683",
+        "title": "NFS 25-064 On-Call Housing Rehabilitation",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/5683",
+        "release_date": "2026-02-11T20:45:49.484823"
+      }
+    },
+    "avondaleaz:5684": {
+      "first_seen": "2026-02-11T20:45:50.188162",
+      "data": {
+        "id": "5684",
+        "title": "Program Instructor Application - February 2026",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/5684",
+        "release_date": "2026-02-11T20:45:49.484940"
+      }
+    },
+    "avondaleaz:5048": {
+      "first_seen": "2026-02-11T20:45:50.188163",
+      "data": {
+        "id": "5048",
+        "title": "PW 26-023 Tree Inventory and Software",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/5048",
+        "release_date": "2026-02-11T20:45:49.485063"
+      }
+    },
+    "avondaleaz:5680": {
+      "first_seen": "2026-02-11T20:45:50.188164",
+      "data": {
+        "id": "5680",
+        "title": "EN 26-025 Phase VI Old Town Las Ligas ADA Sidewalks",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/5680",
+        "release_date": "2026-02-11T20:45:49.485191"
+      }
+    },
+    "avondaleaz:5685": {
+      "first_seen": "2026-02-11T20:45:50.188165",
+      "data": {
+        "id": "5685",
+        "title": "Water Efficiency Upgrade Project",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/avondaleaz/projects/5685",
+        "release_date": "2026-02-11T20:45:49.485324"
+      }
+    },
+    "mesa_engineering:CP1298CNTR": {
+      "first_seen": "2026-02-11T20:58:46.862486",
+      "data": {
+        "id": "CP1298CNTR",
+        "title": "Center Street Improvements",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/cp1298cntr-design-consultant-rfq-master.pdf",
+        "release_date": "2026-02-05T00:00:00"
+      }
+    },
+    "mesa_engineering:CP1191": {
+      "first_seen": "2026-02-11T20:58:46.862492",
+      "data": {
+        "id": "CP1191",
+        "title": "Mesa Arts Center Lighting and Controls System Upgrade",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/cp1191-rfq.pdf",
+        "release_date": "2025-07-31T00:00:00"
+      }
+    },
+    "mesa_engineering:CP0825P018": {
+      "first_seen": "2026-02-11T20:58:46.862495",
+      "data": {
+        "id": "CP0825P018",
+        "title": "Commercial Water Meter Vault Rehabilitation, Phase 18",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/cp0825p018-rfq.pdf",
+        "release_date": "2025-06-12T00:00:00"
+      }
+    },
+    "mesa_engineering:CP1254BR01": {
+      "first_seen": "2026-02-11T20:58:46.862497",
+      "data": {
+        "id": "CP1254BR01",
+        "title": "Brown Road Water Treatment Plant Electrical Upgrades",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/cp1254-rfq.pdf",
+        "release_date": "2025-06-26T00:00:00"
+      }
+    },
+    "mesa_engineering:CP0756SEAF/CP0757RMAF": {
+      "first_seen": "2026-02-11T20:58:46.862498",
+      "data": {
+        "id": "CP0756SEAF/CP0757RMAF",
+        "title": "Southeast and Red Mountain Aquatic Centers and Fremont Pool Demolition",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/2/business-development/engineering/architectural-engineeringdesign/cp0756seaf_cp0757rmaf-rfq.pdf",
+        "release_date": "2025-02-20T00:00:00"
+      }
+    },
+    "mesa_engineering:MESA-40426": {
+      "first_seen": "2026-02-11T20:58:46.862500",
+      "data": {
+        "id": "MESA-40426",
+        "title": "On-Call Consulting Services for Landscape Architect",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/on-call-landscape-architect-rfq.pdf",
+        "release_date": "2025-02-13T00:00:00"
+      }
+    },
+    "mesa_engineering:CP1239": {
+      "first_seen": "2026-02-11T20:58:46.862501",
+      "data": {
+        "id": "CP1239",
+        "title": "Mesa Public Safety Communications",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/cp1239-consultant-rfq.pdf",
+        "release_date": "2025-01-16T00:00:00"
+      }
+    },
+    "mesa_engineering:CP0958": {
+      "first_seen": "2026-02-11T20:58:46.862503",
+      "data": {
+        "id": "CP0958",
+        "title": "Lift Station Rehabilitation",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/cp0958-designer-rfq.pdf",
+        "release_date": "2024-12-19T00:00:00"
+      }
+    },
+    "mesa_engineering:CP1219": {
+      "first_seen": "2026-02-11T20:58:46.862504",
+      "data": {
+        "id": "CP1219",
+        "title": "i.d.e.a. Museum Renovations Phase 2",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/cp1219-designer-rfq-final.pdf",
+        "release_date": "2024-10-03T00:00:00"
+      }
+    },
+    "mesa_engineering:CP0870PH2": {
+      "first_seen": "2026-02-11T20:58:46.862505",
+      "data": {
+        "id": "CP0870PH2",
+        "title": "Food to Energy Phase 2",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/2/business-development/engineering/architectural-engineeringdesign/cp0870ph2-rfq.pdf",
+        "release_date": "2024-09-19T00:00:00"
+      }
+    },
+    "mesa_engineering:CP1202NW03": {
+      "first_seen": "2026-02-11T20:58:46.862507",
+      "data": {
+        "id": "CP1202NW03",
+        "title": "Northwest Water Reclamation Plant Solids Stream Improvements",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/cp1202nw03-rfq.pdf",
+        "release_date": "2024-08-08T00:00:00"
+      }
+    },
+    "mesa_engineering:CP1229FM01/CP1229LS04/CP1229SE01": {
+      "first_seen": "2026-02-11T20:58:46.862508",
+      "data": {
+        "id": "CP1229FM01/CP1229LS04/CP1229SE01",
+        "title": "Southeast (SE) Lift Station, SE Force Main, and Southeast Water Reclamation Plant (SEWRP) Facility Closure Project",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/cp1229-rfq.pdf",
+        "release_date": "2024-05-02T00:00:00"
+      }
     }
   },
-  "last_check": "2026-02-11T19:55:40.973044"
+  "last_check": "2026-02-11T20:58:46.862518"
 }

@@ -25,6 +25,7 @@ import scraper.opengov
 import scraper.bonfire_scraper
 import scraper.chandler_scraper
 import scraper.gilbert
+import scraper.mesa_engineering
 
 # Configure logging
 LOG_DIR = "logs"
@@ -117,7 +118,7 @@ def main():
         # Currently, 'opengov' and 'gilbert' use the browser. 
         # 'bonfire' and 'chandler' use requests (though they can accept browser).
         
-        browser_types = ["opengov", "gilbert"]
+        browser_types = ["opengov", "gilbert", "mesa_engineering"]
 
         with StealthBrowser(headless=headless) as browser:
             

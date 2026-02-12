@@ -87,7 +87,7 @@ def send_email_notification(
         new_projects: List of projects detected for the first time
         todays_projects: List of projects released today
         sender_email: Gmail address to send from
-        receiver_email: Email address to receive notifications
+        receiver_email: Email address(es) to receive notifications (comma-separated for multiple)
         sender_password: Unused (legacy argument)
         
     Returns:
