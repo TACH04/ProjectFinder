@@ -5,7 +5,6 @@ Core scraping logic for OpenGov Procurement portals
 import time
 import re
 from datetime import datetime, date
-from dataclasses import dataclass
 from typing import List, Optional
 
 from selenium.webdriver.common.by import By
@@ -13,59 +12,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
+from scraper.base import BaseScraper, Project, PortalScrapingError
+from scraper.registry import register_scraper
 from scraper.browser import StealthBrowser
 
 
-@dataclass
-class Project:
-    """Represents a procurement project - simplified to only track essential data"""
-    id: str
-    title: str
-    portal: str  # Portal key (e.g., 'phoenix', 'surpriseaz')
-
-    url: Optional[str] = None
-    release_date: Optional[datetime] = None
-    
-    def to_dict(self) -> dict:
-        return {
-            "id": self.id,
-            "title": self.title,
-            "portal": self.portal,
-            "url": self.url,
-            "release_date": self.release_date.isoformat() if self.release_date else None,
-        }
-    
-    @classmethod
-    def from_dict(cls, data: dict) -> "Project":
-        # Handle old data format that may have extra fields
-        release_date = None
-        if data.get("release_date"):
-            try:
-                release_date = datetime.fromisoformat(data["release_date"])
-            except ValueError:
-                pass
-                
-        return cls(
-            id=data["id"],
-            title=data["title"],
-            portal=data["portal"],
-            url=data.get("url"),
-            release_date=release_date,
-        )
-
-
-
-class PortalScrapingError(Exception):
-    """Raised when scraping a portal fails (e.g. timeout, Cloudflare block)"""
-    pass
-
-
-class OpenGovScraper:
+@register_scraper("opengov")
+class OpenGovScraper(BaseScraper):
     """Scraper for OpenGov Procurement portals"""
     
-    def __init__(self, browser: StealthBrowser):
-        self.browser = browser
-        
     def scrape_portal(self, portal_key: str, portal_config: dict) -> List[Project]:
         """
         Scrape active projects from a portal
@@ -176,7 +131,7 @@ class OpenGovScraper:
         return False
     
     def _sort_by_release_date(self) -> bool:
-        """Double-click Release Date header to sort descending"""
+        """Double-click Release Date header to sort descending (newest first)"""
         # 0. Check for empty state first to save time
         try:
             source = self.browser.get_page_source()
@@ -200,7 +155,6 @@ class OpenGovScraper:
         
         for selector in selectors:
             try:
-                # print(f"    Checking selector: {selector}")
                 elements = self.browser.find_elements(By.XPATH, selector)
                 
                 # Filter for visible elements
@@ -212,36 +166,45 @@ class OpenGovScraper:
                 target = visible_elements[0]
                 print(f"      ✓ Found visible header")
                 
-                # Click 1
+                # Click 1 — triggers ascending sort
                 try:
                     target.click()
                 except Exception:
                     self.browser.driver.execute_script("arguments[0].click();", target)
                 
-                # Small delay between clicks for UI to register double click intent or sort change
-                time.sleep(0.2) 
+                # Wait for React to finish re-rendering the table after first sort
+                time.sleep(1.5)
                 
-                # Re-find for Click 2
-                # We re-find because the DOM might have updated slightly, or to be safe
-                elements_retry = self.browser.find_elements(By.XPATH, selector)
-                visible_elements_retry = [e for e in elements_retry if e.is_displayed()]
-                
-
-                if visible_elements_retry:
-                    target = visible_elements_retry[0]
+                # Click 2 — switches to descending sort (newest first)
+                # Re-find because DOM was re-rendered by the sort
+                for attempt in range(3):
                     try:
-                        target.click()
+                        elements_retry = self.browser.find_elements(By.XPATH, selector)
+                        visible_retry = [e for e in elements_retry if e.is_displayed()]
+                        
+                        if visible_retry:
+                            target = visible_retry[0]
+                            try:
+                                target.click()
+                            except Exception:
+                                self.browser.driver.execute_script("arguments[0].click();", target)
+                            print("      ✓ Sorted by release date (Double Clicked)")
+                            time.sleep(1)  # Wait for second sort to take effect
+                            return True
+                        else:
+                            # Element not found yet, wait and retry
+                            time.sleep(0.5)
                     except Exception:
-                         self.browser.driver.execute_script("arguments[0].click();", target)
-                    print("      ✓ Sorted by release date (Double Clicked)")
-                    return True
+                        time.sleep(0.5)
+                        continue
+                
+                # If we get here, all 3 retry attempts for click 2 failed
+                print("      ⚠ First click succeeded but second click failed")
                 
             except Exception as e:
-                # print(f"    ⚠ Error on selector {selector}: {e}")
                 continue
                 
         # Check if the table is empty (No records found)
-        # If so, we can consider the sort "successful" (or at least not a failure) to avoid the warning
         try:
             source = self.browser.get_page_source()
             if "No records found" in source or "No active projects" in source:

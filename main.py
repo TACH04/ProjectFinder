@@ -14,7 +14,7 @@ import sys
 
 from config import PORTALS
 from scraper.browser import StealthBrowser
-from scraper.scraper import OpenGovScraper
+from scraper.opengov import OpenGovScraper
 from scraper.gilbert import GilbertScraper
 from scraper.notifications import check_for_new_projects, notify_new_projects
 

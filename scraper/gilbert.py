@@ -11,15 +11,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from scraper.scraper import Project, PortalScrapingError
+from scraper.base import BaseScraper, Project, PortalScrapingError
+from scraper.registry import register_scraper
 from scraper.browser import StealthBrowser
 
-class GilbertScraper:
+@register_scraper("gilbert")
+class GilbertScraper(BaseScraper):
     """Scraper for Gilbert, AZ purchasing portal"""
     
-    def __init__(self, browser: StealthBrowser):
-        self.browser = browser
-        
     def scrape_portal(self, portal_key: str, portal_config: dict) -> List[Project]:
         """
         Scrape active projects from Gilbert AZ portal

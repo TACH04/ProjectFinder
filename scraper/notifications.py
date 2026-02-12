@@ -8,7 +8,7 @@ from datetime import datetime, date
 from typing import List, Set, Tuple
 
 from config import DATA_DIR, SEEN_PROJECTS_FILE
-from scraper.scraper import Project
+from scraper.base import Project
 
 
 def ensure_data_dir():

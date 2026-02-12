@@ -11,15 +11,20 @@ import time
 import argparse
 import subprocess
 from datetime import datetime
+import concurrent.futures
 
 from config import PORTALS, BROWSER_SETTINGS, DATA_DIR, EMAIL_CONFIG
 from scraper.browser import StealthBrowser
-from scraper.scraper import OpenGovScraper, PortalScrapingError
-from scraper.bonfire_scraper import BonfireScraper
-from scraper.chandler_scraper import ChandlerScraper
-from scraper.gilbert import GilbertScraper
+from scraper.base import PortalScrapingError
+from scraper.registry import get_scraper_class
 from scraper.notifications import check_for_new_projects, notify_new_projects
 from scraper.email_notifier import send_email_notification
+
+# Import scrapers to ensure they are registered
+import scraper.opengov
+import scraper.bonfire_scraper
+import scraper.chandler_scraper
+import scraper.gilbert
 
 # Configure logging
 LOG_DIR = "logs"
@@ -106,26 +111,37 @@ def main():
     # 1. Scrape all portals
     try:
         headless = BROWSER_SETTINGS["headless"]
-
-        # Only initialize browser if we have OpenGov portals (or others needing it)
-        # But for simplicity, we keep the structure.
-        # We can pass browser to BonfireScraper too (it ignores it or uses it as fallback)
         
+        # We need to distinguish between scrapers that need the shared browser (OpenGov, Gilbert)
+        # and those that can run in parallel (API-based or simple requests).
+        # Currently, 'opengov' and 'gilbert' use the browser. 
+        # 'bonfire' and 'chandler' use requests (though they can accept browser).
+        
+        browser_types = ["opengov", "gilbert"]
+
         with StealthBrowser(headless=headless) as browser:
-            opengov_scraper = OpenGovScraper(browser)
-            bonfire_scraper = BonfireScraper(browser)
-            basic_scraper = GilbertScraper(browser)
-            chandler_scraper = ChandlerScraper()
+            
+            # Dictionary to hold reusable scraper instances
+            # Some scrapers might be stateful or heavy to init, so we instantiate once per type
+            scraper_instances = {}
 
+            def get_or_create_scraper(p_type):
+                if p_type not in scraper_instances:
+                    scraper_cls = get_scraper_class(p_type)
+                    if not scraper_cls:
+                        logger.error(f"Unknown scraper type: {p_type}")
+                        return None
+                    # Pass specific browser instance
+                    scraper_instances[p_type] = scraper_cls(browser) 
+                return scraper_instances[p_type]
 
-            # Separate portals into Browser (OpenGov) and API (Bonfire, Chandler)
+            # Separate portals
             browser_portals = {}
             api_portals = {}
 
             for key, config in PORTALS.items():
                 p_type = config.get("type", "opengov")
-                # OpenGov and Gilbert use the shared browser instance, so they must run sequentially
-                if p_type in ["opengov", "gilbert"]:
+                if p_type in browser_types:
                     browser_portals[key] = config
                 else:
                     api_portals[key] = config
@@ -133,25 +149,17 @@ def main():
             # Helper function for scraping a single portal safely
             def scrape_single_portal(p_key, p_config):
                 p_type = p_config.get("type", "opengov")
-                scraper_instance = None
+                scraper = get_or_create_scraper(p_type)
                 
-                if p_type == "bonfire":
-                    scraper_instance = bonfire_scraper
-                elif p_type == "chandler":
-                    scraper_instance = chandler_scraper
-                elif p_type == "gilbert":
-                    scraper_instance = basic_scraper
-                else:
-                    # Should not reuse opengov_scraper across threads if it uses shared browser
-                    # But for serial execution it is fine
-                    scraper_instance = opengov_scraper
+                if not scraper:
+                    return []
 
                 # Retry logic
                 max_retries = 3
                 for attempt in range(max_retries):
                     try:
                         logger.info(f"Reading portal: {p_config['name']} ({p_key})")
-                        projects = scraper_instance.scrape_portal(p_key, p_config)
+                        projects = scraper.scrape_portal(p_key, p_config)
                         logger.info(f"  ✓ Found {len(projects)} active projects for {p_key}")
                         return projects
                     except PortalScrapingError as e:
@@ -167,8 +175,16 @@ def main():
                 return []
 
             # 1. Run API scrapers in PARALLEL
-            import concurrent.futures
+            # Note: We must ensure get_or_create_scraper is thread safe or pre-create instances
+            # Since we are using a shared 'scraper_instances' dict, we should pre-create them OR lock.
+            # But actually, 'bonfire' and 'chandler' scrapers don't strictly *need* the shared browser object 
+            # for their requests logic, but we pass it anyway. 
+            # Requests is thread safe.
             
+            # Let's pre-create instances for API portals to avoid race conditions in get_or_create
+            for _, config in api_portals.items():
+                get_or_create_scraper(config.get("type", "opengov"))
+
             with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
                 future_to_portal = {
                     executor.submit(scrape_single_portal, key, config): key 
@@ -210,14 +226,6 @@ def main():
 
     # 4. Handle Notification
     if args.notify == "popup":
-        # Always generate popup if mode is popup, even if no new projects (to confirm run)
-        # OR should we only popup if new? The request says "get the output as a pop-up notes file"
-        # usually manual runs expect feedback.
-        # But if we automate it via scheduler with popup flag? No, scheduler is typically email.
-        # Let's fallback to: if new projects -> popup. If not -> maybe just log?
-        # "My client wants the option to run the scraper manually ... and get the output as a pop-up notes file"
-        # If I run manually, I want to know it finished.
-        # I'll generate the file regardless, showing "No new projects" if empty.
         logger.info("📝 Generating popup notification...")
         generate_popup_notification(new_projects, all_projects)
         

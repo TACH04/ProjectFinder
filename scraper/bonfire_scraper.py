@@ -8,17 +8,13 @@ import requests
 from typing import List, Optional
 from datetime import datetime
 
-from scraper.scraper import Project, PortalScrapingError
+from scraper.base import BaseScraper, Project, PortalScrapingError
+from scraper.registry import register_scraper
 from scraper.browser import StealthBrowser
 
-class BonfireScraper:
+@register_scraper("bonfire")
+class BonfireScraper(BaseScraper):
     """Scraper for BonfireHub based portals"""
-
-    def __init__(self, browser: Optional[StealthBrowser] = None):
-        # We might not strictly need the browser if the API is public,
-        # but we keep the signature consistent.
-        # However, requests is often faster and sufficient for this API.
-        self.browser = browser
 
     def scrape_portal(self, portal_key: str, portal_config: dict) -> List[Project]:
         """

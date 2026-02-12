@@ -9,10 +9,17 @@ from datetime import datetime
 from typing import List, Optional
 from bs4 import BeautifulSoup
 
-from scraper.scraper import Project, PortalScrapingError
+from scraper.base import BaseScraper, Project, PortalScrapingError
+from scraper.registry import register_scraper
+from scraper.browser import StealthBrowser # type hint
 
-class ChandlerScraper:
+@register_scraper("chandler")
+class ChandlerScraper(BaseScraper):
     """Scraper for Chandler AZ styled portals (RFQ and RFB/RFP)"""
+    
+    # Explicitly init to match signature even if unused, but existing BaseScraper handles it
+    # def __init__(self, browser=None):
+    #     super().__init__(browser)
 
     def scrape_portal(self, portal_key: str, portal_config: dict) -> List[Project]:
         """
