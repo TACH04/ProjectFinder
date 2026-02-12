@@ -116,33 +116,72 @@ def main():
             chandler_scraper = ChandlerScraper()
 
 
-            for portal_key, portal_config in PORTALS.items():
+            # Separate portals into Browser (OpenGov) and API (Bonfire, Chandler)
+            browser_portals = {}
+            api_portals = {}
+
+            for key, config in PORTALS.items():
+                p_type = config.get("type", "opengov")
+                if p_type == "opengov":
+                    browser_portals[key] = config
+                else:
+                    api_portals[key] = config
+
+            # Helper function for scraping a single portal safely
+            def scrape_single_portal(p_key, p_config):
+                p_type = p_config.get("type", "opengov")
+                scraper_instance = None
+                
+                if p_type == "bonfire":
+                    scraper_instance = bonfire_scraper
+                elif p_type == "chandler":
+                    scraper_instance = chandler_scraper
+                else:
+                    # Should not reuse opengov_scraper across threads if it uses shared browser
+                    # But for serial execution it is fine
+                    scraper_instance = opengov_scraper
+
+                # Retry logic
                 max_retries = 3
                 for attempt in range(max_retries):
                     try:
-                        logger.info(f"Reading portal: {portal_config['name']} ({portal_key})")
-                        
-                        portal_type = portal_config.get("type", "opengov")
-                        if portal_type == "bonfire":
-                            projects = bonfire_scraper.scrape_portal(portal_key, portal_config)
-                        elif portal_type == "chandler":
-                            projects = chandler_scraper.scrape_portal(portal_key, portal_config)
-                        else:
-                            projects = opengov_scraper.scrape_portal(portal_key, portal_config)
-                            
-                        logger.info(f"  ✓ Found {len(projects)} active projects for {portal_key}")
-                        all_projects.extend(projects)
-                        break  # Success, exit retry loop
+                        logger.info(f"Reading portal: {p_config['name']} ({p_key})")
+                        projects = scraper_instance.scrape_portal(p_key, p_config)
+                        logger.info(f"  ✓ Found {len(projects)} active projects for {p_key}")
+                        return projects
                     except PortalScrapingError as e:
                         if attempt < max_retries - 1:
-                            wait_time = (attempt + 1) * 30  # 30s, 60s wait
+                            wait_time = (attempt + 1) * 30
                             logger.warning(f"  ⚠ Attempt {attempt+1} failed ({e}). Retrying in {wait_time}s...")
                             time.sleep(wait_time)
                         else:
-                            logger.error(f"  ✗ All {max_retries} attempts failed for {portal_key}: {e}")
+                            logger.error(f"  ✗ All {max_retries} attempts failed for {p_key}: {e}")
                     except Exception as e:
-                        logger.error(f"  ✗ Unexpected error scraping {portal_key}: {e}", exc_info=True)
-                        break  # Don't retry unexpected errors
+                        logger.error(f"  ✗ Unexpected error scraping {p_key}: {e}", exc_info=True)
+                        break
+                return []
+
+            # 1. Run API scrapers in PARALLEL
+            import concurrent.futures
+            
+            with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+                future_to_portal = {
+                    executor.submit(scrape_single_portal, key, config): key 
+                    for key, config in api_portals.items()
+                }
+                
+                for future in concurrent.futures.as_completed(future_to_portal):
+                    p_key = future_to_portal[future]
+                    try:
+                        results = future.result()
+                        all_projects.extend(results)
+                    except Exception as e:
+                        logger.error(f"API Scraper thread failed for {p_key}: {e}")
+
+            # 2. Run Browser scrapers SEQUENTIALLY (Browser is not thread-safe)
+            for key, config in browser_portals.items():
+                results = scrape_single_portal(key, config)
+                all_projects.extend(results)
 
     except Exception as e:
         logger.error(f"✗ Browser/Scraper validation error: {e}", exc_info=True)

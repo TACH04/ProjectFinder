@@ -9,7 +9,9 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from scraper.browser import StealthBrowser
 
@@ -103,11 +105,21 @@ class OpenGovScraper:
         if not self._click_search():
             print("  ⚠ Could not click search, continuing anyway...")
         
-        # Wait for results to load - wait for rows to be present
-        # self.browser.wait_for_element(By.XPATH, "//div[@role='row']|//tr") 
-        # Actually, since we might have just sorted/searched, we should probably wait for stale or just a short delay
-        # But let's trust that _extract_projects will wait or retry if needed
-        time.sleep(1) # Short sleep to allow UI update
+        # Wait for results to load - wait for rows OR empty state message
+        # This prevents waiting full timeout when no projects exist
+        try:
+             WebDriverWait(self.browser.driver, 5).until(
+                EC.any_of(
+                    EC.presence_of_element_located((By.XPATH, "//div[@role='row']")),
+                    EC.presence_of_element_located((By.XPATH, "//tr")),
+                    EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'No records found')]")),
+                    EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'No active projects')]")),
+                    EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'No Projects Found')]")),
+                    EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Please try a different search query')]"))
+                )
+            )
+        except TimeoutException:
+            pass # Continue to extraction even if timeout, might be empty or using fallback
         
         # Step 4: Extract projects
         print("  Step 4: Extracting projects...")
@@ -165,6 +177,15 @@ class OpenGovScraper:
     
     def _sort_by_release_date(self) -> bool:
         """Double-click Release Date header to sort descending"""
+        # 0. Check for empty state first to save time
+        try:
+            source = self.browser.get_page_source()
+            if "No records found" in source or "No active projects" in source or "No Projects Found" in source:
+                print("      ✓ No active projects found - skipping sort")
+                return True
+        except Exception:
+            pass
+
         # Prioritize the most common selectors found in OpenGov
         selectors = [
             # 1. Standard Opengov React Table Header
@@ -198,7 +219,7 @@ class OpenGovScraper:
                     self.browser.driver.execute_script("arguments[0].click();", target)
                 
                 # Small delay between clicks for UI to register double click intent or sort change
-                time.sleep(0.5) 
+                time.sleep(0.2) 
                 
                 # Re-find for Click 2
                 # We re-find because the DOM might have updated slightly, or to be safe
