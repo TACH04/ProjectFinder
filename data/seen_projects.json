@@ -679,7 +679,37 @@
         "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals#collapse-accordion-4887-8",
         "release_date": "2026-02-20T00:00:00"
       }
+    },
+    "gilbertaz:326000219": {
+      "first_seen": "2026-02-11T17:42:26.853227",
+      "data": {
+        "id": "326000219",
+        "title": "Bus Shelter Cleaning Services",
+        "portal": "gilbertaz",
+        "url": "https://www.gilbertaz.gov/Home/Components/RFP/RFP/2074/155?selsta=4&sortn=RFPClosing&sortd=desc",
+        "release_date": "2026-03-11T14:00:00"
+      }
+    },
+    "gilbertaz:326000129": {
+      "first_seen": "2026-02-11T17:42:26.853234",
+      "data": {
+        "id": "326000129",
+        "title": "Custodial Services at Town Buildings RFP",
+        "portal": "gilbertaz",
+        "url": "https://www.gilbertaz.gov/Home/Components/RFP/RFP/2072/155?selsta=4&sortn=RFPClosing&sortd=desc",
+        "release_date": "2026-03-03T14:00:00"
+      }
+    },
+    "gilbertaz:326000245": {
+      "first_seen": "2026-02-11T17:42:26.853237",
+      "data": {
+        "id": "326000245",
+        "title": "Special Events Drone/Laser Show Services RFP",
+        "portal": "gilbertaz",
+        "url": "https://www.gilbertaz.gov/Home/Components/RFP/RFP/2070/155?selsta=4&sortn=RFPClosing&sortd=desc",
+        "release_date": "2026-02-18T14:00:00"
+      }
     }
   },
-  "last_check": "2026-02-11T17:39:56.839465"
+  "last_check": "2026-02-11T17:52:20.188742"
 }

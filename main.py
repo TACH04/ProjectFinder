@@ -15,6 +15,7 @@ import sys
 from config import PORTALS
 from scraper.browser import StealthBrowser
 from scraper.scraper import OpenGovScraper
+from scraper.gilbert import GilbertScraper
 from scraper.notifications import check_for_new_projects, notify_new_projects
 
 
@@ -61,7 +62,26 @@ def main():
             
             for portal_key, portal_config in portals_to_check.items():
                 try:
-                    projects = scraper.scrape_portal(portal_key, portal_config)
+                    # Select appropriate scraper
+                    if portal_config.get("type") == "gilbert":
+                        portal_scraper = GilbertScraper(browser)
+                        projects = portal_scraper.scrape_portal(portal_key, portal_config)
+                    else:
+                        # Default to OpenGov/Bonfire (handled by OpenGovScraper for now)
+                        # Note: OpenGovScraper handles both OpenGov and Bonfire logic internally
+                        # or falls back to generic.
+                        # Ideally we should refactor main to select scraper class based on type
+                        # but OpenGovScraper seems to be the main 'generic' one currently used for
+                        # the others.
+                        # Wait, checking scraper.py... OpenGovScraper is the class.
+                        # It seems Bonfire might also be using OpenGovScraper?
+                        # Let's check config.py... yes, type: bonfire.
+                        # Does OpenGovScraper detect Bonfire?
+                        # Looking at scraper.py, it seems generic enough or tailored to OpenGov.
+                        # But wait, looking at user logs, it scraped Bonfire sites successfully.
+                        # So existing scraper handles them. I'll just add the branch for Gilbert.
+                        projects = scraper.scrape_portal(portal_key, portal_config)
+
                     all_projects.extend(projects)
                 except Exception as e:
                     print(f"\n  ✗ Error scraping {portal_key}: {e}")

@@ -17,6 +17,7 @@ from scraper.browser import StealthBrowser
 from scraper.scraper import OpenGovScraper, PortalScrapingError
 from scraper.bonfire_scraper import BonfireScraper
 from scraper.chandler_scraper import ChandlerScraper
+from scraper.gilbert import GilbertScraper
 from scraper.notifications import check_for_new_projects, notify_new_projects
 from scraper.email_notifier import send_email_notification
 
@@ -113,6 +114,7 @@ def main():
         with StealthBrowser(headless=headless) as browser:
             opengov_scraper = OpenGovScraper(browser)
             bonfire_scraper = BonfireScraper(browser)
+            basic_scraper = GilbertScraper(browser)
             chandler_scraper = ChandlerScraper()
 
 
@@ -122,7 +124,8 @@ def main():
 
             for key, config in PORTALS.items():
                 p_type = config.get("type", "opengov")
-                if p_type == "opengov":
+                # OpenGov and Gilbert use the shared browser instance, so they must run sequentially
+                if p_type in ["opengov", "gilbert"]:
                     browser_portals[key] = config
                 else:
                     api_portals[key] = config
@@ -136,6 +139,8 @@ def main():
                     scraper_instance = bonfire_scraper
                 elif p_type == "chandler":
                     scraper_instance = chandler_scraper
+                elif p_type == "gilbert":
+                    scraper_instance = basic_scraper
                 else:
                     # Should not reuse opengov_scraper across threads if it uses shared browser
                     # But for serial execution it is fine

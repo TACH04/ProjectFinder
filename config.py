@@ -78,6 +78,12 @@ PORTALS = {
         "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals",
         "type": "chandler"
     },
+    # Gilbert AZ
+    "gilbertaz": {
+        "name": "Town of Gilbert",
+        "url": "https://www.gilbertaz.gov/departments/finance-mgmt-services/purchasing-division/rfp-cip-open-bids/-selsta-4/-sortn-RFPClosing/-sortd-desc#RFPClosing_363_1213_313",
+        "type": "gilbert"
+    },
 }
 
 # Browser settings

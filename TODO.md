@@ -15,7 +15,7 @@ https://www.mesaaz.gov/Business-Development/Engineering/Architectural-Engineerin
 
 https://www.cavecreekaz.gov/Bids.aspx?CatID=showStatus&txtSort=Category&showAllBids=on&Status=open
 
-https://www.gilbertaz.gov/departments/finance-mgmt-services/purchasing-division/rfp-cip-open-bids/-selsta-4#rfpStas_363_1213_313
+
 
 https://www.egovlink.com/maricopa/postings.asp
 
