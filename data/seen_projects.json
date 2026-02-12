@@ -969,7 +969,47 @@
         "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/cp1229-rfq.pdf",
         "release_date": "2024-05-02T00:00:00"
       }
+    },
+    "mesa_engineering:MESA-16167": {
+      "first_seen": "2026-02-11T21:29:19.619142",
+      "data": {
+        "id": "MESA-16167",
+        "title": "On-Call Consulting Services for Landscape Architect",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/on-call-landscape-architect-rfq.pdf",
+        "release_date": "2025-02-13T00:00:00"
+      }
+    },
+    "mesa_engineering:MESA-93712": {
+      "first_seen": "2026-02-11T21:29:57.375056",
+      "data": {
+        "id": "MESA-93712",
+        "title": "On-Call Consulting Services for Landscape Architect",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/on-call-landscape-architect-rfq.pdf",
+        "release_date": "2025-02-13T00:00:00"
+      }
+    },
+    "mesa_engineering:MESA-68685": {
+      "first_seen": "2026-02-12T00:52:34.199349",
+      "data": {
+        "id": "MESA-68685",
+        "title": "On-Call Consulting Services for Landscape Architect",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/on-call-landscape-architect-rfq.pdf",
+        "release_date": "2025-02-13T00:00:00"
+      }
+    },
+    "mesa_engineering:MESA-56502": {
+      "first_seen": "2026-02-12T00:56:48.230277",
+      "data": {
+        "id": "MESA-56502",
+        "title": "On-Call Consulting Services for Landscape Architect",
+        "portal": "mesa_engineering",
+        "url": "https://www.mesaaz.gov/files/assets/public/v/1/business-development/engineering/architectural-engineeringdesign/on-call-landscape-architect-rfq.pdf",
+        "release_date": "2025-02-13T00:00:00"
+      }
     }
   },
-  "last_check": "2026-02-11T20:58:46.862518"
+  "last_check": "2026-02-12T00:58:01.324417"
 }

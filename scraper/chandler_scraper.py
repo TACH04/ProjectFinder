@@ -169,9 +169,11 @@ class ChandlerScraper(BaseScraper):
 
             # Fallback ID
             if not project_id:
-                # Use a hash of the title if no ID found to ensure we can track it
-                # We limit the hash size for readability
-                project_id = f"CH-{abs(hash(full_title_text)) % 100000}"
+                import hashlib
+                # Use MD5 for a stable hash of the title
+                hash_object = hashlib.md5(full_title_text.encode())
+                stable_hash = int(hash_object.hexdigest(), 16) % 100000
+                project_id = f"CH-{stable_hash}"
 
             return Project(
                 id=project_id,

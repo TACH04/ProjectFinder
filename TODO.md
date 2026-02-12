@@ -5,10 +5,11 @@ fix cloudflare verifycation on windows
 push updates to him directly
 
 
+TONIGHT: 
+
 Not supported: 
 
 https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx
-
 
 https://www.cavecreekaz.gov/Bids.aspx?CatID=showStatus&txtSort=Category&showAllBids=on&Status=open
 

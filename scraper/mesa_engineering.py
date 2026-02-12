@@ -116,7 +116,11 @@ class MesaEngineeringScraper(BaseScraper):
 
             # Fallback ID
             if not project_id:
-                project_id = f"MESA-{abs(hash(full_title)) % 100000}"
+                import hashlib
+                # Use MD5 for a stable hash of the title
+                hash_object = hashlib.md5(full_title.encode())
+                stable_hash = int(hash_object.hexdigest(), 16) % 100000
+                project_id = f"MESA-{stable_hash}"
 
             # Second cell: due date
             release_date = None
