@@ -16,6 +16,7 @@ from config import PORTALS, BROWSER_SETTINGS, DATA_DIR, EMAIL_CONFIG
 from scraper.browser import StealthBrowser
 from scraper.scraper import OpenGovScraper, PortalScrapingError
 from scraper.bonfire_scraper import BonfireScraper
+from scraper.chandler_scraper import ChandlerScraper
 from scraper.notifications import check_for_new_projects, notify_new_projects
 from scraper.email_notifier import send_email_notification
 
@@ -112,6 +113,7 @@ def main():
         with StealthBrowser(headless=headless) as browser:
             opengov_scraper = OpenGovScraper(browser)
             bonfire_scraper = BonfireScraper(browser)
+            chandler_scraper = ChandlerScraper()
 
 
             for portal_key, portal_config in PORTALS.items():
@@ -123,6 +125,8 @@ def main():
                         portal_type = portal_config.get("type", "opengov")
                         if portal_type == "bonfire":
                             projects = bonfire_scraper.scrape_portal(portal_key, portal_config)
+                        elif portal_type == "chandler":
+                            projects = chandler_scraper.scrape_portal(portal_key, portal_config)
                         else:
                             projects = opengov_scraper.scrape_portal(portal_key, portal_config)
                             

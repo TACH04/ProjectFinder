@@ -33,10 +33,18 @@ A targeted web scraper that detects **new** government procurement projects from
 
 ### 1. Automated Run (Recommended)
 **Use this for cron jobs / schedulers.**
-It runs strictly in headless mode and **only** notifies if *new* projects are found.
+It runs strictly in headless mode and **only** notifies if *new* projects are found (defaulting to email).
+
 ```bash
 python3 run_scraper.py
 ```
+
+**Options:**
+-   `--notify popup`: Opens a local text file summary on your desktop instead of sending an email. Great for manual checks.
+    ```bash
+    python3 run_scraper.py --notify popup
+    ```
+    *(Windows users: You can simply double-click `run_manual.bat`)*
 
 ### 2. Manual / Debug Run
 **Use this for testing or forcing a check.**

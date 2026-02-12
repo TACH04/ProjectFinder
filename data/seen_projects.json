@@ -539,7 +539,147 @@
         "url": "https://tempe-gov.bonfirehub.com/opportunities/220647",
         "release_date": "2026-03-12T22:00:00"
       }
+    },
+    "phoenix:232196": {
+      "first_seen": "2026-02-11T17:03:27.812092",
+      "data": {
+        "id": "232196",
+        "title": "Airfield Lighting Hardware Supplies",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix/projects/232196",
+        "release_date": "2026-02-11T17:03:10.920185"
+      }
+    },
+    "sedona:219248": {
+      "first_seen": "2026-02-11T17:03:27.812100",
+      "data": {
+        "id": "219248",
+        "title": "City Hall Doors Replacement Project",
+        "portal": "sedona",
+        "url": "https://sedonaaz.bonfirehub.com/opportunities/219248",
+        "release_date": "2026-03-04T21:00:00"
+      }
+    },
+    "sedona:221686": {
+      "first_seen": "2026-02-11T17:03:27.812103",
+      "data": {
+        "id": "221686",
+        "title": "Historic Resource Survey Update",
+        "portal": "sedona",
+        "url": "https://sedonaaz.bonfirehub.com/opportunities/221686",
+        "release_date": "2026-03-04T21:00:00"
+      }
+    },
+    "chandler_rfq:WW2403.202": {
+      "first_seen": "2026-02-11T17:03:27.812111",
+      "data": {
+        "id": "WW2403.202",
+        "title": "Tumbleweed Aquifer Storage and Recovery Well 8 Replacement",
+        "portal": "chandler_rfq",
+        "url": "https://www.chandleraz.gov/business/vendor-services/capital-projects/request-for-qualifications#collapse-accordion-17858-1",
+        "release_date": "2026-02-11T17:03:27.747298"
+      }
+    },
+    "chandler_rfq:WA2502.201": {
+      "first_seen": "2026-02-11T17:03:27.812113",
+      "data": {
+        "id": "WA2502.201",
+        "title": "Basha Water Production Facility & Ocotillo and Pleasant Wells Rehabilitation",
+        "portal": "chandler_rfq",
+        "url": "https://www.chandleraz.gov/business/vendor-services/capital-projects/request-for-qualifications#collapse-accordion-17858-2",
+        "release_date": "2026-02-11T17:03:27.747451"
+      }
+    },
+    "chandler_rfq:PR2602.201": {
+      "first_seen": "2026-02-11T17:03:27.812114",
+      "data": {
+        "id": "PR2602.201",
+        "title": "Folley Park and Pool Renovations",
+        "portal": "chandler_rfq",
+        "url": "https://www.chandleraz.gov/business/vendor-services/capital-projects/request-for-qualifications#collapse-accordion-17858-3",
+        "release_date": "2026-02-11T17:03:27.747541"
+      }
+    },
+    "chandler_rfb:ED6-909-5028": {
+      "first_seen": "2026-02-11T17:03:27.812116",
+      "data": {
+        "id": "ED6-909-5028",
+        "title": "Mixed-Use Hotel, Retail, Restaurant, Entertainment Development Tumbleweed Park \u2013 SW Corner of McQueen and Germann Road",
+        "portal": "chandler_rfb",
+        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals#collapse-accordion-4887-1",
+        "release_date": "2026-03-11T00:00:00"
+      }
+    },
+    "chandler_rfb:PW6-962-5021": {
+      "first_seen": "2026-02-11T17:03:27.812117",
+      "data": {
+        "id": "PW6-962-5021",
+        "title": "Sewer Line Cleaning and Video Inspection Services",
+        "portal": "chandler_rfb",
+        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals#collapse-accordion-4887-2",
+        "release_date": "2026-02-12T00:00:00"
+      }
+    },
+    "chandler_rfb:ED6-918-5029": {
+      "first_seen": "2026-02-11T17:03:27.812118",
+      "data": {
+        "id": "ED6-918-5029",
+        "title": "Young Family and Professional Attraction Campaign",
+        "portal": "chandler_rfb",
+        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals#collapse-accordion-4887-3",
+        "release_date": "2026-04-21T00:00:00"
+      }
+    },
+    "chandler_rfb:NR6-952-5035": {
+      "first_seen": "2026-02-11T17:03:27.812120",
+      "data": {
+        "id": "NR6-952-5035",
+        "title": "Human Services - General Services",
+        "portal": "chandler_rfb",
+        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals#collapse-accordion-4887-4",
+        "release_date": "2026-02-19T00:00:00"
+      }
+    },
+    "chandler_rfb:NR6-952-5036": {
+      "first_seen": "2026-02-11T17:03:27.812121",
+      "data": {
+        "id": "NR6-952-5036",
+        "title": "Human Services - Core Services",
+        "portal": "chandler_rfb",
+        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals#collapse-accordion-4887-5",
+        "release_date": "2026-02-19T00:00:00"
+      }
+    },
+    "chandler_rfb:DS6-918-5041": {
+      "first_seen": "2026-02-11T17:03:27.812122",
+      "data": {
+        "id": "DS6-918-5041",
+        "title": "Pre-Approved Housing Design Plans",
+        "portal": "chandler_rfb",
+        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals#collapse-accordion-4887-6",
+        "release_date": "2026-02-26T00:00:00"
+      }
+    },
+    "chandler_rfb:H06-914-5039": {
+      "first_seen": "2026-02-11T17:03:27.812123",
+      "data": {
+        "id": "H06-914-5039",
+        "title": "Public Housing Plumbing Services",
+        "portal": "chandler_rfb",
+        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals#collapse-accordion-4887-7",
+        "release_date": "2026-02-19T00:00:00"
+      }
+    },
+    "chandler_rfb:BF6-910-5040": {
+      "first_seen": "2026-02-11T17:03:27.812125",
+      "data": {
+        "id": "BF6-910-5040",
+        "title": "HVAC Test and Balance Services (TAB) for Various Projects",
+        "portal": "chandler_rfb",
+        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals#collapse-accordion-4887-8",
+        "release_date": "2026-02-20T00:00:00"
+      }
     }
   },
-  "last_check": "2026-02-11T07:00:36.528517"
+  "last_check": "2026-02-11T17:07:25.218331"
 }

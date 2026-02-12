@@ -67,6 +67,17 @@ PORTALS = {
         "url": "https://tempe-gov.bonfirehub.com/portal/?tab=openOpportunities",
         "type": "bonfire"
     },
+    # Chandler AZ Targets
+    "chandler_rfq": {
+        "name": "City of Chandler - RFQ",
+        "url": "https://www.chandleraz.gov/business/vendor-services/capital-projects/request-for-qualifications",
+        "type": "chandler"
+    },
+    "chandler_rfb": {
+        "name": "City of Chandler - RFB",
+        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals",
+        "type": "chandler"
+    },
 }
 
 # Browser settings

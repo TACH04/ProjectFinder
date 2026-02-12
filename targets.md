@@ -1,3 +1,5 @@
+added 2/10
+
 https://procurement.opengov.com/portal/tollesonaz
 
 https://procurement.opengov.com/portal/elmirageaz
@@ -5,6 +7,7 @@ https://procurement.opengov.com/portal/elmirageaz
 https://procurement.opengov.com/portal/tucson-az
 
 https://procurement.opengov.com/portal/queencreekaz
+
 
 https://buckeyeaz.bonfirehub.com/portal/?tab=openOpportunities
 
@@ -18,3 +21,11 @@ https://peoriaaz.bonfirehub.com/portal/?tab=openOpportunities
 
 
 https://tempe-gov.bonfirehub.com/portal/?tab=openOpportunities
+
+
+Added 2/11
+
+
+https://www.chandleraz.gov/business/vendor-services/capital-projects/request-for-qualifications
+
+https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals
