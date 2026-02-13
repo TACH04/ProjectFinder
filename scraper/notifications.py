@@ -44,10 +44,14 @@ def get_project_key(project: Project) -> str:
     return f"{project.portal}:{project.id}"
 
 
-def check_for_new_projects(projects: List[Project]) -> Tuple[List[Project], List[Project]]:
+def check_for_new_projects(projects: List[Project], save: bool = True) -> Tuple[List[Project], List[Project]]:
     """
     Compare current projects against previously seen ones
     
+    Args:
+        projects: List of scraped projects
+        save: Whether to save the updated seen projects to the JSON file
+        
     Returns:
         Tuple of (new_projects, []) - keeping tuple format for compatibility
     """
@@ -62,14 +66,15 @@ def check_for_new_projects(projects: List[Project]) -> Tuple[List[Project], List
         # Check if this is a new project we haven't seen before
         if key not in seen_keys:
             new_projects.append(project)
-            # Add to seen projects
+            # Add to seen projects (in memory)
             seen_data["projects"][key] = {
                 "first_seen": datetime.now().isoformat(),
                 "data": project.to_dict(),
             }
     
-    # Save updated seen projects
-    save_seen_projects(seen_data)
+    # Save updated seen projects ONLY if save is True
+    if save:
+        save_seen_projects(seen_data)
     
     return new_projects, []
 

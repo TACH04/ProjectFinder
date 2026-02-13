@@ -98,6 +98,11 @@ def parse_arguments():
         default="email",
         help="Notification method: 'email' (default) or 'popup' (opens text file)"
     )
+    parser.add_argument(
+        "--validate", 
+        action="store_true",
+        help="Run in validation mode: scrape all, capture screenshots, generate report, DO NOT save."
+    )
     return parser.parse_args()
 
 
@@ -106,8 +111,18 @@ def main():
     
     logger.info(f"🚀 Starting Scraper Run at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"   Notification Mode: {args.notify}")
+    if args.validate:
+        logger.info("   🔍 MODE: VALIDATION (Screenshots on, Saving off)")
 
     all_projects = []
+    
+    # Validation setup
+    validation_dir = None
+    screenshots = {}
+    if args.validate:
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        validation_dir = os.path.join("logs", f"validation_{timestamp}")
+        os.makedirs(validation_dir, exist_ok=True)
 
     # 1. Scrape all portals
     try:
@@ -204,6 +219,41 @@ def main():
             for key, config in browser_portals.items():
                 results = scrape_single_portal(key, config)
                 all_projects.extend(results)
+                
+                # Capture screenshot for validation
+                if args.validate:
+                    try:
+                        time.sleep(1) # Wait for initial render
+                        images = capture_screenshots_scroll(browser, validation_dir, key)
+                        if images:
+                            screenshots[key] = images
+                            logger.info(f"  📸 Screenshots saved for {key}: {len(images)} images")
+                    except Exception as e:
+                        logger.error(f"  ✗ Screenshot failed for {key}: {e}")
+
+            # 3. IF VALIDATION: Screenshot API portals
+            if args.validate:
+                logger.info("--------------------------------------------------")
+                logger.info("📸 Capturing screenshots for API portals...")
+                
+                # We reuse the existing browser instance
+                for key, config in api_portals.items():
+                    try:
+                        url = config.get('url')
+                        if not url:
+                            continue
+                            
+                        logger.info(f"  Navigating to {key} ({url})...")
+                        if browser.navigate(url):
+                             time.sleep(2) # Give it time to render fully
+                             images = capture_screenshots_scroll(browser, validation_dir, key)
+                             if images:
+                                 screenshots[key] = images
+                                 logger.info(f"  ✓ Screenshots saved for {key}: {len(images)} images")
+                        else:
+                             logger.error(f"  ✗ Failed to navigate to {key}")
+                    except Exception as e:
+                        logger.error(f"  ✗ API Screenshot failed for {key}: {e}")
 
     except Exception as e:
         logger.error(f"✗ Browser/Scraper validation error: {e}", exc_info=True)
@@ -225,7 +275,29 @@ def main():
     else:
         logger.info("No new projects found.")
 
+
     # 4. Handle Notification
+    if args.validate:
+        generate_validation_report(all_projects, screenshots, validation_dir)
+        # Check for new projects but DO NOT SAVE
+        new_projects, _ = check_for_new_projects(all_projects, save=False)
+        logger.info(f"🔎 Validation: Found {len(all_projects)} active projects ({len(new_projects)} new).")
+        logger.info(f"📄 Report generated at: {os.path.join(validation_dir, 'index.html')}")
+        
+        # Open the report
+        report_path = os.path.join(validation_dir, "index.html")
+        try:
+            if sys.platform == 'win32':
+                os.startfile(report_path)
+            elif sys.platform == 'darwin':
+                subprocess.call(('open', report_path))
+            else:
+                subprocess.call(('xdg-open', report_path))
+        except Exception:
+            pass
+            
+        return 0
+
     if args.notify == "popup":
         logger.info("📝 Generating popup notification...")
         generate_popup_notification(new_projects, all_projects)
@@ -254,6 +326,134 @@ def main():
 
     logger.info("✅ Run completed.")
     return 0
+
+
+def capture_screenshots_scroll(browser, validation_dir, key):
+    """
+    Capture multiple screenshots by scrolling down the page.
+    Returns a list of saved filenames.
+    """
+    filenames = []
+    # We use a smaller scroll step than the viewport height to ensure overlap
+    # and to account for any fixed headers we might fail to hide.
+    scroll_step = 600 
+    
+    try:
+        # 1. Hide fixed elements (headers/footers/popups) that obscure content
+        # This prevents them from appearing in every screenshot and blocking the "middle"
+        browser.driver.execute_script("""
+            var style = document.createElement('style');
+            style.innerHTML = '* { position: static !important; }'; 
+            // The above is too aggressive, might break layout. 
+            // Better to just hide fixed/sticky elements:
+            document.querySelectorAll('*').forEach(el => {
+                var pos = window.getComputedStyle(el).position;
+                if (pos === 'fixed' || pos === 'sticky') {
+                    el.style.visibility = 'hidden'; 
+                    // or el.style.display = 'none'; 
+                    // visibility hidden preserves layout space which is safer
+                }
+            });
+        """)
+        time.sleep(0.5)
+
+        # Get total height
+        total_height = browser.driver.execute_script("return document.body.scrollHeight")
+        current_scroll = 0
+        index = 1
+        
+        # Max captures to avoid infinite loops on infinite scroll pages
+        # Increased to 20 for long pages like Mesa Engineering
+        max_captures = 20
+        
+        while current_scroll < total_height and index <= max_captures:
+            # Scroll to position
+            browser.driver.execute_script(f"window.scrollTo(0, {current_scroll});")
+            time.sleep(1.0) # Wait for render/lazy-load
+            
+            # Capture
+            filename = f"{key}_{index}.png"
+            path = os.path.join(validation_dir, filename)
+            browser.driver.save_screenshot(path)
+            filenames.append(filename)
+            logger.info(f"  📸 Captured part {index}: {filename}")
+            
+            current_scroll += scroll_step
+            index += 1
+            
+        return filenames
+
+    except Exception as e:
+        logger.error(f"  ✗ Screenshot capture error: {e}")
+        return filenames
+
+
+def generate_validation_report(all_projects, screenshots_map, output_dir):
+    """
+    Generate an HTML report for validation
+    screenshots_map: { 'portal_key': ['img1.png', 'img2.png'] }
+    """
+    projects_by_portal = {}
+    for p in all_projects:
+        if p.portal not in projects_by_portal:
+            projects_by_portal[p.portal] = []
+        projects_by_portal[p.portal].append(p)
+
+    html = [
+        "<html><head><title>ProjectFinder Validation Report</title>",
+        "<style>",
+        "body { font-family: sans-serif; padding: 20px; background: #f0f0f0; }",
+        ".portal-card { background: white; margin-bottom: 30px; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; gap: 20px; }",
+        ".screenshot-col { flex: 0 0 400px; display: flex; flex-direction: column; gap: 10px; }",
+        ".screenshot-wrapper { width: 100%; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; position: relative; }",
+        ".screenshot-wrapper img { width: 100%; display: block; cursor: pointer; transition: transform 0.2s; }",
+        ".screenshot-wrapper img:hover { transform: scale(1.5); box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 10; position: relative; }",
+        ".projects { flex: 1; }",
+        "h2 { margin-top: 0; color: #333; }",
+        "ul { list-style: none; padding: 0; }",
+        "li { padding: 8px 0; border-bottom: 1px solid #eee; }",
+        ".count { font-weight: bold; color: #666; font-size: 0.9em; }",
+        ".id { font-family: monospace; background: #eee; padding: 2px 5px; border-radius: 3px; font-size: 0.9em; color: #555; }",
+        "</style></head><body>",
+        f"<h1>ProjectFinder Validation Report - {datetime.now().strftime('%Y-%m-%d %H:%M')}</h1>",
+        f"<p>Found {len(all_projects)} total projects across {len(screenshots_map)} scanned portals.</p>"
+    ]
+
+    # Sort by portal name
+    for portal_key in sorted(screenshots_map.keys()):
+        images = screenshots_map.get(portal_key, [])
+        projects = projects_by_portal.get(portal_key, [])
+        
+        html.append(f'<div class="portal-card">')
+        
+        # Screenshot Column
+        html.append(f'<div class="screenshot-col">')
+        if images:
+            for img_file in images:
+                html.append(f'<div class="screenshot-wrapper"><a href="{img_file}" target="_blank"><img src="{img_file}" title="Click to open full size"></a></div>')
+        else:
+            html.append('<div style="background:#eee;height:200px;display:flex;align-items:center;justify-content:center;color:#999;">No Screenshot</div>')
+        html.append('</div>')
+        
+        # Projects Column
+        html.append(f'<div class="projects">')
+        html.append(f'<h2>{portal_key} <span class="count">({len(projects)} projects)</span></h2>')
+        
+        if projects:
+            html.append('<ul>')
+            for p in projects:
+                link_html = f'<a href="{p.url}" target="_blank">View</a>' if p.url else ''
+                html.append(f'<li><span class="id">{p.id}</span> <strong>{p.title}</strong> {link_html}</li>')
+            html.append('</ul>')
+        else:
+            html.append('<p><em>No active projects found.</em></p>')
+            
+        html.append('</div></div>')
+
+    html.append("</body></html>")
+    
+    with open(os.path.join(output_dir, "index.html"), "w", encoding="utf-8") as f:
+        f.write("\n".join(html))
 
 
 if __name__ == "__main__":
