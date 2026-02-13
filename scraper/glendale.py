@@ -60,25 +60,38 @@ class GlendaleScraper(BaseScraper):
         except Exception as e:
             print(f"  ⚠ Error selecting Open Bids: {e}")
 
-        # 4. Click Search
-        try:
-            search_btn = self.browser.find_element(By.ID, "ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_Search")
-            if search_btn:
-                print("  Clicking Search...")
-                search_btn.click()
-                time.sleep(2) # Wait for postback
-            else:
-                print("  ⚠ Search button not found")
-        except Exception as e:
-            print(f"  ⚠ Error clicking Search: {e}")
+        # 4. Click Search and wait for results
+        max_retries = 2
+        search_successful = False
+        
+        for attempt in range(max_retries + 1):
+            try:
+                if attempt > 0:
+                    print(f"  Retry attempt {attempt} for Search...")
+                    
+                search_btn = self.browser.find_element(By.ID, "ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_Search")
+                if search_btn:
+                    print("  Clicking Search...")
+                    search_btn.click()
+                    
+                    # Wait for table to appear (increased timeout to 20s)
+                    print(f"  Waiting for results table (attempt {attempt + 1})...")
+                    if self.browser.wait_for_element(By.ID, "ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_MolGridView1", timeout=20):
+                        search_successful = True
+                        break
+                    else:
+                        print(f"  ⚠ Results table did not appear within 20s (attempt {attempt + 1})")
+                else:
+                    print(f"  ⚠ Search button not found (attempt {attempt + 1})")
+            except Exception as e:
+                print(f"  ⚠ Error clicking Search: {e}")
             
-        # Wait for table
-        try:
-             WebDriverWait(self.browser.driver, 10).until(
-                EC.presence_of_element_located((By.ID, "ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_MolGridView1"))
-            )
-        except TimeoutException:
-             print("  ⚠ Timed out waiting for results table")
+            if attempt < max_retries:
+                time.sleep(2) # Brief pause before retry
+        
+        if not search_successful:
+            print("  ✗ Failed to load search results after retries")
+            return []
 
         # 5. Extract
         print("  Extracting projects...")

@@ -318,7 +318,7 @@ def main():
         else:
             logger.info("😴 No new projects to notify about.")
 
-    logger.info("✅ Run completed.")
+    logger.info(f"✅ Run completed. Total Projects scanned: {len(all_projects)}")
     return 0
 
 
