@@ -3,7 +3,7 @@ install git on dustins machine
 fix cloudflare verifycation on windows
 ---try multiple tabs ---
 push updates to him directly
-UI 
+---UI--- 
 ---Validation---
 
 
