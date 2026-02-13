@@ -2779,7 +2779,107 @@
         "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
         "release_date": null
       }
+    },
+    "glendaleaz:41900001": {
+      "first_seen": "2026-02-13T13:06:13.005750",
+      "data": {
+        "id": "41900001",
+        "title": "RFP 19-09 Gas Chromatograph with Electron Capture Detector (GC/ED)",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2018-08-30T14:00:00"
+      }
+    },
+    "glendaleaz:41900002": {
+      "first_seen": "2026-02-13T13:06:13.005775",
+      "data": {
+        "id": "41900002",
+        "title": "RFP 19-14 State Lobbying Services",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2018-10-04T14:00:00"
+      }
+    },
+    "glendaleaz:41900005": {
+      "first_seen": "2026-02-13T13:06:13.005780",
+      "data": {
+        "id": "41900005",
+        "title": "IFB 19-16 CRANE AND BOOM TRUCK RENTAL",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2018-12-13T14:00:00"
+      }
+    },
+    "glendaleaz:41900006": {
+      "first_seen": "2026-02-13T13:06:13.005783",
+      "data": {
+        "id": "41900006",
+        "title": "RSOQ 19-17 MACHINE SHOP SERVICES",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2018-12-20T14:00:00"
+      }
+    },
+    "glendaleaz:41900007": {
+      "first_seen": "2026-02-13T13:06:13.005786",
+      "data": {
+        "id": "41900007",
+        "title": "RFP 19-24 Meeting Minutes Recorder",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2019-01-17T14:00:00"
+      }
+    },
+    "glendaleaz:41900008": {
+      "first_seen": "2026-02-13T13:06:13.005789",
+      "data": {
+        "id": "41900008",
+        "title": "RFP 19-34 FOOTHILLS RECREATION & AQUATIC CENTER POOL RESURFACING",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2019-01-31T14:00:00"
+      }
+    },
+    "glendaleaz:41900009": {
+      "first_seen": "2026-02-13T13:06:13.005791",
+      "data": {
+        "id": "41900009",
+        "title": "RFP 19-20 GENERATOR MAINTENANCE",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2019-02-14T14:00:00"
+      }
+    },
+    "glendaleaz:41900010": {
+      "first_seen": "2026-02-13T13:06:13.005793",
+      "data": {
+        "id": "41900010",
+        "title": "RFP 19-32 CAFE CONCESSION SERVICES",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2019-02-07T14:00:00"
+      }
+    },
+    "glendaleaz:41900011": {
+      "first_seen": "2026-02-13T13:06:13.005796",
+      "data": {
+        "id": "41900011",
+        "title": "RFP 19-37 SPORTS OFFICIATING SERVICES",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2019-03-28T14:00:00"
+      }
+    },
+    "glendaleaz:41900012": {
+      "first_seen": "2026-02-13T13:06:13.005798",
+      "data": {
+        "id": "41900012",
+        "title": "IFB 19-40 ENGINEERED WOOD FIBER",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2019-03-14T14:00:00"
+      }
     }
   },
-  "last_check": "2026-02-13T11:39:17.980068"
+  "last_check": "2026-02-13T13:06:13.005818"
 }
