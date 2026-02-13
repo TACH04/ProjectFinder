@@ -176,6 +176,11 @@ def parse_arguments():
         action="store_true",
         help="Run in validation mode: scrape all, capture screenshots, generate report, DO NOT save."
     )
+    parser.add_argument(
+        "--ghost",
+        action="store_true",
+        help="Run in Ghost Mode (browser hidden/off-screen)"
+    )
     return parser.parse_args()
 
 
@@ -184,6 +189,9 @@ def main():
     
     logger.info(f"🚀 Starting Scraper Run at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"   Notification Mode: {args.notify}")
+    if args.ghost:
+        logger.info("   👻 MODE: GHOST (Browser Hidden)")
+    
     if args.validate:
         logger.info("   🔍 MODE: VALIDATION (Screenshots on, Saving off)")
 
@@ -199,7 +207,8 @@ def main():
 
     # 1. Scrape all portals
     try:
-        headless = BROWSER_SETTINGS["headless"]
+        # Ghost mode overrides default headless setting
+        headless = args.ghost or BROWSER_SETTINGS["headless"]
         
         # We need to distinguish between scrapers that need the shared browser (OpenGov, Gilbert)
         # and those that can run in parallel (API-based or simple requests).

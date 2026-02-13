@@ -1,3 +1,4 @@
 {
-    "notification_type": "popup"
+    "notification_type": "popup",
+    "ghost_mode": true
 }
