@@ -46,15 +46,19 @@ class GlendaleScraper(BaseScraper):
         # Based on exploration, it seems to default to "Any Type".
         # Let's verify if the element exists.
         
-        # 3. Select "Open Bids only"
+        # 3. Force "Open Bids only" (JS to bypass focus issues)
         try:
             if self.browser.wait_for_element(By.ID, "OpenBidsOnly"):
                 checkbox = self.browser.find_element(By.ID, "OpenBidsOnly")
+                
+                # Force check via JS
+                self.browser.driver.execute_script("arguments[0].checked = true;", checkbox)
+                print("  Forced 'Open Bids only' state via JS")
+                
+                # Verify state
                 if not checkbox.is_selected():
-                    print("  Clicking 'Open Bids only'...")
+                    print("  ⚠ JS check failed, attempting standard click...")
                     checkbox.click()
-                else:
-                    print("  'Open Bids only' already selected")
             else:
                 print("  ⚠ 'Open Bids only' checkbox not found")
         except Exception as e:
