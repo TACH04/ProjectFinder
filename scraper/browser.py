@@ -159,3 +159,13 @@ class StealthBrowser:
         """Add random delay to simulate human behavior"""
         # Reduced default delay to be faster
         time.sleep(random.uniform(min_seconds, max_seconds))
+        
+    def save_screenshot(self, path: str):
+        """Save a screenshot of the current page"""
+        if self.driver:
+            try:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                self.driver.save_screenshot(path)
+                print(f"  📸 Screenshot saved to {path}")
+            except Exception as e:
+                print(f"  ⚠ Failed to save screenshot: {e}")

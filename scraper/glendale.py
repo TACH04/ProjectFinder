@@ -69,28 +69,45 @@ class GlendaleScraper(BaseScraper):
                 if attempt > 0:
                     print(f"  Retry attempt {attempt} for Search...")
                     
+                # Find button again to avoid stale element
                 search_btn = self.browser.find_element(By.ID, "ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_Search")
+                
                 if search_btn:
-                    print("  Clicking Search...")
-                    search_btn.click()
+                    # Scroll into view
+                    self.browser.driver.execute_script("arguments[0].scrollIntoView(true);", search_btn)
+                    time.sleep(0.5)
+
+                    print(f"  Clicking Search (attempt {attempt + 1})...")
+                    try:
+                        search_btn.click()
+                    except Exception as click_err:
+                        print(f"  ⚠ Standard click failed: {click_err}")
+                        print("  Attempting JS click...")
+                        self.browser.driver.execute_script("arguments[0].click();", search_btn)
                     
                     # Wait for table to appear (increased timeout to 20s)
-                    print(f"  Waiting for results table (attempt {attempt + 1})...")
+                    print(f"  Waiting for results table...")
                     if self.browser.wait_for_element(By.ID, "ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_MolGridView1", timeout=20):
                         search_successful = True
                         break
                     else:
-                        print(f"  ⚠ Results table did not appear within 20s (attempt {attempt + 1})")
+                        print(f"  ⚠ Results table did not appear within 20s")
                 else:
-                    print(f"  ⚠ Search button not found (attempt {attempt + 1})")
+                    print(f"  ⚠ Search button not found")
             except Exception as e:
-                print(f"  ⚠ Error clicking Search: {e}")
+                print(f"  ⚠ Error interacting with Search: {e}")
             
             if attempt < max_retries:
                 time.sleep(2) # Brief pause before retry
         
         if not search_successful:
             print("  ✗ Failed to load search results after retries")
+            
+            # Capture screenshot for debugging
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            screenshot_path = f"logs/screenshots/glendale_error_{timestamp}.png"
+            self.browser.save_screenshot(screenshot_path)
+            
             return []
 
         # 5. Extract
