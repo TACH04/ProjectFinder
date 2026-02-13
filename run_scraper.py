@@ -52,40 +52,110 @@ logger.addHandler(console_handler)
 
 def generate_popup_notification(new_projects, all_projects):
     """
-    Generate a text file with new projects and open it directly
+    Generate an HTML file with new projects and open it directly
     to serve as a 'popup' notification.
     """
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    filename = "latest_projects.txt"
+    timestamp = datetime.now().strftime('%A, %B %d, %Y %I:%M %p')
+    filename = "latest_projects.html"
     
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write("=" * 60 + "\n")
-        f.write("📋 PROJECT FINDER ALERTS\n")
-        f.write(f"Checked at: {timestamp}\n")
-        f.write("=" * 60 + "\n\n")
-        
-        if new_projects:
-            f.write(f"🚨 FOUND {len(new_projects)} NEW PROJECTS:\n")
-            f.write("-" * 40 + "\n")
-            for p in new_projects:
-                f.write(f"• [{p.portal}] {p.title}\n")
-                if p.url:
-                    f.write(f"  Link: {p.url}\n")
-                f.write("\n")
-        else:
-            f.write("✓ No new projects found since last check.\n")
+    html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>ProjectFinder Alert</title>
+        <style>
+            body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; background-color: #f5f5f7; }}
+            .container {{ max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; }}
+            .header {{ background-color: #2c3e50; color: white; padding: 20px; text-align: center; }}
+            .header h2 {{ margin: 0; font-size: 24px; }}
+            .header p {{ margin: 5px 0 0; opacity: 0.8; font-size: 14px; }}
+            .content {{ padding: 20px; }}
+            .project-list {{ list-style: none; padding: 0; margin: 0; }}
+            .project-item {{ padding: 15px 0; border-bottom: 1px solid #eee; display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-items: start; }}
+            .project-item:last-child {{ border-bottom: none; }}
+            .city {{ font-weight: 600; color: #2c3e50; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }}
+            .project-details {{ display: flex; flex-direction: column; gap: 4px; }}
+            .project-name {{ color: #007aff; text-decoration: none; font-weight: 500; font-size: 16px; line-height: 1.4; }}
+            .project-name:hover {{ text-decoration: underline; }}
+            .project-id {{ font-size: 12px; color: #888; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; }}
+            .section-title {{ color: #2c3e50; border-bottom: 2px solid #e74c3c; padding-bottom: 8px; margin-bottom: 15px; font-size: 18px; }}
+            .empty-state {{ text-align: center; color: #888; padding: 40px; font-style: italic; }}
+            .footer {{ background: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #eee; }}
+            .summary {{ margin-top: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px; color: #2980b9; font-size: 14px; text-align: center; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h2>ProjectFinder Alert</h2>
+                <p>{timestamp}</p>
+            </div>
             
-        f.write("\n" + "=" * 60 + "\n")
-        f.write(f"Total Active Projects Scanned: {len(all_projects)}\n")
+            <div class="content">
+    """
+    
+    if new_projects:
+        html += f"""
+                <h3 class="section-title">🚨 New Projects ({len(new_projects)})</h3>
+                <ul class="project-list">
+        """
+        
+        # Helper to get city name (reused logic from email_notifier essentially)
+        def get_city_name(portal_key):
+             # PORTALS is global in run_scraper
+             if portal_key in PORTALS:
+                 return PORTALS[portal_key].get('name', portal_key.title())
+             return portal_key.title()
 
-    # Open the file with default application
+        for p in new_projects:
+            city_name = get_city_name(p.portal)
+            link_html = f'<a href="{p.url}" class="project-name" target="_blank">{p.title}</a>' if p.url else f'<span class="project-name">{p.title}</span>'
+            
+            html += f"""
+                    <li class="project-item">
+                        <div class="city">{city_name}</div>
+                        <div class="project-details">
+                            {link_html}
+                            <span class="project-id">{p.id}</span>
+                        </div>
+                    </li>
+            """
+        html += "</ul>"
+    else:
+        html += '<div class="empty-state">No new projects found since last check.</div>'
+
+    html += f"""
+                <div class="summary">
+                    Total Active Projects Scanned: <strong>{len(all_projects)}</strong>
+                </div>
+            </div>
+            
+            <div class="footer">
+                Generated by ProjectFinder • <a href="file://{os.getcwd()}" style="color:#999">View Project Folder</a>
+            </div>
+        </div>
+        
+        <script>
+            // Optional: Auto-close functionality or simple interactions could go here
+        </script>
+    </body>
+    </html>
+    """
+
     try:
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(html)
+            
+        # Open the file
         if sys.platform == 'win32':
             os.startfile(filename)
         elif sys.platform == 'darwin':
+            # Use 'open' to open in default browser
             subprocess.call(('open', filename))
         else:
             subprocess.call(('xdg-open', filename))
+            
         logger.info(f"  ✓ Popup notification opened: {filename}")
         return True
     except Exception as e:

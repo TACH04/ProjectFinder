@@ -34,12 +34,22 @@ https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids
 https://www.gilbertaz.gov/departments/finance-mgmt-services/purchasing-division/rfp-cip-open-bids/ 
 
 
+
 https://procurement.opengov.com/portal/embed/avondaleaz/project-list
 
 https://www.mesaaz.gov/Business-Development/Engineering/Architectural-Engineering-Design-Opportunities
 
 
 
+https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx
+
+
 Added 2/12
 
+https://www.cavecreekaz.gov/Bids.aspx?CatID=showStatus&txtSort=Category&showAllBids=on&Status=open
+
 https://procurement.opengov.com/portal/bensonaz
+
+
+
+https://www.egovlink.com/maricopa/postings.asp
