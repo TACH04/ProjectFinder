@@ -45,6 +45,20 @@ class BonfireScraper(BaseScraper):
 
             projects_data = data.get("payload", {}).get("projects", {})
             
+            # Handle case where projects is a list (e.g. empty list []) instead of dict
+            if isinstance(projects_data, list):
+                if not projects_data: # Empty list
+                    print("    (No projects found in payload)")
+                    projects_data = {}
+                else:
+                    # If it's a list of items, convert to dict or iterate differently?
+                    # valid payload is typically dict of ID -> Data
+                    # If it's a non-empty list, structure might be different. 
+                    # For now assume list implies empty or we log warning.
+                    print(f"    ⚠ Warning: 'projects' is a list of len {len(projects_data)}")
+                    # safe fallback
+                    projects_data = {}
+
             projects = []
             for pid, pdata in projects_data.items():
                 project = self._parse_project(pdata, domain, portal_key)

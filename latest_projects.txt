@@ -1,9 +1,16 @@
 ============================================================
 📋 PROJECT FINDER ALERTS
-Checked at: 2026-02-12 11:20:03
+Checked at: 2026-02-12 20:10:38
 ============================================================
 
-✓ No new projects found since last check.
+🚨 FOUND 2 NEW PROJECTS:
+----------------------------------------
+• [scottsdaleaz] 26RFP2890 - DIGITAL PCR (dPCR) System Complete for Water Quality Lab
+  Link: https://scottsdaleaz.bonfirehub.com/opportunities/222306
+
+• [bensonaz] Request for Qualifications - On-Call Miscellaneous Engineering Design and Review Services
+  Link: https://procurement.opengov.com/portal/bensonaz/projects/225365
+
 
 ============================================================
 Total Active Projects Scanned: 84

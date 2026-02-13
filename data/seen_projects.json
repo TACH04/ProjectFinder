@@ -1129,7 +1129,27 @@
         "url": "https://procurement.opengov.com/portal/tollesonaz/projects/228218",
         "release_date": "2026-02-12T11:03:45.226141"
       }
+    },
+    "scottsdaleaz:222306": {
+      "first_seen": "2026-02-12T20:10:38.981221",
+      "data": {
+        "id": "222306",
+        "title": "26RFP2890 - DIGITAL PCR (dPCR) System Complete for Water Quality Lab",
+        "portal": "scottsdaleaz",
+        "url": "https://scottsdaleaz.bonfirehub.com/opportunities/222306",
+        "release_date": "2026-03-12T21:00:00"
+      }
+    },
+    "bensonaz:225365": {
+      "first_seen": "2026-02-12T20:10:38.981256",
+      "data": {
+        "id": "225365",
+        "title": "Request for Qualifications - On-Call Miscellaneous Engineering Design and Review Services",
+        "portal": "bensonaz",
+        "url": "https://procurement.opengov.com/portal/bensonaz/projects/225365",
+        "release_date": "2026-02-12T20:10:20.781546"
+      }
     }
   },
-  "last_check": "2026-02-12T11:20:03.832476"
+  "last_check": "2026-02-12T20:10:38.981381"
 }

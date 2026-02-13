@@ -1,0 +1,68 @@
+🚀 Starting Scraper Run at 2026-02-12 20:07:05
+   Notification Mode: popup
+Reading portal: City of Sedona (sedona)
+
+==================================================
+Scraping (Bonfire): City of Sedona
+==================================================
+  Fetching API: https://sedonaaz.bonfirehub.com/PublicPortal/getOpenPublicOpportunitiesSectionData
+Reading portal: City of Buckeye (buckeyeaz)
+
+==================================================
+Scraping (Bonfire): City of Buckeye
+==================================================
+  Fetching API: https://buckeyeaz.bonfirehub.com/PublicPortal/getOpenPublicOpportunitiesSectionData
+Reading portal: City of Goodyear (goodyearaz)
+
+==================================================Reading portal: City of Scottsdale (scottsdaleaz)
+
+Scraping (Bonfire): City of Goodyear
+==================================================
+  Fetching API: https://goodyearaz.bonfirehub.com/PublicPortal/getOpenPublicOpportunitiesSectionData
+Reading portal: City of Peoria (peoriaaz)
+
+==================================================
+Scraping (Bonfire): City of Scottsdale
+==================================================
+  Fetching API: https://scottsdaleaz.bonfirehub.com/PublicPortal/getOpenPublicOpportunitiesSectionData
+
+==================================================
+Scraping (Bonfire): City of Peoria
+==================================================
+  Fetching API: https://peoriaaz.bonfirehub.com/PublicPortal/getOpenPublicOpportunitiesSectionData
+  ✗ API request failed: 'list' object has no attribute 'items'
+  ⚠ Attempt 1 failed (Bonfire API failed: 'list' object has no attribute 'items'). Retrying in 30s...
+  ✓ Found 3 active projects via API
+  ✓ Found 3 active projects for buckeyeaz
+Reading portal: City of Tempe (tempe)
+
+==================================================
+Scraping (Bonfire): City of Tempe
+==================================================
+  Fetching API: https://tempe-gov.bonfirehub.com/PublicPortal/getOpenPublicOpportunitiesSectionData
+  ✓ Found 3 active projects via API
+  ✓ Found 3 active projects for sedona
+Reading portal: City of Chandler - RFQ (chandler_rfq)
+
+==================================================
+Scraping (Chandler): City of Chandler - RFQ
+==================================================
+  Fetching URL: https://www.chandleraz.gov/business/vendor-services/capital-projects/request-for-qualifications
+  ✓ Found 1 active projects via API
+  ✓ Found 6 active projects via API
+  ✓ Found 1 active projects for goodyearaz
+  ✓ Found 6 active projects for scottsdaleaz
+Reading portal: City of Chandler - RFB (chandler_rfb)
+
+==================================================
+Scraping (Chandler): City of Chandler - RFB
+==================================================
+  Fetching URL: https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals
+  Found 3 (header) items
+  ✓ Found 3 active projects
+  ✓ Found 3 active projects for chandler_rfq
+  Found 8 (header) items
+  ✓ Found 8 active projects
+  ✓ Found 8 active projects for chandler_rfb
+  ✓ Found 7 active projects via API
+  ✓ Found 7 active projects for tempe

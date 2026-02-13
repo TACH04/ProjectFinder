@@ -118,7 +118,7 @@ def main():
         # Currently, 'opengov' and 'gilbert' use the browser. 
         # 'bonfire' and 'chandler' use requests (though they can accept browser).
         
-        browser_types = ["opengov", "gilbert", "mesa_engineering"]
+        browser_types = ["opengov", "gilbert", "mesa_engineering", "glendale", "cave_creek"]
 
         with StealthBrowser(headless=headless) as browser:
             
@@ -165,7 +165,7 @@ def main():
                         return projects
                     except PortalScrapingError as e:
                         if attempt < max_retries - 1:
-                            wait_time = (attempt + 1) * 30
+                            wait_time = (attempt + 1) * 5
                             logger.warning(f"  ⚠ Attempt {attempt+1} failed ({e}). Retrying in {wait_time}s...")
                             time.sleep(wait_time)
                         else:

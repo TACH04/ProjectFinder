@@ -26,6 +26,11 @@ PORTALS = {
         "url": "https://procurement.opengov.com/portal/tollesonaz",
         "type": "opengov"
     },
+    "bensonaz": {
+        "name": "City of Benson",
+        "url": "https://procurement.opengov.com/portal/bensonaz",
+        "type": "opengov"
+    },
     "elmirageaz": {
         "name": "City of El Mirage",
         "url": "https://procurement.opengov.com/portal/elmirageaz",
@@ -100,6 +105,12 @@ PORTALS = {
         "name": "City of Glendale",
         "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
         "type": "glendale"
+    },
+    # Cave Creek AZ
+    "cavecreek": {
+        "name": "City of Cave Creek",
+        "url": "https://www.cavecreekaz.gov/Bids.aspx?CatID=All&txtSort=Category&showAllBids=&Status=",
+        "type": "cave_creek"
     },
 }
 
