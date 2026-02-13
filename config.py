@@ -112,6 +112,12 @@ PORTALS = {
         "url": "https://www.cavecreekaz.gov/Bids.aspx?CatID=All&txtSort=Category&showAllBids=&Status=",
         "type": "cave_creek"
     },
+    # Maricopa AZ
+    "maricopa": {
+        "name": "City of Maricopa",
+        "url": "https://www.egovlink.com/maricopa/postings.asp?listtype=BID",
+        "type": "maricopa"
+    },
 }
 
 # Browser settings
