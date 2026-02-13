@@ -26,6 +26,9 @@ import scraper.bonfire_scraper
 import scraper.chandler_scraper
 import scraper.gilbert
 import scraper.mesa_engineering
+import scraper.glendale
+import scraper.cave_creek
+import scraper.maricopa
 
 # Configure logging
 LOG_DIR = "logs"
@@ -133,7 +136,7 @@ def main():
         # Currently, 'opengov' and 'gilbert' use the browser. 
         # 'bonfire' and 'chandler' use requests (though they can accept browser).
         
-        browser_types = ["opengov", "gilbert", "mesa_engineering", "glendale", "cave_creek"]
+        browser_types = ["opengov", "gilbert", "mesa_engineering", "glendale", "cave_creek", "maricopa"]
 
         with StealthBrowser(headless=headless) as browser:
             
@@ -265,22 +268,13 @@ def main():
 
     # 2. Check for new projects
     logger.info("🔍 Checking for new projects against database...")
-    new_projects, _ = check_for_new_projects(all_projects)
+    # In validation mode, we check for curiosities but DO NOT save to seen_projects.json
+    save_to_db = not args.validate
+    new_projects, _ = check_for_new_projects(all_projects, save=save_to_db)
 
-    # 3. Print CLI summary
-    if new_projects:
-        logger.info(f"Found {len(new_projects)} NEW projects.")
-        for p in new_projects:
-            logger.info(f"  + New: {p.title} ({p.portal})")
-    else:
-        logger.info("No new projects found.")
-
-
-    # 4. Handle Notification
+    # 3. Handle Notification & Report
     if args.validate:
         generate_validation_report(all_projects, screenshots, validation_dir)
-        # Check for new projects but DO NOT SAVE
-        new_projects, _ = check_for_new_projects(all_projects, save=False)
         logger.info(f"🔎 Validation: Found {len(all_projects)} active projects ({len(new_projects)} new).")
         logger.info(f"📄 Report generated at: {os.path.join(validation_dir, 'index.html')}")
         
@@ -336,22 +330,29 @@ def capture_screenshots_scroll(browser, validation_dir, key):
     filenames = []
     # We use a smaller scroll step than the viewport height to ensure overlap
     # and to account for any fixed headers we might fail to hide.
-    scroll_step = 600 
+    # We use 500 for more overlap and to ensure elements at the edge are caught.
+    scroll_step = 500 
     
     try:
-        # 1. Hide fixed elements (headers/footers/popups) that obscure content
-        # This prevents them from appearing in every screenshot and blocking the "middle"
+        # 1. Provide a small buffer for heavy React apps to finish initial rendering
+        time.sleep(2)
+
+        # 2. Hide fixed elements (headers/footers/popups) that obscure content
+        # This version is more careful to only hide true fixed/sticky headers
         browser.driver.execute_script("""
-            var style = document.createElement('style');
-            style.innerHTML = '* { position: static !important; }'; 
-            // The above is too aggressive, might break layout. 
-            // Better to just hide fixed/sticky elements:
             document.querySelectorAll('*').forEach(el => {
-                var pos = window.getComputedStyle(el).position;
+                const style = window.getComputedStyle(el);
+                const pos = style.position;
+                const top = parseInt(style.top);
+                const height = el.offsetHeight;
+                
+                // Hide elements that stay at the top or are explicitly fixed/sticky
                 if (pos === 'fixed' || pos === 'sticky') {
-                    el.style.visibility = 'hidden'; 
-                    // or el.style.display = 'none'; 
-                    // visibility hidden preserves layout space which is safer
+                     // Check if it's a large overlay (likely a popup) or a header
+                     if (top < 100 || height > window.innerHeight * 0.8) {
+                        el.style.opacity = '0'; 
+                        el.style.pointerEvents = 'none';
+                     }
                 }
             });
         """)
@@ -378,7 +379,7 @@ def capture_screenshots_scroll(browser, validation_dir, key):
             filenames.append(filename)
             logger.info(f"  📸 Captured part {index}: {filename}")
             
-            current_scroll += scroll_step
+            current_scroll += (scroll_step - 50) # 50px overlap
             index += 1
             
         return filenames

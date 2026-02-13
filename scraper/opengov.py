@@ -29,7 +29,7 @@ class OpenGovScraper(BaseScraper):
         1. Navigate to portal
         2. Click "Active" status filter
         3. Double-click "Release Date" to sort newest first
-        4. Click Search
+        4. (Optional) Increase rows per page to 40
         5. Extract project data
         """
         url = portal_config["url"]
@@ -76,8 +76,16 @@ class OpenGovScraper(BaseScraper):
         except TimeoutException:
             pass # Continue to extraction even if timeout, might be empty or using fallback
         
-        # Step 4: Extract projects
-        print("  Step 4: Extracting projects...")
+        # Step 4: (Phoenix/Avondale/Tucson specific or if requested) Increase rows per page
+        # This is a good optimization for any portal that might have many projects
+        if portal_key in ["phoenix", "avondaleaz", "tucsonaz"]: 
+            print(f"  Step 4: Increasing rows per page to 50 for {portal_key}...")
+            self._set_rows_per_page(50)
+            # Give it a moment to reload after changing rows
+            time.sleep(2)
+
+        # Step 5: Extract projects
+        print("  Step 5: Extracting projects...")
         projects = self._extract_projects(portal_key)
         
         print(f"  ✓ Found {len(projects)} active projects")
@@ -215,6 +223,59 @@ class OpenGovScraper(BaseScraper):
         
         return False
     
+    def _set_rows_per_page(self, count: int = 40) -> bool:
+        """Find the rows per page dropdown and select the target count"""
+        try:
+            # Dropdown is usually a <select> or a React-Select div near the bottom
+            # Based on user screenshot, it contains the text "10 rows"
+            selectors = [
+                "//select[contains(@aria-label, 'rows per page')]",
+                "//div[contains(@class, 'select')]//div[contains(text(), 'rows')]",
+                "//span[contains(text(), 'rows')]/parent::div",
+                "//select", # Generic fallback
+            ]
+            
+            for selector in selectors:
+                try:
+                    elements = self.browser.find_elements(By.XPATH, selector)
+                    for elem in elements:
+                        if elem.is_displayed():
+                            if elem.tag_name == "select":
+                                from selenium.webdriver.support.ui import Select
+                                select = Select(elem)
+                                # Try to find option with '40' or max available
+                                options = [o.text for o in select.options]
+                                target_val = str(count)
+                                if target_val in options:
+                                    select.select_by_visible_text(target_val)
+                                else:
+                                    # Fallback to last option (usually max)
+                                    select.select_by_index(len(options) - 1)
+                                return True
+                            else:
+                                # It's a div/custom dropdown
+                                elem.click()
+                                time.sleep(1)
+                                # Look for the option in the list
+                                option_xpath = f"//div[@role='option' and contains(text(), '{count}')]"
+                                options = self.browser.find_elements(By.XPATH, option_xpath)
+                                if options:
+                                    options[0].click()
+                                    return True
+                                else:
+                                    # Try generic any option that looks like a number > 10
+                                    generic_options = self.browser.find_elements(By.XPATH, "//div[@role='option']")
+                                    for opt in generic_options:
+                                        if any(x in opt.text for x in ['40', '50', '100']):
+                                            opt.click()
+                                            return True
+                except Exception:
+                    continue
+            return False
+        except Exception as e:
+            print(f"    ⚠ Error setting rows per page: {e}")
+            return False
+
     def _click_search(self) -> bool:
         """Click the Search button"""
         selectors = [
@@ -244,7 +305,9 @@ class OpenGovScraper(BaseScraper):
         
         # Try to find project rows in various table/list structures
         row_selectors = [
+            "//div[@role='row']", # Explicitly confirmed for Phoenix
             "//tr[contains(@class, 'row')]",
+            "//div[contains(@class, 'rt-tr-group')]", # Common React-Table group
             "//div[contains(@class, 'project-row')]",
             "//div[contains(@class, 'solicitation')]",
             "//a[contains(@href, '/portal/') and contains(@href, '/projects/')]",
@@ -295,31 +358,41 @@ class OpenGovScraper(BaseScraper):
             # First line is usually the title
             title = lines[0] if lines else text[:100]
             
+            # SKIP HEADERS: If the title is "Project Title" or "ID", it's a header row
+            if title.lower() in ["project title", "id", "title"]:
+                return None
+    
 
-            # Try to find a project ID (usually numeric or alphanumeric pattern)
-            # 1. Look for labeled ID: "ID: 123", "#123", "Project #123"
-            id_match = re.search(r'(?:ID|#|Project|Number)\s*:?\s*([A-Za-z0-9-]+)', text, re.IGNORECASE)
-            
-            if id_match:
-                project_id = id_match.group(1)
-            else:
-                # 2. Look for formatted IDs (e.g., "IFB-25-001")
-                formatted_id = re.search(r'\b([A-Z]{2,}-\d{2,}-[\w-]+)\b', text)
-                if formatted_id:
-                    project_id = formatted_id.group(1)
+            # Try to extract the true internal ID from the URL first (most stable)
+            # URL format: https://procurement.opengov.com/portal/portal_key/projects/232196
+            if url and "/projects/" in url:
+                url_id = url.split("/projects/")[-1].split("?")[0].split("#")[0]
+                if url_id and url_id.isdigit():
+                    project_id = url_id
                 else:
-                    # 3. Last resort: Find any 3-6 digit number that ISN'T a year (2024-2027)
-                    # We look for a number that is NOT 202x
-                    numbers = re.findall(r'\b(\d{3,6})\b', text)
                     project_id = None
-                    for num in numbers:
-                        # Skip likely years
-                        if not (2020 <= int(num) <= 2030):
-                            project_id = num
-                            break
+            else:
+                project_id = None
+
+                if not project_id:
+                    # 3. Look for alphanumeric string (8-15 chars, usually letters + numbers)
+                    # Like AV31000100
+                    alpha_num = re.search(r'\b([A-Z0-9]{6,15})\b', text)
+                    if alpha_num:
+                        project_id = alpha_num.group(1)
+                    else:
+                        # 4. Last resort: Find any 3-6 digit number that ISN'T a year (2024-2027)
+                        numbers = re.findall(r'\b(\d{3,6})\b', text)
+                        for num in numbers:
+                            if not (2020 <= int(num) <= 2030):
+                                project_id = num
+                                break
                     
-                    if not project_id:
-                        project_id = f"_{hash(text) % 100000}"
+                if not project_id:
+                    # STABLE FALLBACK: Hash the title only, which is less likely to change than the full row text
+                    import hashlib
+                    clean_title = "".join(filter(str.isalnum, title)).lower()
+                    project_id = f"_{hashlib.md5(clean_title.encode()).hexdigest()[:8]}"
             
             # Construct URL if extraction failed or returned dummy '#'
             if (not url or url == "#" or "javascript" in url) and not project_id.startswith("_"):
@@ -363,12 +436,14 @@ class OpenGovScraper(BaseScraper):
         # We enforce strict proximity (e.g. within 600 chars) to ensure we don't cross object boundaries
         # We use . instead of [^}] because there might be nested objects (like "template":{...}) between title and id
         patterns = [
-            # Title ... ID (Most common based on debug output)
-            r'"title"\s*:\s*"([^"]+)".{0,600}?"id"\s*:\s*(\d+)',
+            # Title ... ID (Allows alphanumeric IDs with dashes/spaces)
+            r'"title"\s*:\s*"([^"]+)".{0,600}?"id"\s*:\s*"([^"]+)"',
             # ID ... Title
-            r'"id"\s*:\s*(\d+).{0,600}?"title"\s*:\s*"([^"]+)"',
+            r'"id"\s*:\s*"([^"]+)".{0,600}?"title"\s*:\s*"([^"]+)"',
              # Alternative format with 'jobTitle'
-            r'"id"\s*:\s*(\d+).{0,600}?"jobTitle"\s*:\s*"([^"]+)"',
+            r'"id"\s*:\s*"([^"]+)".{0,600}?"jobTitle"\s*:\s*"([^"]+)"',
+            # Numeric ID specific patterns (just in case)
+            r'"id"\s*:\s*(\d+).{0,600}?"title"\s*:\s*"([^"]+)"',
         ]
         
         seen_ids = set()
