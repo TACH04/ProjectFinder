@@ -129,7 +129,45 @@ class GlendaleScraper(BaseScraper):
             
             return []
 
-        # 5. Extract
+        # 5. Wait for table data to actually populate (JavaScript loads this async)
+        print("  Waiting for JavaScript to populate table data...")
+        data_loaded = False
+        
+        try:
+            # Wait for actual links/data in the table (not just the table structure)
+            # The table has links with bid numbers like "42200005"
+            wait = WebDriverWait(self.browser.driver, 15)
+            
+            # Wait for at least one anchor tag with a bid number to appear in the table
+            def check_table_has_data(driver):
+                try:
+                    table = driver.find_element(By.ID, "ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_MolGridView1")
+                    # Look for anchor tags in the table (bid number links)
+                    links = table.find_elements(By.TAG_NAME, "a")
+                    if len(links) > 0:
+                        # Check if any link has text (a bid number)
+                        for link in links:
+                            if link.text.strip():
+                                return True
+                    return False
+                except Exception:
+                    return False
+            
+            data_loaded = wait.until(check_table_has_data)
+            print(f"  ✓ Table data populated by JavaScript")
+            
+        except TimeoutException:
+            print("  ⚠ Table data did not populate within 15 seconds")
+            # Take screenshot for debugging
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            screenshot_path = f"logs/screenshots/glendale_no_data_{timestamp}.png"
+            self.browser.save_screenshot(screenshot_path)
+        except Exception as e:
+            print(f"  ⚠ Error waiting for data: {e}")
+        
+        # Add a small extra delay to ensure all rows are rendered
+        time.sleep(1)
+        
         print("  Extracting projects...")
         projects = self._extract_projects(portal_key)
         
@@ -171,9 +209,12 @@ class GlendaleScraper(BaseScraper):
             if len(cells) < 4:
                 return None
                 
-            # Column 2: Bid Number (and Link)
-            # Column 3: Description / Title
-            # Column 4: Closing Date / Due Date
+            # Column 0: Type (Statement of Qualifications, Request for Proposal, etc.)
+            # Column 1: Number (Bid Number with link)
+            # Column 2: Description (Project Title)
+            # Column 3: Due By (Closing Date)
+            # Column 4: Opening
+            # Column 5: Status
             
             id_cell = cells[1]
             title_cell = cells[2]
@@ -193,7 +234,11 @@ class GlendaleScraper(BaseScraper):
             # Extract Title
             title = title_cell.text.strip()
             
-            # Extract Date
+            # Skip if no title or ID (invalid/header row)
+            if not title or not project_id:
+                return None
+            
+            # Extract Due Date
             release_date = None
             date_text = date_cell.text.strip()
             

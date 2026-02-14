@@ -1139,7 +1139,457 @@
         "url": "https://procurement.opengov.com/portal/tollesonaz/projects/13235",
         "release_date": "2026-02-12T11:03:45.227929"
       }
+    },
+    "scottsdaleaz:222306": {
+      "first_seen": "2026-02-14T02:02:21.548502",
+      "data": {
+        "id": "222306",
+        "title": "26RFP2890 - DIGITAL PCR (dPCR) System Complete for Water Quality Lab",
+        "portal": "scottsdaleaz",
+        "url": "https://scottsdaleaz.bonfirehub.com/opportunities/222306",
+        "release_date": "2026-03-12T21:00:00"
+      }
+    },
+    "phoenix:001": {
+      "first_seen": "2026-02-14T02:02:21.548603",
+      "data": {
+        "id": "001",
+        "title": "35-65-95 Gallon Containers",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:007": {
+      "first_seen": "2026-02-14T02:02:21.548547",
+      "data": {
+        "id": "007",
+        "title": "HVAC Filter Maintenance and Repair",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0125": {
+      "first_seen": "2026-02-14T02:02:21.548551",
+      "data": {
+        "id": "0125",
+        "title": "Automatic Transfer Switch Testing, Maintenance, and Repair Services",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:POSITIVE": {
+      "first_seen": "2026-02-14T02:02:21.548554",
+      "data": {
+        "id": "POSITIVE",
+        "title": "POSITIVE OFFSETS WITH FLASHING YELLOW ARROWS 5 LOCATIONS",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0198": {
+      "first_seen": "2026-02-14T02:02:21.548557",
+      "data": {
+        "id": "0198",
+        "title": "Comprehensive Community Needs Assessment",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0183": {
+      "first_seen": "2026-02-14T02:02:21.548560",
+      "data": {
+        "id": "0183",
+        "title": "Small Equipment Repair Services",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:PHOENIX": {
+      "first_seen": "2026-02-14T02:02:21.548608",
+      "data": {
+        "id": "PHOENIX",
+        "title": "PHOENIX SKY HARBOR INTERNATIONAL AIRPORT TERMINAL 4 ROOF REPLACEMENT N2 CONCOURSE, N3 CONCOURSE, AND CONNECTOR BRIDGES",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:AVIATION": {
+      "first_seen": "2026-02-14T02:02:21.548577",
+      "data": {
+        "id": "AVIATION",
+        "title": "AVIATION ARCHITECTURAL CONSTRUCTION",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:SERVICES": {
+      "first_seen": "2026-02-14T02:02:21.548610",
+      "data": {
+        "id": "SERVICES",
+        "title": "WATER SERVICES DEPARTMENT SMALL DIAMETER ASSET REPAIR AND REPLACEMENT JOB ORDER CONTRACT",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0128": {
+      "first_seen": "2026-02-14T02:02:21.548582",
+      "data": {
+        "id": "0128",
+        "title": "Occupational Medicine Staffing Services and Electronic Health Records Management",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0222": {
+      "first_seen": "2026-02-14T02:02:21.548584",
+      "data": {
+        "id": "0222",
+        "title": "Airfield Lighting Hardware Supplies",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0116": {
+      "first_seen": "2026-02-14T02:02:21.548586",
+      "data": {
+        "id": "0116",
+        "title": "Evidence Bags",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0123": {
+      "first_seen": "2026-02-14T02:02:21.548588",
+      "data": {
+        "id": "0123",
+        "title": "Alco-Sensor Equipment, Parts and Supplies",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:LIMITS": {
+      "first_seen": "2026-02-14T02:02:21.548597",
+      "data": {
+        "id": "LIMITS",
+        "title": "LOCAL LIMITS STUDY FOR 91ST AVENUE AND 23RD AVENUE WASTEWATER TREATMENT PLANTS - ENGINEERING SERVICES",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0158": {
+      "first_seen": "2026-02-14T02:02:21.548599",
+      "data": {
+        "id": "0158",
+        "title": "Lease of High-Volume Digital Color Production Press",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0228": {
+      "first_seen": "2026-02-14T02:02:21.548601",
+      "data": {
+        "id": "0228",
+        "title": "Air Compressors, Dyers, Parts and Services",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:013": {
+      "first_seen": "2026-02-14T02:02:21.548605",
+      "data": {
+        "id": "013",
+        "title": "Vehicle Maintenance of Repair",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0095": {
+      "first_seen": "2026-02-14T02:02:21.548607",
+      "data": {
+        "id": "0095",
+        "title": "Employee Health Clinic Services",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:REGIONAL": {
+      "first_seen": "2026-02-14T02:02:21.548615",
+      "data": {
+        "id": "REGIONAL",
+        "title": "SUB-REGIONAL OPERATING GROUP - 91ST AVENUE WASTEWATER TREATMENT PLANT SOLIDS REHABILITATION PHASE 2 - ENGINEERING SERVICES",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:DIAMETER": {
+      "first_seen": "2026-02-14T02:02:21.548616",
+      "data": {
+        "id": "DIAMETER",
+        "title": "LARGE DIAMETER SANITARY SEWER ENGINEERING SERVICES",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:0217": {
+      "first_seen": "2026-02-14T02:02:21.548618",
+      "data": {
+        "id": "0217",
+        "title": "Water Pipe and Miscellaneous Fittings",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "phoenix:STREET": {
+      "first_seen": "2026-02-14T02:02:21.548620",
+      "data": {
+        "id": "STREET",
+        "title": "56TH STREET: THOMAS RD TO INDIAN SCHOOL RD \u2013 PHASE 2 BIKE AND PEDESTRIAN IMPROVEMENTS",
+        "portal": "phoenix",
+        "url": "https://procurement.opengov.com/portal/phoenix?departmentId=all&status=open&page=1&limit=50&sortField=proposalDeadline&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "surpriseaz:_ec81172c": {
+      "first_seen": "2026-02-14T02:02:21.548623",
+      "data": {
+        "id": "_ec81172c",
+        "title": "Special Interest Classes (Continuous Selection)",
+        "portal": "surpriseaz",
+        "url": "https://procurement.opengov.com/portal/surpriseaz?departmentId=all&status=open&page=1&limit=10&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tollesonaz:_6988580c": {
+      "first_seen": "2026-02-14T02:02:21.548626",
+      "data": {
+        "id": "_6988580c",
+        "title": "Financial Auditing Services RFP",
+        "portal": "tollesonaz",
+        "url": "https://procurement.opengov.com/portal/tollesonaz?departmentId=all&status=open&page=1&limit=10&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "bensonaz:_2afbeccf": {
+      "first_seen": "2026-02-14T02:02:21.548628",
+      "data": {
+        "id": "_2afbeccf",
+        "title": "Request for Qualifications - On-Call Miscellaneous Engineering Design and Review Services",
+        "portal": "bensonaz",
+        "url": "https://procurement.opengov.com/portal/bensonaz?departmentId=all&status=open&page=1&limit=10&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tucsonaz:260155": {
+      "first_seen": "2026-02-14T02:02:21.548634",
+      "data": {
+        "id": "260155",
+        "title": "Sampling Bottles, Vials and Related Items for Tucson Water Quality Lab",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucson-az?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tucsonaz:260164": {
+      "first_seen": "2026-02-14T02:02:21.548640",
+      "data": {
+        "id": "260164",
+        "title": "Temporary Employment and Staffing Services",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucson-az?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tucsonaz:260172": {
+      "first_seen": "2026-02-14T02:02:21.548642",
+      "data": {
+        "id": "260172",
+        "title": "Landscape Maintenance Services for Medians and Roadsides",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucson-az?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tucsonaz:260139": {
+      "first_seen": "2026-02-14T02:02:21.548644",
+      "data": {
+        "id": "260139",
+        "title": "Heavy Equipment & Tool Rentals and Related Services (AXIA)",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucson-az?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tucsonaz:260168": {
+      "first_seen": "2026-02-14T02:02:21.548646",
+      "data": {
+        "id": "260168",
+        "title": "Request for Information - Redevelopment Ideas for the Joel D. Valdez Main Library",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucson-az?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tucsonaz:260140": {
+      "first_seen": "2026-02-14T02:02:21.548648",
+      "data": {
+        "id": "260140",
+        "title": "Amphi Housing Resource Center (HRC) Design Build",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucson-az?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tucsonaz:250123": {
+      "first_seen": "2026-02-14T02:02:21.548650",
+      "data": {
+        "id": "250123",
+        "title": "Qualified Vendor List (QVL) for Green Stormwater Infrastructure (GSI) Landscape Maintenance",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucson-az?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tucsonaz:230147": {
+      "first_seen": "2026-02-14T02:02:21.548652",
+      "data": {
+        "id": "230147",
+        "title": "Qualified Vendor List for Psychological & Psychiatric Services for the Tucson Police Department",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucson-az?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tucsonaz:230022": {
+      "first_seen": "2026-02-14T02:02:21.548654",
+      "data": {
+        "id": "230022",
+        "title": "Qualified Vendor List (QVL) for the Purchase of New Vehicles",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucson-az?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "tucsonaz:SERVICES": {
+      "first_seen": "2026-02-14T02:02:21.548657",
+      "data": {
+        "id": "SERVICES",
+        "title": "LEGAL SERVICES FOR INDIGENT DEFENDANTS",
+        "portal": "tucsonaz",
+        "url": "https://procurement.opengov.com/portal/tucson-az?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "avondaleaz:047": {
+      "first_seen": "2026-02-14T02:02:21.548659",
+      "data": {
+        "id": "047",
+        "title": "PR 26-047 Surplus Offers to Purchase - Park Benches",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "avondaleaz:025": {
+      "first_seen": "2026-02-14T02:02:21.548661",
+      "data": {
+        "id": "025",
+        "title": "EN 26-025 Phase VI Old Town Las Ligas ADA Sidewalks",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "avondaleaz:_9b244405": {
+      "first_seen": "2026-02-14T02:02:21.548662",
+      "data": {
+        "id": "_9b244405",
+        "title": "Water Efficiency Upgrade Project",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "avondaleaz:_d1a9fd4f": {
+      "first_seen": "2026-02-14T02:02:21.548664",
+      "data": {
+        "id": "_d1a9fd4f",
+        "title": "Program Instructor Application - February 2026",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "avondaleaz:023": {
+      "first_seen": "2026-02-14T02:02:21.548666",
+      "data": {
+        "id": "023",
+        "title": "PW 26-023 Tree Inventory and Software",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "avondaleaz:039": {
+      "first_seen": "2026-02-14T02:02:21.548668",
+      "data": {
+        "id": "039",
+        "title": "PW 26-039 PFAS Treatment Infrastructure Program Manager",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "avondaleaz:001": {
+      "first_seen": "2026-02-14T02:02:21.548670",
+      "data": {
+        "id": "001",
+        "title": "PW 26-001 Motor, Pump, Well Repair and Replacement Services",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "avondaleaz:018": {
+      "first_seen": "2026-02-14T02:02:21.548672",
+      "data": {
+        "id": "018",
+        "title": "PW 26-018 Fleet Management Software",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
+    },
+    "avondaleaz:064": {
+      "first_seen": "2026-02-14T02:02:21.548674",
+      "data": {
+        "id": "064",
+        "title": "NFS 25-064 On-Call Housing Rehabilitation",
+        "portal": "avondaleaz",
+        "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list?departmentId=all&status=open&page=1&limit=50&sortField=releaseProjectDate&sortDirection=DESC#",
+        "release_date": null
+      }
     }
   },
-  "last_check": "2026-02-12T11:03:58.384313"
+  "last_check": "2026-02-14T02:18:47.099315"
 }

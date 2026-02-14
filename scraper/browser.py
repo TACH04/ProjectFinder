@@ -29,13 +29,13 @@ class StealthBrowser:
         options = uc.ChromeOptions()
         
         if self.headless:
-            print("  👻 Setting background mode (minimized window)...")
+            print("  👻 Setting background mode (small window in corner)...")
             # We avoid true headless mode because Cloudflare detects it easily.
-            # Instead, we run a normal window but minimize it to be less intrusive.
-            # We'll minimize it after the browser starts.
-        
-        # Human-like settings
-        options.add_argument("--window-size=1920,1080")
+            # Ghost mode = small, ignorable window in top-right corner.
+            options.add_argument("--window-size=400,300")
+        else:
+            # Human-like settings for visible mode
+            options.add_argument("--window-size=1920,1080")
         options.add_argument("--disable-gpu")
         options.add_argument("--no-sandbox")
         
@@ -50,17 +50,24 @@ class StealthBrowser:
             version_main=144,  # Match Chrome version 144
         )
         
-        # Minimize window if in ghost mode (cross-platform: Windows/macOS)
+        # Position window in top-right corner for ghost mode
         if self.headless:
             try:
-                # Standard WebDriver method - works on Windows and macOS
-                self.driver.minimize_window()
-                print("  ✓ Browser minimized")
+                # Get screen dimensions to position in top-right
+                screen_width = self.driver.execute_script("return window.screen.width;")
+                window_width = 400
+                
+                # Position in top-right corner (with small margin)
+                x_position = screen_width - window_width - 10
+                self.driver.set_window_position(x_position, 0)
+                self.driver.set_window_size(window_width, 300)
+                print(f"  ✓ Browser positioned at top-right corner ({window_width}x300)")
             except Exception as e:
-                # Fallback to off-screen positioning if minimize fails
-                print(f"  ⚠ Could not minimize ({e}), using off-screen positioning")
+                print(f"  ⚠ Could not position window: {e}")
+                # Fallback: just use a reasonable position
                 try:
-                    self.driver.set_window_position(-10000, 0)
+                    self.driver.set_window_position(1400, 0)
+                    self.driver.set_window_size(400, 300)
                 except Exception:
                     pass
                 
@@ -213,3 +220,13 @@ class StealthBrowser:
                 print(f"  📸 Screenshot saved to {path}")
             except Exception as e:
                 print(f"  ⚠ Failed to save screenshot: {e}")
+    
+    def ensure_corner_position(self):
+        """Ensure window stays in top-right corner (for ghost mode)."""
+        if self.headless and self.driver:
+            try:
+                screen_width = self.driver.execute_script("return window.screen.width;")
+                self.driver.set_window_position(screen_width - 410, 0)
+                self.driver.set_window_size(400, 300)
+            except Exception:
+                pass
