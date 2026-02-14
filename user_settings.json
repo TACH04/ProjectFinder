@@ -1,4 +1,5 @@
 {
-    "notification_type": "popup",
-    "ghost_mode": true
+    "notification_type": "email",
+    "ghost_mode": false,
+    "auto_run_timer": 10
 }
