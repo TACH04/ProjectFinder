@@ -351,8 +351,8 @@ def main_menu():
         console.print(get_header_panel())
         
         menu_text = """[bold white]1.[/bold white] RUN SCRAPER [dim](Default)[/dim]
-[bold white]2.[/bold white] CHANGE NOTIFICATION TYPE
-[bold white]3.[/bold white] TOGGLE GHOST MODE
+[bold white]2.[/bold white] TOGGLE GHOST MODE
+[bold white]3.[/bold white] CHANGE NOTIFICATION TYPE
 [bold white]4.[/bold white] RUN VALIDATION MODE
 [bold white]5.[/bold white] SETTINGS
 [bold white]6.[/bold white] EXIT"""
@@ -375,13 +375,15 @@ def main_menu():
                         user_input = sys.stdin.readline().strip()
                         choice = user_input if user_input else "1"
                         break
+                
+                # If we finished the loop without setting choice, we should auto-run (choice "1")
+                if choice is None:
+                    choice = "1"
+                    
                 # Clear the countdown line
                 console.print(" " * 80, end="\r")
-            elif first_run and timer_seconds <= 0:
-                 # If timer is 0 or less, just prompt immediately
-                 pass
             
-            # Windows fallback or subsequent runs or interrupted countdown
+            # Windows fallback or subsequent runs
             if choice is None:
                 choice = Prompt.ask("Select an option", choices=["1", "2", "3", "4", "5", "6"], default="1")
 
@@ -389,18 +391,15 @@ def main_menu():
             console.print("\n[bold red]Exiting...[/bold red]")
             sys.exit(0)
         
-        # Handle "1" selected during countdown
-        if choice is None: # Should technically be covered by select loop default, but just in case
-            run_scraper()
 
         if choice == "1":
             run_scraper()
             first_run = False
         elif choice == "2":
-            change_notification()
+            change_ghost_mode()
             first_run = False
         elif choice == "3":
-            change_ghost_mode()
+            change_notification()
             first_run = False
         elif choice == "4":
             run_scraper(validate=True)
