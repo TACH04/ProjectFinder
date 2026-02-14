@@ -2879,7 +2879,17 @@
         "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
         "release_date": "2019-03-14T14:00:00"
       }
+    },
+    "glendaleaz:": {
+      "first_seen": "2026-02-14T01:07:04.459068",
+      "data": {
+        "id": "",
+        "title": "",
+        "portal": "glendaleaz",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "release_date": "2026-02-14T01:07:00.615753"
+      }
     }
   },
-  "last_check": "2026-02-13T13:13:36.682955"
+  "last_check": "2026-02-14T01:07:04.459086"
 }

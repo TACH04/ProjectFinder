@@ -10,7 +10,7 @@ from typing import List, Optional
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
 
 from scraper.base import BaseScraper, Project, PortalScrapingError
 from scraper.registry import register_scraper
@@ -81,8 +81,8 @@ class OpenGovScraper(BaseScraper):
         if portal_key in ["phoenix", "avondaleaz", "tucsonaz"]: 
             print(f"  Step 4: Increasing rows per page to 50 for {portal_key}...")
             self._set_rows_per_page(50)
-            # Give it a moment to reload after changing rows
-            time.sleep(2)
+            # Give it a moment to reload after changing rows - HANDLED INTERNALLY NOW
+
 
         # Step 5: Extract projects
         print("  Step 5: Extracting projects...")
@@ -91,6 +91,7 @@ class OpenGovScraper(BaseScraper):
         print(f"  ✓ Found {len(projects)} active projects")
         return projects
     
+
     def _select_active_filter(self) -> bool:
         """Click the Active status filter"""
         # Check if already active
@@ -130,7 +131,8 @@ class OpenGovScraper(BaseScraper):
                     if elem.is_displayed():
                         print(f"    ✓ Found and clicking: {selector}")
                         elem.click()
-                        time.sleep(1)
+                        # Wait for the click to process - usually results in a URL change or UI update
+                        # But since we have other waits downstream, we can just return true
                         return True
             except Exception as e:
                 print(f"    ⚠ Error checking selector {selector}: {e}")
@@ -175,39 +177,68 @@ class OpenGovScraper(BaseScraper):
                 print(f"      ✓ Found visible header")
                 
                 # Click 1 — triggers ascending sort
+                # We want to capture the state of the table before clicking to wait for it to go stale
+                # This ensures the sort has actually processed
+                try:
+                    table_rows = self.browser.driver.find_elements(By.XPATH, "//div[@role='row']")
+                    first_row = table_rows[0] if table_rows else target
+                except Exception:
+                    first_row = target
+
                 try:
                     target.click()
                 except Exception:
                     self.browser.driver.execute_script("arguments[0].click();", target)
                 
-                # Wait for React to finish re-rendering the table after first sort
-                time.sleep(1.5)
+                # Wait for React to re-render (element reference becomes stale)
+                try:
+                    WebDriverWait(self.browser.driver, 2).until(EC.staleness_of(first_row))
+                except TimeoutException:
+                    pass # Might not have refreshed yet or didn't need to
+
                 
                 # Click 2 — switches to descending sort (newest first)
                 # Re-find because DOM was re-rendered by the sort
-                for attempt in range(3):
+                # Use a short wait loop for the re-appearance
+                target = None
+                for _ in range(3):
                     try:
                         elements_retry = self.browser.find_elements(By.XPATH, selector)
                         visible_retry = [e for e in elements_retry if e.is_displayed()]
-                        
                         if visible_retry:
                             target = visible_retry[0]
-                            try:
-                                target.click()
-                            except Exception:
-                                self.browser.driver.execute_script("arguments[0].click();", target)
-                            print("      ✓ Sorted by release date (Double Clicked)")
-                            time.sleep(1)  # Wait for second sort to take effect
-                            return True
-                        else:
-                            # Element not found yet, wait and retry
-                            time.sleep(0.5)
+                            break
                     except Exception:
-                        time.sleep(0.5)
-                        continue
-                
-                # If we get here, all 3 retry attempts for click 2 failed
-                print("      ⚠ First click succeeded but second click failed")
+                        pass
+                    time.sleep(0.5)
+
+                if target:
+                    try:
+                        # Capture row again for staleness check
+                        try:
+                            table_rows = self.browser.driver.find_elements(By.XPATH, "//div[@role='row']")
+                            first_row = table_rows[0] if table_rows else target
+                        except Exception:
+                            first_row = target
+                            
+                        try:
+                            target.click()
+                        except Exception:
+                            self.browser.driver.execute_script("arguments[0].click();", target)
+                            
+                        print("      ✓ Sorted by release date (Double Clicked)")
+                        
+                        # Wait for the second sort to process
+                        try:
+                            WebDriverWait(self.browser.driver, 2).until(EC.staleness_of(first_row))
+                        except TimeoutException:
+                            pass
+                            
+                        return True
+                    except Exception as e:
+                        print(f"      ⚠ Error on second click: {e}")
+                else:
+                    print("      ⚠ Could not re-find header for second click")
                 
             except Exception as e:
                 continue
@@ -226,6 +257,15 @@ class OpenGovScraper(BaseScraper):
     def _set_rows_per_page(self, count: int = 40) -> bool:
         """Find the rows per page dropdown and select the target count"""
         try:
+            # Capture a reference to the current table content to check for updates
+            old_first_row = None
+            try:
+                old_rows = self.browser.driver.find_elements(By.XPATH, "//div[@role='row']")
+                if old_rows:
+                    old_first_row = old_rows[0]
+            except Exception:
+                pass
+
             # Dropdown is usually a <select> or a React-Select div near the bottom
             # Based on user screenshot, it contains the text "10 rows"
             selectors = [
@@ -240,6 +280,7 @@ class OpenGovScraper(BaseScraper):
                     elements = self.browser.find_elements(By.XPATH, selector)
                     for elem in elements:
                         if elem.is_displayed():
+                            clicked = False
                             if elem.tag_name == "select":
                                 from selenium.webdriver.support.ui import Select
                                 select = Select(elem)
@@ -251,24 +292,50 @@ class OpenGovScraper(BaseScraper):
                                 else:
                                     # Fallback to last option (usually max)
                                     select.select_by_index(len(options) - 1)
-                                return True
+                                clicked = True
                             else:
                                 # It's a div/custom dropdown
                                 elem.click()
-                                time.sleep(1)
+                                time.sleep(0.5) # Short wait for dropdown animation
                                 # Look for the option in the list
                                 option_xpath = f"//div[@role='option' and contains(text(), '{count}')]"
                                 options = self.browser.find_elements(By.XPATH, option_xpath)
                                 if options:
                                     options[0].click()
-                                    return True
+                                    clicked = True
                                 else:
                                     # Try generic any option that looks like a number > 10
                                     generic_options = self.browser.find_elements(By.XPATH, "//div[@role='option']")
                                     for opt in generic_options:
                                         if any(x in opt.text for x in ['40', '50', '100']):
                                             opt.click()
-                                            return True
+                                            clicked = True
+                                            break
+                            
+                            if clicked:
+                                # Wait for table update if we had rows
+                                if old_first_row:
+                                    try:
+                                        # 1. Wait for old row to disappear (stale)
+                                        WebDriverWait(self.browser.driver, 5).until(EC.staleness_of(old_first_row))
+                                        # 2. Wait for new rows to appear (presence)
+                                        WebDriverWait(self.browser.driver, 5).until(
+                                            EC.presence_of_element_located((By.XPATH, "//div[@role='row']"))
+                                        )
+                                        # 3. Small buffer for render completion
+                                        time.sleep(0.5)
+                                    except TimeoutException:
+                                        print("    ⚠ Table did not refresh properly after changing rows per page (timeout)")
+                                else:
+                                    # If no rows before, just wait for new rows
+                                    try:
+                                        WebDriverWait(self.browser.driver, 5).until(
+                                            EC.presence_of_element_located((By.XPATH, "//div[@role='row']"))
+                                        )
+                                    except TimeoutException:
+                                        time.sleep(2) # Fallback sleep if no rows appear
+
+                                return True
                 except Exception:
                     continue
             return False
@@ -292,7 +359,7 @@ class OpenGovScraper(BaseScraper):
                 for elem in elements:
                     if elem.is_displayed():
                         elem.click()
-                        time.sleep(1)
+                        # No sleep needed, we rely on the subsequent result waiting
                         return True
             except Exception:
                 continue

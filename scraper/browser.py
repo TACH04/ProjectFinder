@@ -109,10 +109,28 @@ class StealthBrowser:
                     print("  ✓ Cloudflare bypassed")
                     self._human_delay(1, 2)  # Let page fully settle after a bypass
                     return True
+                
+                # Attempt to find and click the challenge checkbox
+                # This is a best-effort attempt as Cloudflare changes often
+                try:
+                    # Look for shadow host
+                    shadow_host = self.driver.find_element(By.CSS_SELECTOR, "#turnstile-wrapper")
+                    if shadow_host:
+                        shadow_root = self.driver.execute_script("return arguments[0].shadowRoot", shadow_host)
+                        if shadow_root:
+                            checkbox = shadow_root.find_element(By.CSS_SELECTOR, "input[type='checkbox']")
+                            if checkbox:
+                                checkbox.click()
+                                print("  ✓ Attempted to click Cloudflare checkbox")
+                except Exception:
+                    # Silent failure on auto-click attempt, as it's optional
+                    pass
+
             except Exception:
                 pass
             
-            print("  Waiting for Cloudflare verification...")
+            if int(time.time() - start_time) % 5 == 0:
+                 print("  ⚠ Cloudflare detected! Please manually click the checkbox if needed...")
             time.sleep(1)
         
         print("  ✗ Cloudflare bypass timeout - try running without --headless")

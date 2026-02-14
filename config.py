@@ -124,7 +124,7 @@ PORTALS = {
 BROWSER_SETTINGS = {
     "headless": False,  # Set to True for background operation (may reduce bypass success)
     "wait_timeout": 30,  # Seconds to wait for page elements
-    "cloudflare_wait": 30,  # Max seconds to wait for Cloudflare bypass
+    "cloudflare_wait": 60,  # Max seconds to wait for Cloudflare bypass
 }
 
 # Notification settings

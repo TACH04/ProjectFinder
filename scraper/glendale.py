@@ -77,17 +77,32 @@ class GlendaleScraper(BaseScraper):
                 search_btn = self.browser.find_element(By.ID, "ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_Search")
                 
                 if search_btn:
+                    # Capture old table for staleness check
+                    old_table = None
+                    try:
+                        old_table = self.browser.find_element(By.ID, "ctl00_ctl00_PrimaryPlaceHolder_ContentPlaceHolderMain_MolGridView1")
+                    except Exception:
+                        pass # Table might not exist yet
+
                     # Scroll into view
                     self.browser.driver.execute_script("arguments[0].scrollIntoView(true);", search_btn)
                     time.sleep(0.5)
 
                     print(f"  Clicking Search (attempt {attempt + 1})...")
                     try:
-                        search_btn.click()
-                    except Exception as click_err:
-                        print(f"  ⚠ Standard click failed: {click_err}")
-                        print("  Attempting JS click...")
+                        # Use JS click by default as it's more robust for background interaction
+                        print("  Using JS click for search button...")
                         self.browser.driver.execute_script("arguments[0].click();", search_btn)
+                    except Exception as click_err:
+                        print(f"  ⚠ JS click failed: {click_err}")
+                    
+                    # If table existed, wait for it to go stale (indicating reload)
+                    if old_table:
+                        print("  Waiting for interface update...")
+                        try:
+                            WebDriverWait(self.browser.driver, 10).until(EC.staleness_of(old_table))
+                        except TimeoutException:
+                            print("  ⚠ Old table did not go stale (page might not have reloaded)")
                     
                     # Wait for table to appear (increased timeout to 20s)
                     print(f"  Waiting for results table...")
