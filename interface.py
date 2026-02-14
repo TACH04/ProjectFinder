@@ -182,12 +182,12 @@ def setup_emailer():
                 console.print(f"\n[bold red]❌ Authentication failed:[/bold red] {e}")
         else:
             console.print("\n[bold yellow]⚠️  credentials.json NOT FOUND[/bold yellow]")
-            console.print("To send emails via Gmail, you need a 'credentials.json' file.")
-            console.print("1. Go to Google Cloud Console")
-            console.print("2. Create a Project > Enable Gmail API")
-            console.print("3. Create Credentials (OAuth Client ID > Desktop App)")
-            console.print("4. Download JSON and save as 'credentials.json' in this folder")
-            console.print("\nOnce you have the file, run this setup again.")
+            console.print("Opening setup guide in your browser...")
+            import webbrowser
+            guide_path = os.path.abspath("email_setup_guide.html")
+            webbrowser.open(f"file://{guide_path}")
+            console.print("\n[dim]Follow the instructions in the browser window to get your credentials.json file.[/dim]")
+            console.print("Once you have the file, run this setup again.")
             
     time.sleep(2)
 

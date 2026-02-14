@@ -1,89 +1,92 @@
-# ProjectFinder
+# ProjectFinder 🕵️‍♂️
 
-A targeted web scraper that detects **new** government procurement projects from OpenGov portals and sends email notifications.
+A modern, automated procurement scraper designed to help you find and bid on government projects before anyone else. It monitors OpenGov portals and alerts you the moment a new project is released.
 
-## 🚀 Features
-- **Smart Detection**: Ignores old projects; only alerts you about *freshly released* ones (using `run_scraper.py`).
-- **Targeted Scraping**: Filters for "Active" projects and "Release Date" to ensure relevance.
-- **Robust Bypassing**: Uses `undetected-chromedriver` and smart logic (e.g., waiting for specific React components) to handle Cloudflare and dynamic site content.
-- **Email Alerts**: Sends clean, minimal HTML emails via Gmail API.
-- **Automated**: Includes setup scripts for daily scheduling on macOS and Windows.
+![ProjectFinder Header](projectfindericon.png)
 
-## 🛠️ Setup
+## 🚀 Quick Start
 
-1.  **Install Dependencies**
-    ```bash
-    pip install -r requirements.txt
-    ```
+### 1. Prerequisites
+- **Python 3.11+**
+- **Google Chrome** (The scraper uses it to navigate portals)
 
-2.  **Environment Variables**
-    Create a `.env` file with your details:
-    ```env
-    EMAIL_ENABLED=true
-    SENDER_EMAIL=your-gmail@gmail.com
-    RECEIVER_EMAIL=your-email@example.com
-    ```
-    *(Note: `SENDER_PASSWORD` is legacy/unused if using OAuth credentials below)*
-
-3.  **Gmail OAuth Setup**
-    -   Download `credentials.json` from Google Cloud Console (Desktop App type).
-    -   Run `python3 setup_email_oauth.py` to generate `token.json`.
-
-## 🏃 Usage
-
-### 1. Automated Run (Recommended)
-**Use this for cron jobs / schedulers.**
-It runs strictly in headless mode and **only** notifies if *new* projects are found (defaulting to email).
-
+### 2. Installation
 ```bash
-python3 run_scraper.py
+# Clone the repository
+git clone https://github.com/TACH04/ProjectFinder.git
+cd ProjectFinder
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-**Options:**
--   `--notify popup`: Opens a local text file summary on your desktop instead of sending an email. Great for manual checks.
-    ```bash
-    python3 run_scraper.py --notify popup
-    ```
-    *(Windows users: You can simply double-click `run_manual.bat`)*
+### 3. Launch
+- **macOS/Linux**: `python3 interface.py`
+- **Windows**: Double-click `run_manual.bat` (or run `python interface.py`)
 
-### 2. Manual / Debug Run
-**Use this for testing or forcing a check.**
-Allows specific portal selection and visible browser mode.
+---
+
+## 🖥️ The Dashboard
+
+ProjectFinder features a beautiful terminal-based interface (TUI) to manage your operations without touching a line of code.
+
+- **[1] Run Scraper**: Start a fresh search across all configured portals.
+- **[2] Notification Type**: Toggle between **Email Alerts** and **Popup Summaries**.
+- **[3] Ghost Mode**: Toggle between **Visible** and **Hidden** browser sessions.
+- **[4] Validation Mode**: Run a diagnostic check (captures screenshots, doesn't save to database).
+- **[5] Settings**: Access update checks, email setup, and scheduler management.
+
+---
+
+## 🔔 Notifications
+
+### Email Alerts (Recommended)
+Sends a clean HTML report directly to your inbox.
+1. Go to **Settings > Setup Emailer**.
+2. Enter your recipient email.
+3. Follow the automated OAuth flow to authorize your sender Gmail account.
+   - *Note: If `credentials.json` is missing, a setup guide will open automatically.*
+
+### Popup Summaries
+Displays a quick summary of new projects in a text window on your desktop. Perfect for manual runs.
+
+---
+
+## 👻 Ghost Mode
+Tired of browser windows popping up? Toggle **Ghost Mode** ON to run the scraper silently in a hidden window. It automatically moves the browser off-screen so you can keep working uninterrupted.
+
+---
+
+## 📅 Daily Scheduler
+Never miss a project again. Use the built-in **Scheduler Management** (under Settings) to set ProjectFinder to run automatically every morning (e.g., at 7:00 AM).
+
+- **Windows**: Installs as a Background Task in Task Scheduler.
+- **macOS**: Installs as a LaunchAgent.
+
+---
+
+## 🧪 Validation Mode
+Want to see what the scraper is seeing? **Validation Mode** runs the scraper visibly, takes screenshots of every portal results page, and generates a detailed report in the `logs/` folder. It **won't** save these projects to your "seen" database, making it perfect for testing.
+
+---
+
+## 🛠️ Advanced Usage (CLI)
+
+For power users or custom scripts, you can run the core scraper directly:
+
 ```bash
-# Check all portals (shows all output)
-python3 main.py
-
-# Check a specific portal
-python3 main.py --portal phoenix
-
-# Run visibly (not headless) for debugging
-python3 main.py --headless
+python3 run_scraper.py --notify [email|popup] [--ghost] [--validate] [--portal PORTAL_NAME]
 ```
 
-### 3. Dry Run (Simulated)
-Checks for projects from the last 7 days (ignoring "seen" history).
-```bash
-python3 dry_run.py
-```
+---
 
-## 📅 Scheduling
+## ❓ Troubleshooting
 
-**Mac**
-```bash
-./scheduler/install_schedule_mac.sh
-```
+- **"python is not recognized"**: Ensure Python is added to your system's PATH.
+- **Browser Crashes**: Make sure you have the latest version of Google Chrome installed.
+- **Cloudflare Blocks**: If a site stays on "Just a moment...", ProjectFinder will wait for you to solve the captcha manually.
+- **OAuth Errors**: Ensure your `credentials.json` is placed in the project root and is of type "Desktop App".
 
-**Windows**
-Run `scheduler\install_schedule_windows.bat` as Administrator.
+---
 
-## 🧪 Testing
-Verify the notification logic without scraping:
-```bash
-python3 test_notifications.py
-```
-
-## 📂 Project Structure
--   `scraper/`: Core logic (browser, scraper, notifications).
--   `data/`: Stores `seen_projects.json` database.
--   `logs/`: Log files from scheduled runs.
--   `config.py`: Portal URLs and browser settings.
+*Built with ❤️ for procurement professionals.*

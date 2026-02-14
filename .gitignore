@@ -38,6 +38,11 @@ tanner_scheduler_instructions.md
 logs/
 *.log
 
+#Macos Icon bullshit
+Icon?
+Icon
+
+
 # Browser Automation & Drivers
 .browsers/
 .drivers/
@@ -46,6 +51,7 @@ logs/
 .chrome_profile/
 chromedriver/
 chromedriver.exe
+.chrome_profile_debug/
 
 # Output Data
 data/*
