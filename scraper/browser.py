@@ -29,10 +29,10 @@ class StealthBrowser:
         options = uc.ChromeOptions()
         
         if self.headless:
-            print("  👻 Setting background mode (window off-screen)...")
+            print("  👻 Setting background mode (minimized window)...")
             # We avoid true headless mode because Cloudflare detects it easily.
-            # Instead, we run a normal window but move it off-screen.
-            options.add_argument("--window-position=-10000,0")
+            # Instead, we run a normal window but minimize it to be less intrusive.
+            # We'll minimize it after the browser starts.
         
         # Human-like settings
         options.add_argument("--window-size=1920,1080")
@@ -50,12 +50,19 @@ class StealthBrowser:
             version_main=144,  # Match Chrome version 144
         )
         
-        # Force window off-screen if in background mode
+        # Minimize window if in ghost mode (cross-platform: Windows/macOS)
         if self.headless:
             try:
-                self.driver.set_window_position(-10000, 0)
-            except Exception:
-                pass
+                # Standard WebDriver method - works on Windows and macOS
+                self.driver.minimize_window()
+                print("  ✓ Browser minimized")
+            except Exception as e:
+                # Fallback to off-screen positioning if minimize fails
+                print(f"  ⚠ Could not minimize ({e}), using off-screen positioning")
+                try:
+                    self.driver.set_window_position(-10000, 0)
+                except Exception:
+                    pass
                 
         # Set page load timeout
         try:

@@ -58,7 +58,7 @@ def get_header_panel():
         padding=(0, 2)
     )
 
-def run_scraper(validate=False, auto_exit=False):
+def run_scraper(validate=False):
     """Run the scraper script."""
     settings = load_settings()
     notif_type = settings.get("notification_type", "email")
@@ -85,12 +85,10 @@ def run_scraper(validate=False, auto_exit=False):
     except Exception as e:
         console.print(f"[bold red]❌ Error running scraper:[/bold red] {e}")
     
-    if auto_exit:
-        console.print("\n[bold green]Auto-run complete. Exiting.[/bold green]")
-        sys.exit(0)
-
-    console.print("\n[dim]Press Enter to return to menu...[/dim]")
-    input()
+    # Always exit after scraper completes
+    console.print("\n[bold green]✓ Run complete. Exiting.[/bold green]")
+    time.sleep(1)
+    sys.exit(0)
 
 def change_notification():
     """Toggle notification settings."""
@@ -188,6 +186,8 @@ def main_menu():
     with console.status("[bold blue]Checking for updates...[/bold blue]", spinner="dots", spinner_style="magenta"):
         update_available = check_update_status()
 
+    first_run = True  # Track if this is the first menu display
+    
     while True:
         clear_screen()
         console.print(get_header_panel())
@@ -208,9 +208,9 @@ def main_menu():
         # Timeout logic for default option
         choice = None
         
-        # Countdown loop
+        # Countdown loop - only on first menu display
         try:
-            if os.name != 'nt':
+            if first_run and os.name != 'nt':
                 for i in range(5, 0, -1):
                     console.print(f"[dim]Auto-running in {i} seconds... (Press Enter to run immediately)[/dim]", end="\r")
                     rlist, _, _ = select.select([sys.stdin], [], [], 1)
@@ -221,29 +221,35 @@ def main_menu():
                 # Clear the countdown line
                 console.print(" " * 80, end="\r")
             else:
-                # Windows fallback (no auto-run for now to avoid complexity)
+                # Windows fallback or subsequent runs - no auto-run
                 choice = Prompt.ask("Select an option", choices=["1", "2", "3", "4", "5", "6", "7"], default="1")
 
         except KeyboardInterrupt:
             console.print("\n[bold red]Exiting...[/bold red]")
             sys.exit(0)
         
-        # If no input after countdown, auto-run
+        # If no input after countdown, auto-run and exit
         if choice is None:
-            run_scraper(auto_exit=True)
+            run_scraper()
         elif choice == "1":
             run_scraper()
+            first_run = False  # Disable auto-run for subsequent menu displays
         elif choice == "2":
             change_notification()
+            first_run = False
         elif choice == "3":
             change_ghost_mode()
+            first_run = False
         elif choice == "4":
             run_scraper(validate=True)
+            first_run = False
         elif choice == "5":
             if check_updates(): # If updated, reset flag
                 update_available = False
+            first_run = False
         elif choice == "6":
             manage_scheduler()
+            first_run = False
         elif choice == "7":
             console.print("\n[bold green]Goodbye![/bold green]")
             break
