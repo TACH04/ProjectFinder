@@ -124,22 +124,37 @@ def check_update_status():
         pass
     return False
 
-def check_updates():
-    """Manual update check."""
-    console.print("\n[bold blue]📩 Checking for updates from GitHub...[/bold blue]")
+def check_updates(auto=False):
+    """Check for updates. if auto=True, pull and restart without prompt."""
+    if not auto:
+        console.print("\n[bold blue]📩 Checking for updates from GitHub...[/bold blue]")
+    
     try:
         if check_update_status():
-            console.print(Panel("[bold magenta]⚠ Update Available![/bold magenta]\nYour local version is behind the remote repository.", border_style="magenta"))
-            if Confirm.ask("Do you want to pull updates now?"):
+            if auto:
+                console.print(Panel("[bold magenta]🚀 Update Available! Installing...[/bold magenta]", border_style="magenta"))
                 subprocess.run(["git", "pull"], check=True)
-                console.print("[bold green]✅ Updated successfully![/bold green]")
-                return True # Updated
+                console.print("[bold green]✅ Updated successfully! Restarting...[/bold green]")
+                time.sleep(1)
+                # Restart the script
+                os.execv(sys.executable, [sys.executable] + sys.argv)
+            else:
+                console.print(Panel("[bold magenta]⚠ Update Available![/bold magenta]\nYour local version is behind the remote repository.", border_style="magenta"))
+                if Confirm.ask("Do you want to pull updates now?"):
+                    subprocess.run(["git", "pull"], check=True)
+                    console.print("[bold green]✅ Updated successfully! Restarting...[/bold green]")
+                    time.sleep(1)
+                    os.execv(sys.executable, [sys.executable] + sys.argv)
+                    return True # Updated (though we restart, so this might not be reached)
         else:
-            console.print("[bold green]✅ You are up to date![/bold green]")
+            if not auto:
+                console.print("[bold green]✅ You are up to date![/bold green]")
     except Exception as e:
-        console.print(f"[bold red]❌ Error checking updates:[/bold red] {e}")
+        if not auto:
+            console.print(f"[bold red]❌ Error checking updates:[/bold red] {e}")
     
-    console.input("\n[dim]Press Enter to return to menu...[/dim]")
+    if not auto:
+        console.input("\n[dim]Press Enter to return to menu...[/dim]")
     return False
 
 def manage_scheduler():
@@ -182,9 +197,12 @@ def manage_scheduler():
 
 def main_menu():
     """Display the main menu."""
-    # Check updates silently on startup
+    # Check updates silently on startup (and auto-apply if found)
     with console.status("[bold blue]Checking for updates...[/bold blue]", spinner="dots", spinner_style="magenta"):
-        update_available = check_update_status()
+        check_updates(auto=True)
+        # If updated, it will restart, so we won't reach here if an update occurred.
+        update_available = False # We can assume false if we are still running
+
 
     first_run = True  # Track if this is the first menu display
     
@@ -192,8 +210,8 @@ def main_menu():
         clear_screen()
         console.print(get_header_panel())
         
-        if update_available:
-             console.print(Panel("[bold magenta]⚠ UPDATE AVAILABLE[/bold magenta]\nSelect option 5 to update.", border_style="magenta"))
+        # Auto-update handles notification/restart, so we don't need to show a panel here anymore.
+
 
         menu_text = """[bold white]1.[/bold white] RUN SCRAPER [dim](Default)[/dim]
 [bold white]2.[/bold white] CHANGE NOTIFICATION TYPE
@@ -244,8 +262,7 @@ def main_menu():
             run_scraper(validate=True)
             first_run = False
         elif choice == "5":
-            if check_updates(): # If updated, reset flag
-                update_available = False
+            check_updates()
             first_run = False
         elif choice == "6":
             manage_scheduler()
