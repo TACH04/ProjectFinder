@@ -18,7 +18,8 @@ from scraper.browser import StealthBrowser
 from scraper.base import PortalScrapingError
 from scraper.registry import get_scraper_class
 from scraper.notifications import check_for_new_projects, notify_new_projects
-from scraper.email_notifier import send_email_notification
+# from scraper.email_notifier import send_email_notification  <-- Moved to local scope
+
 
 # Import scrapers to ensure they are registered
 import scraper.opengov
@@ -50,7 +51,7 @@ console_handler.setFormatter(logging.Formatter('%(message)s'))  # Keep console c
 logger.addHandler(console_handler)
 
 
-def generate_popup_notification(new_projects, all_projects):
+def generate_popup_notification(new_projects, all_projects, failed_portals=None):
     """
     Generate an HTML file with new projects and open it directly
     to serve as a 'popup' notification.
@@ -95,18 +96,20 @@ def generate_popup_notification(new_projects, all_projects):
             <div class="content">
     """
     
+
+    
+    # Helper to get city name (reused logic from email_notifier essentially)
+    def get_city_name(portal_key):
+         # PORTALS is global in run_scraper
+         if portal_key in PORTALS:
+             return PORTALS[portal_key].get('name', portal_key.title())
+         return portal_key.title()
+    
     if new_projects:
         html += f"""
                 <h3 class="section-title">🚨 New Projects ({len(new_projects)})</h3>
                 <ul class="project-list">
         """
-        
-        # Helper to get city name (reused logic from email_notifier essentially)
-        def get_city_name(portal_key):
-             # PORTALS is global in run_scraper
-             if portal_key in PORTALS:
-                 return PORTALS[portal_key].get('name', portal_key.title())
-             return portal_key.title()
 
         for p in new_projects:
             city_name = get_city_name(p.portal)
@@ -124,6 +127,24 @@ def generate_popup_notification(new_projects, all_projects):
         html += "</ul>"
     else:
         html += '<div class="empty-state">No new projects found since last check.</div>'
+
+    if failed_portals:
+        html += f"""
+                <h3 class="section-title" style="border-color: #f1c40f; margin-top: 30px;">⚠️ Skipped Portals ({len(failed_portals)})</h3>
+                <ul class="project-list">
+        """
+        for p_key in failed_portals:
+            city_name = get_city_name(p_key)
+            html += f"""
+                    <li class="project-item">
+                        <div class="city" style="color: #e67e22;">{city_name}</div>
+                        <div class="project-details">
+                            <span class="project-name" style="color: #95a5a6;">Connection Failed / Timeout</span>
+                            <span class="project-id">SKIPPED</span>
+                        </div>
+                    </li>
+            """
+        html += "</ul>"
 
     html += f"""
                 <div class="summary">
@@ -196,6 +217,8 @@ def main():
         logger.info("   🔍 MODE: VALIDATION (Screenshots on, Saving off)")
 
     all_projects = []
+    failed_portals = [] # Track portals that completely failed
+
     
     # Validation setup
     validation_dir = None
@@ -267,10 +290,13 @@ def main():
                             time.sleep(wait_time)
                         else:
                             logger.error(f"  ✗ All {max_retries} attempts failed for {p_key}: {e}")
+                            failed_portals.append(p_key) # Track failure
                     except Exception as e:
                         logger.error(f"  ✗ Unexpected error scraping {p_key}: {e}", exc_info=True)
+                        failed_portals.append(p_key) # Track failure
                         break
                 return []
+
 
             # 1. Run API scrapers in PARALLEL
             # Note: We must ensure get_or_create_scraper is thread safe or pre-create instances
@@ -373,29 +399,35 @@ def main():
 
     if args.notify == "popup":
         logger.info("📝 Generating popup notification...")
-        generate_popup_notification(new_projects, all_projects)
+        generate_popup_notification(new_projects, all_projects, failed_portals)
         
     else:
         # Email mode (Default)
-        if new_projects:
+        if new_projects or failed_portals:
             if not EMAIL_CONFIG["enabled"]:
                 logger.info("📧 Email notifications disabled; skipping email send.")
             elif not EMAIL_CONFIG["sender_email"] or not EMAIL_CONFIG["receiver_email"]:
                 logger.error("📧 Missing sender/receiver email in .env; skipping email send.")
             else:
                 logger.info(f"📧 Sending email notification for {len(new_projects)} new projects...")
-                success = send_email_notification(
-                    new_projects,
-                    EMAIL_CONFIG["sender_email"],
-                    EMAIL_CONFIG["receiver_email"],
-                )
+                try:
+                    from scraper.email_notifier import send_email_notification
+                    success = send_email_notification(
+                        new_projects,
+                        EMAIL_CONFIG["sender_email"],
+                        EMAIL_CONFIG["receiver_email"],
+                        failed_portals=failed_portals
+                    )
+                except ImportError:
+                     logger.error("  ✗ Could not import email notifier (check dependencies).")
+                     success = False
 
                 if success:
                     logger.info("  ✓ Email notification sent successfully!")
                 else:
                     logger.error("  ✗ Failed to send email notification.")
         else:
-            logger.info("😴 No new projects to notify about.")
+            logger.info("😴 No new projects or failures to notify about.")
 
     logger.info(f"✅ Run completed. Total Projects scanned: {len(all_projects)}")
     return 0

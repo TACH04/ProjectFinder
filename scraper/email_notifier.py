@@ -77,7 +77,8 @@ def send_email_notification(
     new_projects: List[Project], 
     sender_email: str,
     receiver_email: str,
-    sender_password: str = None  # Kept for backward compatibility but unused
+    sender_password: str = None,  # Kept for backward compatibility but unused
+    failed_portals: List[str] = None
 ) -> bool:
     """
     Send email notification for new projects using Gmail API
@@ -91,8 +92,8 @@ def send_email_notification(
     Returns:
         bool: True if sent successfully
     """
-    if not new_projects:
-        print("  ℹ No new projects to notify about.")
+    if not new_projects and not failed_portals:
+        print("  ℹ No new projects or failures to notify about.")
         return False
         
     print(f"  📧 Sending email notification to {receiver_email}...")
@@ -110,7 +111,14 @@ def send_email_notification(
     
     # Subject line
     count_new = len(new_projects)
-    subject = f"🎯 {count_new} New Project{'s' if count_new != 1 else ''} Found!"
+    subject_parts = []
+    if count_new > 0:
+        subject_parts.append(f"🎯 {count_new} New Project{'s' if count_new != 1 else ''}")
+    
+    if failed_portals:
+        subject_parts.append(f"⚠️ {len(failed_portals)} Failed Portal{'s' if len(failed_portals) != 1 else ''}")
+        
+    subject = " | ".join(subject_parts) if subject_parts else "ProjectFinder Update"
         
     msg['Subject'] = subject
     
@@ -151,25 +159,44 @@ def send_email_notification(
         return portal_key.title()
     
     # Section 1: New Projects (First time seen)
-    html += f"""
-        <h3 class="section-title">🚨 New Projects ({len(new_projects)})</h3>
-        <ul class="project-list">
-    """
-    
-    for p in new_projects:
-        city_name = get_city_name(p.portal)
-        if p.url:
-            project_link = f'<a href="{p.url}" class="project-name">{p.title}</a>'
-        else:
-            project_link = f'<span class="project-name">{p.title}</span>'
+    if new_projects:
         html += f"""
-            <li class="project-item">
-                <span class="city">{city_name}</span>
-                {project_link}
-            </li>
+            <h3 class="section-title">🚨 New Projects ({len(new_projects)})</h3>
+            <ul class="project-list">
         """
-    
-    html += "</ul>"
+        
+        for p in new_projects:
+            city_name = get_city_name(p.portal)
+            if p.url:
+                project_link = f'<a href="{p.url}" class="project-name">{p.title}</a>'
+            else:
+                project_link = f'<span class="project-name">{p.title}</span>'
+            html += f"""
+                <li class="project-item">
+                    <span class="city">{city_name}</span>
+                    {project_link}
+                </li>
+            """
+        
+        html += "</ul>"
+
+    # Section 2: Failed Portals
+    if failed_portals:
+        html += f"""
+            <h3 class="section-title" style="border-color: #f1c40f; margin-top: 30px;">⚠️ Skipped Portals ({len(failed_portals)})</h3>
+            <p style="font-size: 14px; color: #7f8c8d; margin-bottom: 10px;">The following portals could not be reached or timed out:</p>
+            <ul class="project-list">
+        """
+        
+        for p_key in failed_portals:
+            city_name = get_city_name(p_key)
+            html += f"""
+                <li class="project-item">
+                    <span class="city" style="color: #e67e22;">{city_name}</span>
+                    <span class="project-name" style="color: #95a5a6;">Connection Failed / Timeout</span>
+                </li>
+            """
+        html += "</ul>"
             
     html += """
             <div class="footer">

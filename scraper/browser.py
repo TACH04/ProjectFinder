@@ -56,6 +56,12 @@ class StealthBrowser:
                 self.driver.set_window_position(-10000, 0)
             except Exception:
                 pass
+                
+        # Set page load timeout
+        try:
+            self.driver.set_page_load_timeout(BROWSER_SETTINGS.get("page_load_timeout", 30))
+        except Exception:
+            pass
         
         return self
     
@@ -77,7 +83,20 @@ class StealthBrowser:
     def navigate(self, url: str) -> bool:
         """Navigate to URL and wait for Cloudflare to pass"""
         print(f"  Navigating to {url}...")
-        self.driver.get(url)
+        try:
+            self.driver.get(url)
+        except TimeoutException:
+            print(f"  ✗ Page load timed out after {BROWSER_SETTINGS.get('page_load_timeout', 30)}s")
+            # If we timeout, we should probably return False so the scraper knows it failed
+            # We might need to stop loading? 
+            try:
+                self.driver.execute_script("window.stop();")
+            except Exception:
+                pass
+            return False
+        except Exception as e:
+            print(f"  ✗ Navigation failed: {e}")
+            return False
         
         # Wait for Cloudflare challenge to complete
         if not self._wait_for_cloudflare():
