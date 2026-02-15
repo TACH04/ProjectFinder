@@ -1,5 +1,5 @@
 {
     "notification_type": "popup",
-    "ghost_mode": true,
+    "ghost_mode": false,
     "auto_run_timer": 5
 }
