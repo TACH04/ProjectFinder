@@ -77,13 +77,13 @@ def run_scraper(validate=False):
     
     cmd = [sys.executable, "run_scraper.py", "--notify", notif_type]
     
-    if ghost_mode:
+    if ghost_mode and not validate:
         cmd.append("--ghost")
 
     console.print()
     if validate:
         cmd.append("--validate")
-        console.print(Panel("[bold yellow]Running in VALIDATION mode[/bold yellow]\nScreenshots enabled, Database saving disabled.", border_style="yellow"))
+        console.print(Panel("[bold yellow]Running in VALIDATION mode[/bold yellow]\nScreenshots enabled, Database saving disabled.\n[italic]Ghost Mode bypassed (Browser Visible)[/italic]", border_style="yellow"))
     else:
         mode_str = "GHOST (Hidden)" if ghost_mode else "VISIBLE"
         console.print(Panel(f"[bold blue]Running Scraper[/bold blue]\nNotification: [magenta]{notif_type}[/magenta] | Mode: [magenta]{mode_str}[/magenta]", border_style="blue"))
