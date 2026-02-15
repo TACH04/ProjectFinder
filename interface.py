@@ -129,12 +129,18 @@ def configure_auto_run():
     settings = load_settings()
     current_timer = settings.get("auto_run_timer", 5)
     
-    console.print(f"\n[bold]Current Auto-Run Timer:[/bold] {current_timer} seconds")
-    new_timer = IntPrompt.ask("Enter new timer duration (in seconds)", default=current_timer)
+    if current_timer == 0:
+        console.print(f"\n[bold]Current Auto-Run Timer:[/bold] [bold red]Auto-run turned off[/bold red]")
+    else:
+        console.print(f"\n[bold]Current Auto-Run Timer:[/bold] {current_timer} seconds")
+    new_timer = IntPrompt.ask("Enter new timer duration in seconds ([bold magenta]0[/bold magenta] to turn off)", default=current_timer)
     
     settings["auto_run_timer"] = new_timer
     save_settings(settings)
-    console.print(f"\n[bold green]✅ Auto-Run timer set to {new_timer} seconds.[/bold green]")
+    if new_timer == 0:
+        console.print(f"\n[bold green]✅ Auto-run turned off.[/bold green]")
+    else:
+        console.print(f"\n[bold green]✅ Auto-Run timer set to {new_timer} seconds.[/bold green]")
     time.sleep(1.5)
 
 def setup_emailer():
