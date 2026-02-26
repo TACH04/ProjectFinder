@@ -34,9 +34,17 @@ credentials.json
 token.json
 tanner_scheduler_instructions.md
 
-# Logs
+# Logs & Debugging
 logs/
 *.log
+dustindebug.txt
+
+# Local Settings
+user_settings.json
+
+# Windows Shortcuts
+*.lnk
+run_manual.bat - Shortcut.lnk
 
 #Macos Icon bullshit
 Icon?
@@ -60,4 +68,8 @@ data/*
 #temp
 .tmp/
 .tmp_uv_cache/
+
+latest_projects.html
+seen_projects.json
+
 

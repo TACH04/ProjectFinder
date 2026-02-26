@@ -949,7 +949,17 @@
         "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
         "release_date": "2026-02-20T14:00:00"
       }
+    },
+    "scottsdaleaz:222481": {
+      "first_seen": "2026-02-16T01:02:28.449502",
+      "data": {
+        "id": "222481",
+        "title": "26IFB2946 - CHAMPION HI-TECH SEALS",
+        "portal": "scottsdaleaz",
+        "url": "https://scottsdaleaz.bonfirehub.com/opportunities/222481",
+        "release_date": "2026-03-16T21:00:00"
+      }
     }
   },
-  "last_check": "2026-02-15T12:16:05.921501"
+  "last_check": "2026-02-16T01:02:28.449572"
 }
