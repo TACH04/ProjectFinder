@@ -253,7 +253,11 @@ def check_updates(auto=False):
         if check_update_status():
             if auto:
                 console.print(Panel("[bold magenta]🚀 Update Available! Installing...[/bold magenta]", border_style="magenta"))
+                # Stash local changes before pulling to avoid conflicts
+                subprocess.run(["git", "stash"], capture_output=True)
                 subprocess.run(["git", "pull"], check=True)
+                # Try to restore stashed changes (non-critical)
+                subprocess.run(["git", "stash", "pop"], capture_output=True)
                 console.print("[bold green]✅ Updated successfully! Restarting...[/bold green]")
                 time.sleep(1)
                 # Restart the script
@@ -261,11 +265,15 @@ def check_updates(auto=False):
             else:
                 console.print(Panel("[bold magenta]⚠ Update Available![/bold magenta]\nYour local version is behind the remote repository.", border_style="magenta"))
                 if Confirm.ask("Do you want to pull updates now?"):
+                    # Stash local changes before pulling
+                    subprocess.run(["git", "stash"], capture_output=True)
                     subprocess.run(["git", "pull"], check=True)
+                    # Try to restore stashed changes
+                    subprocess.run(["git", "stash", "pop"], capture_output=True)
                     console.print("[bold green]✅ Updated successfully! Restarting...[/bold green]")
                     time.sleep(1)
                     os.execv(sys.executable, [sys.executable] + sys.argv)
-                    return True # Updated (though we restart, so this might not be reached)
+                    return True # Updated
         else:
             if not auto:
                 console.print("\n[bold green]✅ You are up to date![/bold green]")

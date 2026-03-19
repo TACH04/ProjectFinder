@@ -21,32 +21,78 @@ from config import BROWSER_SETTINGS
 
 
 def get_chrome_major_version():
-    """Detect local Chrome major version to pass to undetected-chromedriver"""
-    try:
-        if os.name == 'nt':
-            # Windows
+    """Detect local Chrome major version to pass to undetected-chromedriver.
+    
+    Uses multiple fallback methods on Windows because some environments
+    (e.g., Microsoft Store Python) have restricted registry access.
+    """
+    if os.name == 'nt':
+        # Windows - Method 1: Registry (fastest)
+        try:
             import winreg
             key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'Software\Google\Chrome\BLBeacon')
             version, _ = winreg.QueryValueEx(key, 'version')
             return int(version.split('.')[0])
-        elif sys.platform == 'darwin':
-            # macOS
+        except Exception:
+            pass
+
+        # Windows - Method 2: Check chrome.exe directly via WMIC
+        try:
+            chrome_paths = [
+                os.path.join(os.environ.get('PROGRAMFILES', 'C:\\Program Files'), 'Google', 'Chrome', 'Application', 'chrome.exe'),
+                os.path.join(os.environ.get('PROGRAMFILES(X86)', 'C:\\Program Files (x86)'), 'Google', 'Chrome', 'Application', 'chrome.exe'),
+                os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Google', 'Chrome', 'Application', 'chrome.exe'),
+            ]
+            for chrome_path in chrome_paths:
+                if os.path.exists(chrome_path):
+                    escaped = chrome_path.replace('\\', '\\\\')
+                    result = subprocess.run(
+                        f'wmic datafile where name="{escaped}" get Version /value',
+                        capture_output=True, text=True, shell=True, timeout=10
+                    )
+                    match = re.search(r'Version=(\d+)\.', result.stdout)
+                    if match:
+                        return int(match.group(1))
+        except Exception:
+            pass
+
+        # Windows - Method 3: PowerShell (last resort)
+        try:
+            result = subprocess.run(
+                ['powershell', '-Command',
+                 '(Get-Item "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe").VersionInfo.FileVersion'],
+                capture_output=True, text=True, timeout=10
+            )
+            match = re.search(r'(\d+)\.', result.stdout.strip())
+            if match:
+                return int(match.group(1))
+        except Exception:
+            pass
+
+        print("  ⚠ Could not detect Chrome version on Windows. Driver version mismatch may occur.")
+        return None
+
+    elif sys.platform == 'darwin':
+        # macOS
+        try:
             process = subprocess.Popen(['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '--version'], stdout=subprocess.PIPE)
             version = process.communicate()[0].decode('utf-8').strip()
             match = re.search(r'Chrome (\d+)\.', version)
             if match:
                 return int(match.group(1))
-        else:
-            # Linux
+        except Exception as e:
+            print(f"  ⚠ Failed to detect Chrome version: {e}")
+    else:
+        # Linux
+        try:
             process = subprocess.Popen(['google-chrome', '--version'], stdout=subprocess.PIPE)
             version = process.communicate()[0].decode('utf-8').strip()
             match = re.search(r'Chrome (\d+)\.', version)
             if match:
                 return int(match.group(1))
-    except Exception as e:
-        print(f"  ⚠ Failed to detect Chrome version automatically: {e}")
-        
-    # If detection fails, don't pass version_main and let uc guess
+        except Exception as e:
+            print(f"  ⚠ Failed to detect Chrome version: {e}")
+
     return None
 
 class StealthBrowser:
@@ -88,7 +134,59 @@ class StealthBrowser:
         if version_main:
             kwargs["version_main"] = version_main
             
-        self.driver = uc.Chrome(**kwargs)
+        try:
+            self.driver = uc.Chrome(**kwargs)
+        except Exception as e:
+            error_msg = str(e)
+            if "This version of ChromeDriver only supports Chrome version" in error_msg:
+                print()
+                print("  ╔══════════════════════════════════════════════════════════╗")
+                print("  ║  ⚠  Chrome version mismatch detected!                  ║")
+                print("  ║  Your Chrome browser updated but the cached driver      ║")
+                print("  ║  is outdated. Clearing cache and retrying...            ║")
+                print("  ╚══════════════════════════════════════════════════════════╝")
+                print()
+                
+                # Clear the stale chromedriver cache
+                import shutil
+                import platform
+                home = os.path.expanduser("~")
+                if os.name == 'nt':
+                    driver_cache = os.path.join(home, "AppData", "Roaming", "undetected_chromedriver")
+                elif platform.system() == 'Darwin':
+                    driver_cache = os.path.join(home, "Library", "Application Support", "undetected_chromedriver")
+                else:
+                    driver_cache = os.path.join(home, ".local", "share", "undetected_chromedriver")
+
+                if os.path.exists(driver_cache):
+                    try:
+                        shutil.rmtree(driver_cache)
+                        print("  🧹 Cleared stale ChromeDriver cache.")
+                    except Exception as cache_err:
+                        print(f"  ⚠ Could not clear cache: {cache_err}")
+
+                # Also clear the browser profile in case it's corrupted
+                if os.path.exists(user_data_dir):
+                    try:
+                        shutil.rmtree(user_data_dir)
+                        os.makedirs(user_data_dir, exist_ok=True)
+                        print("  🧹 Reset browser profile.")
+                    except Exception:
+                        pass
+
+                # Retry with fresh driver
+                print("  🔄 Downloading fresh ChromeDriver and retrying...")
+                print()
+                try:
+                    self.driver = uc.Chrome(**kwargs)
+                    print("  ✅ Browser started successfully after auto-fix!")
+                except Exception as retry_err:
+                    print(f"  ❌ Retry failed: {retry_err}")
+                    print("  💡 Try manually updating Chrome or running with --reset-browser")
+                    raise
+            else:
+                raise
+
         
         # Position window in top-right corner for ghost mode
         if self.headless:
