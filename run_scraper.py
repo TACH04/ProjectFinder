@@ -202,11 +202,41 @@ def parse_arguments():
         action="store_true",
         help="Run in Ghost Mode (browser hidden/off-screen)"
     )
+    parser.add_argument(
+        "--reset-browser",
+        action="store_true",
+        help="Clear the browser profile to fix hanging/navigation issues"
+    )
     return parser.parse_args()
 
 
 def main():
     args = parse_arguments()
+    
+    if getattr(args, 'reset_browser', False):
+        import shutil
+        import time
+        profile_dir = os.path.join(os.path.dirname(__file__), ".chrome_profile")
+        if os.path.exists(profile_dir):
+            try:
+                shutil.rmtree(profile_dir)
+                print(f"🧹 Successfully cleared browser profile. Starting fresh!")
+            except Exception as e:
+                print(f"⚠ Failed to clear browser profile: {e}")
+                if os.name == 'nt':
+                    print("  Attempting to forcefully close stuck Chrome processes...")
+                    try:
+                        import subprocess
+                        subprocess.run(['taskkill', '/F', '/IM', 'chrome.exe', '/T'], capture_output=True)
+                        subprocess.run(['taskkill', '/F', '/IM', 'chromedriver.exe', '/T'], capture_output=True)
+                        time.sleep(1)
+                        if os.path.exists(profile_dir):
+                            shutil.rmtree(profile_dir)
+                        print(f"🧹 Successfully cleared browser profile after killing stuck processes.")
+                    except Exception as e2:
+                        print(f"⚠ Still failed to clear: {e2}")
+        else:
+            print("✨ Browser profile is already clean.")
     
     logger.info(f"🚀 Starting Scraper Run at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"   Notification Mode: {args.notify}")
@@ -325,6 +355,13 @@ def main():
 
             # 2. Run Browser scrapers SEQUENTIALLY (Browser is not thread-safe)
             for key, config in browser_portals.items():
+                if not browser.is_healthy():
+                    logger.warning(f"⚠ Browser is unhealthy before scraping {key}. Attempting restart...")
+                    if not browser.restart():
+                        logger.error(f"✗ Failed to restart browser. Skipping {key}.")
+                        failed_portals.append(key)
+                        continue
+
                 results = scrape_single_portal(key, config)
                 all_projects.extend(results)
                 

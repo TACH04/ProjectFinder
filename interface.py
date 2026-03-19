@@ -69,7 +69,7 @@ def get_header_panel():
         padding=(0, 2)
     )
 
-def run_scraper(validate=False):
+def run_scraper(validate=False, reset_browser=False):
     """Run the scraper script."""
     settings = load_settings()
     notif_type = settings.get("notification_type", "email")
@@ -79,11 +79,16 @@ def run_scraper(validate=False):
     
     if ghost_mode and not validate:
         cmd.append("--ghost")
+        
+    if reset_browser:
+        cmd.append("--reset-browser")
 
     console.print()
     if validate:
         cmd.append("--validate")
         console.print(Panel("[bold yellow]Running in VALIDATION mode[/bold yellow]\nScreenshots enabled, Database saving disabled.\n[italic]Ghost Mode bypassed (Browser Visible)[/italic]", border_style="yellow"))
+    elif reset_browser:
+        console.print(Panel(f"[bold red]Running Scraper (RESET BROWSER)[/bold red]\nClearing `.chrome_profile` before starting...", border_style="red"))
     else:
         mode_str = "GHOST (Hidden)" if ghost_mode else "VISIBLE"
         console.print(Panel(f"[bold blue]Running Scraper[/bold blue]\nNotification: [magenta]{notif_type}[/magenta] | Mode: [magenta]{mode_str}[/magenta]", border_style="blue"))
@@ -360,8 +365,9 @@ def main_menu():
 [bold white]2.[/bold white] TOGGLE GHOST MODE
 [bold white]3.[/bold white] CHANGE NOTIFICATION TYPE
 [bold white]4.[/bold white] RUN VALIDATION MODE
-[bold white]5.[/bold white] SETTINGS
-[bold white]6.[/bold white] EXIT"""
+[bold white]5.[/bold white] RESET BROWSER [dim](Fixes Hangs)[/dim]
+[bold white]6.[/bold white] SETTINGS
+[bold white]7.[/bold white] EXIT"""
 
         console.print(Panel(menu_text, title="Main Menu", border_style="blue", expand=False))
         
@@ -389,9 +395,9 @@ def main_menu():
                 # Clear the countdown line
                 console.print(" " * 80, end="\r")
             
-            # Windows fallback or subsequent runs
+        # Windows fallback or subsequent runs
             if choice is None:
-                choice = Prompt.ask("Select an option", choices=["1", "2", "3", "4", "5", "6"], default="1")
+                choice = Prompt.ask("Select an option", choices=["1", "2", "3", "4", "5", "6", "7"], default="1")
 
         except KeyboardInterrupt:
             console.print("\n[bold red]Exiting...[/bold red]")
@@ -411,9 +417,13 @@ def main_menu():
             run_scraper(validate=True)
             first_run = False
         elif choice == "5":
-            settings_menu()
+            if Confirm.ask("\nThis will clear the background browser profile to fix freezing. Continue?"):
+                run_scraper(reset_browser=True)
             first_run = False
         elif choice == "6":
+            settings_menu()
+            first_run = False
+        elif choice == "7":
             console.print("\n[bold green]Goodbye![/bold green]")
             break
 

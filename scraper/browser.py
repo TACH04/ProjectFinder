@@ -12,8 +12,42 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+import subprocess
+import re
+import os
+import sys
+
 from config import BROWSER_SETTINGS
 
+
+def get_chrome_major_version():
+    """Detect local Chrome major version to pass to undetected-chromedriver"""
+    try:
+        if os.name == 'nt':
+            # Windows
+            import winreg
+            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'Software\Google\Chrome\BLBeacon')
+            version, _ = winreg.QueryValueEx(key, 'version')
+            return int(version.split('.')[0])
+        elif sys.platform == 'darwin':
+            # macOS
+            process = subprocess.Popen(['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '--version'], stdout=subprocess.PIPE)
+            version = process.communicate()[0].decode('utf-8').strip()
+            match = re.search(r'Chrome (\d+)\.', version)
+            if match:
+                return int(match.group(1))
+        else:
+            # Linux
+            process = subprocess.Popen(['google-chrome', '--version'], stdout=subprocess.PIPE)
+            version = process.communicate()[0].decode('utf-8').strip()
+            match = re.search(r'Chrome (\d+)\.', version)
+            if match:
+                return int(match.group(1))
+    except Exception as e:
+        print(f"  ⚠ Failed to detect Chrome version automatically: {e}")
+        
+    # If detection fails, don't pass version_main and let uc guess
+    return None
 
 class StealthBrowser:
     """Browser wrapper with Cloudflare bypass capabilities using undetected-chromedriver"""
@@ -43,12 +77,18 @@ class StealthBrowser:
         user_data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".chrome_profile")
         os.makedirs(user_data_dir, exist_ok=True)
         
-        self.driver = uc.Chrome(
-            options=options,
-            user_data_dir=user_data_dir,
-            use_subprocess=True,
-            version_main=144,  # Match Chrome version 144
-        )
+        # Determine the major version dynamically to avoid crashes
+        version_main = get_chrome_major_version()
+        
+        kwargs = {
+            "options": options,
+            "user_data_dir": user_data_dir,
+            "use_subprocess": True,
+        }
+        if version_main:
+            kwargs["version_main"] = version_main
+            
+        self.driver = uc.Chrome(**kwargs)
         
         # Position window in top-right corner for ghost mode
         if self.headless:
@@ -98,11 +138,22 @@ class StealthBrowser:
         """Navigate to URL and wait for Cloudflare to pass"""
         print(f"  Navigating to {url}...")
         try:
+            # Set a script timeout just in case
+            self.driver.set_script_timeout(10)
+            
             self.driver.get(url)
+            # Give the browser a moment to process the navigation
+            time.sleep(3)
+            
+            # Check if we landed on a blank page (indicates a totally broken session)
+            current_url = self.driver.current_url
+            
+            if current_url == "about:blank" or current_url.startswith("data:"):
+                print(f"  ✗ Navigation failed: Blank page detected ({current_url})")
+                return False
+                
         except TimeoutException:
             print(f"  ✗ Page load timed out after {BROWSER_SETTINGS.get('page_load_timeout', 30)}s")
-            # If we timeout, we should probably return False so the scraper knows it failed
-            # We might need to stop loading? 
             try:
                 self.driver.execute_script("window.stop();")
             except Exception:
@@ -120,19 +171,22 @@ class StealthBrowser:
     
     def _wait_for_cloudflare(self) -> bool:
         """Wait for Cloudflare verification to complete"""
-        # Quick check: if we are not on a Cloudflare page, return immediately without delay
-        # This assumes driver.get() has mostly loaded the page or at least the title
-        try:
-            title = self.driver.title.lower()
-            if "just a moment" not in title and "checking" not in title:
-                return True
-        except Exception:
-            pass
+        print("  Checking for Cloudflare...")
+        
+        # Give the browser a tiny bit more time to at least set the title
+        for _ in range(5):
+            title = self.driver.title.strip()
+            if title:
+                break
+            time.sleep(1)
+            
+        title = self.driver.title.lower()
+        if title and "just a moment" not in title and "checking" not in title:
+            # We have a real title and it's not a challenge page
+            return True
 
         max_wait = BROWSER_SETTINGS["cloudflare_wait"]
         start_time = time.time()
-        
-        print("  Checking for Cloudflare...")
         
         while time.time() - start_time < max_wait:
             try:
@@ -230,3 +284,26 @@ class StealthBrowser:
                 self.driver.set_window_size(400, 300)
             except Exception:
                 pass
+
+    def is_healthy(self) -> bool:
+        """Check if the browser process is still responsive."""
+        if not self.driver:
+            return False
+        try:
+            # Simple check to see if the driver can execute a script
+            self.driver.execute_script("return 1;")
+            return True
+        except Exception as e:
+            print(f"  ⚠ Browser health check failed: {e}")
+            return False
+
+    def restart(self) -> bool:
+        """Restart the browser instance."""
+        print("  🔄 Restarting browser instance...")
+        self.close()
+        try:
+            self.start()
+            return True
+        except Exception as e:
+            print(f"  ✗ Failed to restart browser: {e}")
+            return False

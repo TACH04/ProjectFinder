@@ -38,8 +38,39 @@ def main():
         action="store_true",
         help="List all configured portals"
     )
+    parser.add_argument(
+        "--reset-browser",
+        action="store_true",
+        help="Clear the browser profile to fix hanging/navigation issues"
+    )
     
     args = parser.parse_args()
+    
+    if getattr(args, 'reset_browser', False):
+        import os
+        import shutil
+        import time
+        profile_dir = os.path.join(os.path.dirname(__file__), ".chrome_profile")
+        if os.path.exists(profile_dir):
+            try:
+                shutil.rmtree(profile_dir)
+                print(f"🧹 Successfully cleared browser profile. Starting fresh!")
+            except Exception as e:
+                print(f"⚠ Failed to clear browser profile: {e}")
+                if os.name == 'nt':
+                    print("  Attempting to forcefully close stuck Chrome processes...")
+                    try:
+                        import subprocess
+                        subprocess.run(['taskkill', '/F', '/IM', 'chrome.exe', '/T'], capture_output=True)
+                        subprocess.run(['taskkill', '/F', '/IM', 'chromedriver.exe', '/T'], capture_output=True)
+                        time.sleep(1)
+                        if os.path.exists(profile_dir):
+                            shutil.rmtree(profile_dir)
+                        print(f"🧹 Successfully cleared browser profile after killing stuck processes.")
+                    except Exception as e2:
+                        print(f"⚠ Still failed to clear: {e2}")
+        else:
+            print("✨ Browser profile is already clean.")
     
     # List portals mode
     if args.list_portals:
@@ -81,6 +112,13 @@ def main():
                         # But wait, looking at user logs, it scraped Bonfire sites successfully.
                         # So existing scraper handles them. I'll just add the branch for Gilbert.
                         projects = scraper.scrape_portal(portal_key, portal_config)
+
+                    # Health check between portals
+                    if not browser.is_healthy():
+                        print(f"  ⚠ Browser is unhealthy. Attempting restart...")
+                        if not browser.restart():
+                            print("  ✗ Failed to restart browser. Stopping.")
+                            break
 
                     all_projects.extend(projects)
                 except Exception as e:

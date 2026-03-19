@@ -2,7 +2,7 @@
 
 An automated procurement scraper designed to monitor government portals and alert users to new project releases. It provides a centralized dashboard for tracking OpenGov, Bonfire, and municipal portals.
 
-![ProjectFinder Header](projectfindericon.png)
+<img src="projectfindericon.png" alt="ProjectFinder Header" width="400">
 
 ## Overview
 
