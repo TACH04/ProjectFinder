@@ -249,24 +249,6 @@ def main():
                         print(f"⚠ Still failed to clear: {e2}")
         else:
             print("✨ Browser profile is already clean.")
-
-        # Also clear chromedriver cache to fix Chrome version mismatch errors
-        import shutil as _shutil
-        import platform
-        home = os.path.expanduser("~")
-        if os.name == 'nt':
-            driver_cache = os.path.join(home, "AppData", "Roaming", "undetected_chromedriver")
-        elif platform.system() == 'Darwin':
-            driver_cache = os.path.join(home, "Library", "Application Support", "undetected_chromedriver")
-        else:
-            driver_cache = os.path.join(home, ".local", "share", "undetected_chromedriver")
-
-        if os.path.exists(driver_cache):
-            try:
-                _shutil.rmtree(driver_cache)
-                print(f"🧹 Cleared ChromeDriver cache to resolve version mismatches.")
-            except Exception as e:
-                print(f"⚠ Failed to clear ChromeDriver cache: {e}")
     
     logger.info(f"🚀 Starting Scraper Run at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"   Notification Mode: {args.notify}")
