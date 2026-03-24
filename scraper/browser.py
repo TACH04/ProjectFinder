@@ -46,23 +46,26 @@ class StealthBrowser:
         user_data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".chrome_profile")
         os.makedirs(user_data_dir, exist_ok=True)
         
-        # Use webdriver-manager to automatically detect Chrome and download
-        # the matching ChromeDriver. This handles version mismatches transparently.
-        print("  🔍 Detecting Chrome version and fetching matching ChromeDriver...")
+        # Use webdriver-manager only to detect the current Chrome version.
+        # We pass the major version (version_main) to undetected-chromedriver
+        # so it can download and patch its own stealth-optimized binary.
+        # Providing the path directly can sometimes cause status -9 crashes on macOS.
+        print("  🔍 Detecting Chrome version...")
         try:
-            driver_path = ChromeDriverManager().install()
-            print(f"  ✓ ChromeDriver ready: {driver_path}")
+            version = ChromeDriverManager().driver.get_browser_version_from_os()
+            version_main = int(version.split('.')[0])
+            print(f"  ✓ Chrome {version_main} detected.")
         except Exception as e:
-            print(f"  ⚠ webdriver-manager failed ({e}), falling back to undetected-chromedriver default.")
-            driver_path = None
+            print(f"  ⚠ webdriver-manager failed to detect version ({e}), falling back to uc default.")
+            version_main = None
 
         kwargs = {
             "options": options,
             "user_data_dir": user_data_dir,
             "use_subprocess": True,
         }
-        if driver_path:
-            kwargs["driver_executable_path"] = driver_path
+        if version_main:
+            kwargs["version_main"] = version_main
 
         self.driver = uc.Chrome(**kwargs)
 
