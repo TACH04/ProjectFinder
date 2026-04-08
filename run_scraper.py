@@ -30,6 +30,7 @@ import scraper.mesa_engineering
 import scraper.glendale
 import scraper.cave_creek
 import scraper.maricopa
+import scraper.planetbids
 
 # Configure logging
 LOG_DIR = "logs"
@@ -280,7 +281,7 @@ def main():
         # Currently, 'opengov' and 'gilbert' use the browser. 
         # 'bonfire' and 'chandler' use requests (though they can accept browser).
         
-        browser_types = ["opengov", "gilbert", "mesa_engineering", "glendale", "cave_creek", "maricopa"]
+        browser_types = ["opengov", "gilbert", "mesa_engineering", "glendale", "cave_creek", "maricopa", "planetbids"]
 
         with StealthBrowser(headless=headless) as browser:
             

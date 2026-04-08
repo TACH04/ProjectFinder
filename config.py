@@ -118,6 +118,12 @@ PORTALS = {
         "url": "https://www.egovlink.com/maricopa/postings.asp?listtype=BID",
         "type": "maricopa"
     },
+    # PlanetBids Arizona
+    "planetbids_az": {
+        "name": "PlanetBids - Buyer Arizona",
+        "url": "https://vendors.planetbids.com/portal/46991/bo/bo-search",
+        "type": "planetbids"
+    },
 }
 
 # Browser settings
