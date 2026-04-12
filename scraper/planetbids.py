@@ -19,6 +19,7 @@ from scraper.registry import register_scraper
 @register_scraper("planetbids")
 class PlanetBidsScraper(BaseScraper):
     """Scraper for PlanetBids Procurement portals"""
+    requires_browser = True
     
     def scrape_portal(self, portal_key: str, portal_config: dict) -> List[Project]:
         """

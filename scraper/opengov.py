@@ -20,6 +20,7 @@ from scraper.browser import StealthBrowser
 @register_scraper("opengov")
 class OpenGovScraper(BaseScraper):
     """Scraper for OpenGov Procurement portals"""
+    requires_browser = True
     
     def scrape_portal(self, portal_key: str, portal_config: dict) -> List[Project]:
         """

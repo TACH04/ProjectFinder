@@ -16,6 +16,7 @@ from scraper.registry import register_scraper
 @register_scraper("cave_creek")
 class CaveCreekScraper(BaseScraper):
     """Scraper for City of Cave Creek, AZ"""
+    requires_browser = True
     
     def scrape_portal(self, portal_key: str, portal_config: dict) -> List[Project]:
         url = portal_config["url"]

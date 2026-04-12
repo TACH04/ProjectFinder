@@ -18,6 +18,7 @@ from scraper.browser import StealthBrowser
 @register_scraper("gilbert")
 class GilbertScraper(BaseScraper):
     """Scraper for Gilbert, AZ purchasing portal"""
+    requires_browser = True
     
     def scrape_portal(self, portal_key: str, portal_config: dict) -> List[Project]:
         """

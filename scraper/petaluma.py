@@ -12,6 +12,7 @@ from scraper.registry import register_scraper
 @register_scraper("petaluma")
 class PetalumaScraper(BaseScraper):
     """Scraper for City of Petaluma bid opportunities portal"""
+    requires_browser = True
     
     def scrape_portal(self, portal_key: str, portal_config: dict) -> List[Project]:
         """

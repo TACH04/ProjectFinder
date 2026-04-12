@@ -17,6 +17,7 @@ from scraper.browser import StealthBrowser
 @register_scraper("mesa_engineering")
 class MesaEngineeringScraper(BaseScraper):
     """Scraper for Mesa AZ Architectural/Engineering Design Opportunities"""
+    requires_browser = True
 
     def scrape_portal(self, portal_key: str, portal_config: dict) -> List[Project]:
         url = portal_config["url"]

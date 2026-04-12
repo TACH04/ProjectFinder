@@ -53,6 +53,7 @@ class PortalScrapingError(Exception):
 
 class BaseScraper(ABC):
     """Abstract base class for all scrapers"""
+    requires_browser: bool = False
     
     def __init__(self, browser: Optional[BrowserProtocol] = None):
         self.browser = browser

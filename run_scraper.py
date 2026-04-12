@@ -31,6 +31,7 @@ import scraper.glendale
 import scraper.cave_creek
 import scraper.maricopa
 import scraper.planetbids
+import scraper.arizona_app
 import scraper.petaluma
 
 # Configure logging
@@ -280,13 +281,9 @@ def main():
         # Ghost mode overrides default headless setting
         headless = args.ghost or BROWSER_SETTINGS["headless"]
         
-        # We need to distinguish between scrapers that need the shared browser (OpenGov, Gilbert)
-        # and those that can run in parallel (API-based or simple requests).
-        # Currently, 'opengov' and 'gilbert' use the browser. 
-        # 'bonfire' and 'chandler' use requests (though they can accept browser).
+        # Partition portals into those that require the shared browser (sequential)
+        # and those that can run via API/requests (parallel).
         
-        browser_types = ["opengov", "gilbert", "mesa_engineering", "glendale", "cave_creek", "maricopa", "planetbids", "arizona_app", "petaluma"]
-
         # Validation mode uses its own profile to avoid lock conflicts
         user_data_dir = os.path.join(DATA_DIR, "validation_profile") if args.validate else None
         
@@ -312,7 +309,7 @@ def main():
 
             # Filter portals if --portal is specified
             target_portals = PORTALS
-            if getattr(args, 'portal', None):
+            if args.portal:
                 if args.portal in PORTALS:
                     target_portals = {args.portal: PORTALS[args.portal]}
                 else:
@@ -321,7 +318,10 @@ def main():
 
             for key, config in target_portals.items():
                 p_type = config.get("type", "opengov")
-                if p_type in browser_types:
+                scraper_cls = get_scraper_class(p_type)
+                
+                # Check if the scraper class exists and requires a browser
+                if scraper_cls and scraper_cls.requires_browser:
                     browser_portals[key] = config
                 else:
                     api_portals[key] = config
