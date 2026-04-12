@@ -31,6 +31,7 @@ import scraper.glendale
 import scraper.cave_creek
 import scraper.maricopa
 import scraper.planetbids
+import scraper.petaluma
 
 # Configure logging
 LOG_DIR = "logs"
@@ -206,6 +207,10 @@ def parse_arguments():
         help="Notification method: 'email' (default) or 'popup' (opens text file)"
     )
     parser.add_argument(
+        "--portal",
+        help="Optional: Run only this specific portal (e.g., 'arizona_app')"
+    )
+    parser.add_argument(
         "--validate", 
         action="store_true",
         help="Run in validation mode: scrape all, capture screenshots, generate report, DO NOT save."
@@ -228,7 +233,6 @@ def main():
     
     if getattr(args, 'reset_browser', False):
         import shutil
-        import time
         profile_dir = os.path.join(os.path.dirname(__file__), ".chrome_profile")
         if os.path.exists(profile_dir):
             try:
@@ -281,9 +285,12 @@ def main():
         # Currently, 'opengov' and 'gilbert' use the browser. 
         # 'bonfire' and 'chandler' use requests (though they can accept browser).
         
-        browser_types = ["opengov", "gilbert", "mesa_engineering", "glendale", "cave_creek", "maricopa", "planetbids"]
+        browser_types = ["opengov", "gilbert", "mesa_engineering", "glendale", "cave_creek", "maricopa", "planetbids", "arizona_app", "petaluma"]
 
-        with StealthBrowser(headless=headless) as browser:
+        # Validation mode uses its own profile to avoid lock conflicts
+        user_data_dir = os.path.join(DATA_DIR, "validation_profile") if args.validate else None
+        
+        with StealthBrowser(headless=headless, user_data_dir=user_data_dir) as browser:
             
             # Dictionary to hold reusable scraper instances
             # Some scrapers might be stateful or heavy to init, so we instantiate once per type
@@ -303,7 +310,16 @@ def main():
             browser_portals = {}
             api_portals = {}
 
-            for key, config in PORTALS.items():
+            # Filter portals if --portal is specified
+            target_portals = PORTALS
+            if getattr(args, 'portal', None):
+                if args.portal in PORTALS:
+                    target_portals = {args.portal: PORTALS[args.portal]}
+                else:
+                    logger.error(f"Portal '{args.portal}' not found in configuration.")
+                    return 1
+
+            for key, config in target_portals.items():
                 p_type = config.get("type", "opengov")
                 if p_type in browser_types:
                     browser_portals[key] = config

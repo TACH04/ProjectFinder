@@ -22,8 +22,9 @@ class StealthBrowser:
     """Browser wrapper with Cloudflare bypass capabilities using undetected-chromedriver"""
     
 
-    def __init__(self, headless: bool = None):
+    def __init__(self, headless: bool = None, user_data_dir: str = None):
         self.headless = headless if headless is not None else BROWSER_SETTINGS["headless"]
+        self.user_data_dir = user_data_dir
         self.driver = None
         self.wait_timeout = BROWSER_SETTINGS["wait_timeout"]
         
@@ -43,7 +44,7 @@ class StealthBrowser:
         options.add_argument("--no-sandbox")
         
         # Use project-local data directory
-        user_data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".chrome_profile")
+        user_data_dir = self.user_data_dir or os.path.join(os.path.dirname(os.path.dirname(__file__)), ".chrome_profile")
         os.makedirs(user_data_dir, exist_ok=True)
         
         # Use webdriver-manager only to detect the current Chrome version.

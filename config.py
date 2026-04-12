@@ -124,6 +124,16 @@ PORTALS = {
         "url": "https://vendors.planetbids.com/portal/46991/bo/bo-search",
         "type": "planetbids"
     },
+    "arizona_app": {
+        "name": "Arizona Procurement Portal",
+        "url": "https://app.az.gov/page.aspx/en/rfp/request_browse_public",
+        "type": "arizona_app"
+    },
+    "petaluma": {
+        "name": "City of Petaluma",
+        "url": "https://cityofpetaluma.org/bid-opportunities-2/",
+        "type": "petaluma"
+    },
 }
 
 # Browser settings
