@@ -5,6 +5,7 @@ load_dotenv()
 
 # Portal configurations - add more portals as needed
 PORTALS = {
+    # OpenGov Targets
     "phoenix": {
         "name": "City of Phoenix",
         "url": "https://procurement.opengov.com/portal/phoenix",
@@ -15,12 +16,6 @@ PORTALS = {
         "url": "https://procurement.opengov.com/portal/surpriseaz",
         "type": "opengov"
     },
-    "sedona": {
-        "name": "City of Sedona",
-        "url": "https://sedonaaz.bonfirehub.com/portal/?tab=openOpportunities",
-        "type": "bonfire"
-    },
-    # New OpenGov Targets
     "tollesonaz": {
         "name": "City of Tolleson",
         "url": "https://procurement.opengov.com/portal/tollesonaz",
@@ -51,7 +46,18 @@ PORTALS = {
         "url": "https://procurement.opengov.com/portal/embed/avondaleaz/project-list",
         "type": "opengov"
     },
-    # New Bonfire Targets
+    "americancanyon": {
+        "name": "City of American Canyon",
+        "url": "https://procurement.opengov.com/portal/cityofamericancanyon",
+        "type": "opengov"
+    },
+    
+    # Bonfire Targets
+    "sedona": {
+        "name": "City of Sedona",
+        "url": "https://sedonaaz.bonfirehub.com/portal/?tab=openOpportunities",
+        "type": "bonfire"
+    },
     "buckeyeaz": {
         "name": "City of Buckeye",
         "url": "https://buckeyeaz.bonfirehub.com/portal/?tab=openOpportunities",
@@ -77,48 +83,8 @@ PORTALS = {
         "url": "https://tempe-gov.bonfirehub.com/portal/?tab=openOpportunities",
         "type": "bonfire"
     },
-    # Chandler AZ Targets
-    "chandler_rfq": {
-        "name": "City of Chandler - RFQ",
-        "url": "https://www.chandleraz.gov/business/vendor-services/capital-projects/request-for-qualifications",
-        "type": "chandler"
-    },
-    "chandler_rfb": {
-        "name": "City of Chandler - RFB",
-        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals",
-        "type": "chandler"
-    },
-    # Gilbert AZ
-    "gilbertaz": {
-        "name": "Town of Gilbert",
-        "url": "https://www.gilbertaz.gov/departments/finance-mgmt-services/purchasing-division/rfp-cip-open-bids/-selsta-4/-sortn-RFPClosing/-sortd-desc#RFPClosing_363_1213_313",
-        "type": "gilbert"
-    },
-    # Mesa AZ Engineering
-    "mesa_engineering": {
-        "name": "City of Mesa - Engineering RFQs",
-        "url": "https://www.mesaaz.gov/Business-Development/Engineering/Architectural-Engineering-Design-Opportunities",
-        "type": "mesa_engineering"
-    },
-    # Glendale AZ
-    "glendaleaz": {
-        "name": "City of Glendale",
-        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
-        "type": "glendale"
-    },
-    # Cave Creek AZ
-    "cavecreek": {
-        "name": "City of Cave Creek",
-        "url": "https://www.cavecreekaz.gov/Bids.aspx?CatID=All&txtSort=Category&showAllBids=&Status=",
-        "type": "cave_creek"
-    },
-    # Maricopa AZ
-    "maricopa": {
-        "name": "City of Maricopa",
-        "url": "https://www.egovlink.com/maricopa/postings.asp?listtype=BID",
-        "type": "maricopa"
-    },
-    # PlanetBids Arizona
+
+    # PlanetBids Targets
     "planetbids_az": {
         "name": "PlanetBids - Buyer Arizona",
         "url": "https://vendors.planetbids.com/portal/46991/bo/bo-search",
@@ -133,6 +99,43 @@ PORTALS = {
         "name": "Central Marin Sanitation Agency",
         "url": "https://vendors.planetbids.com/portal/63909/bo/bo-search",
         "type": "planetbids"
+    },
+
+    # Other Arizona Targets
+    "chandler_rfq": {
+        "name": "City of Chandler - RFQ",
+        "url": "https://www.chandleraz.gov/business/vendor-services/capital-projects/request-for-qualifications",
+        "type": "chandler"
+    },
+    "chandler_rfb": {
+        "name": "City of Chandler - RFB",
+        "url": "https://www.chandleraz.gov/business/vendor-services/purchasing/requests-for-bids-and-proposals",
+        "type": "chandler"
+    },
+    "gilbertaz": {
+        "name": "Town of Gilbert",
+        "url": "https://www.gilbertaz.gov/departments/finance-mgmt-services/purchasing-division/rfp-cip-open-bids/-selsta-4/-sortn-RFPClosing/-sortd-desc#RFPClosing_363_1213_313",
+        "type": "gilbert"
+    },
+    "mesa_engineering": {
+        "name": "City of Mesa - Engineering RFQs",
+        "url": "https://www.mesaaz.gov/Business-Development/Engineering/Architectural-Engineering-Design-Opportunities",
+        "type": "mesa_engineering"
+    },
+    "glendaleaz": {
+        "name": "City of Glendale",
+        "url": "https://glendaleazvendors.munisselfservice.com/Vendors/VBids/Default.aspx",
+        "type": "glendale"
+    },
+    "cavecreek": {
+        "name": "City of Cave Creek",
+        "url": "https://www.cavecreekaz.gov/Bids.aspx?CatID=All&txtSort=Category&showAllBids=&Status=",
+        "type": "cave_creek"
+    },
+    "maricopa": {
+        "name": "City of Maricopa",
+        "url": "https://www.egovlink.com/maricopa/postings.asp?listtype=BID",
+        "type": "maricopa"
     },
     "arizona_app": {
         "name": "Arizona Procurement Portal",

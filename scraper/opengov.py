@@ -28,10 +28,9 @@ class OpenGovScraper(BaseScraper):
         
         Steps:
         1. Navigate to portal
-        2. Click "Active" status filter
-        3. Double-click "Release Date" to sort newest first
-        4. (Optional) Increase rows per page to 40
-        5. Extract project data
+        2. Trigger Search
+        3. Increase rows per page to 50 (to capture all active projects)
+        4. Extract project data
         """
         url = portal_config["url"]
         portal_name = portal_config["name"]
@@ -51,13 +50,8 @@ class OpenGovScraper(BaseScraper):
         if not self.browser.wait_for_element(By.XPATH, "//input[@aria-label='Search']|//button[contains(text(), 'Search')]|//div[@role='row']"):
             print("  ⚠ Timed out waiting for portal to load main elements")
         
-        # Step 2: Sort by Release Date (newest first = double click)
-        print("  Step 2: Sorting by Release Date (newest first)...")
-        if not self._sort_by_release_date():
-            print("  ⚠ Could not sort by release date, continuing anyway...")
-        
-        # Step 3: Click Search button
-        print("  Step 3: Triggering search...")
+        # Step 2: Triggering search to ensure active filters are applied
+        print("  Step 2: Triggering search...")
         if not self._click_search():
             print("  ⚠ Could not click search, continuing anyway...")
         
@@ -77,16 +71,13 @@ class OpenGovScraper(BaseScraper):
         except TimeoutException:
             pass # Continue to extraction even if timeout, might be empty or using fallback
         
-        # Step 4: (Phoenix/Avondale/Tucson specific or if requested) Increase rows per page
-        # This is a good optimization for any portal that might have many projects
-        if portal_key in ["phoenix", "avondaleaz", "tucsonaz"]: 
-            print(f"  Step 4: Increasing rows per page to 50 for {portal_key}...")
-            self._set_rows_per_page(50)
-            # Give it a moment to reload after changing rows - HANDLED INTERNALLY NOW
+        # Step 3: Increase rows per page to 50
+        # Optimization: Scan everything on one page since we compare against database
+        print("  Step 3: Increasing rows per page to 50...")
+        self._set_rows_per_page(50)
 
-
-        # Step 5: Extract projects
-        print("  Step 5: Extracting projects...")
+        # Step 4: Extract projects
+        print("  Step 4: Extracting projects...")
         projects = self._extract_projects(portal_key)
         
         print(f"  ✓ Found {len(projects)} active projects")
