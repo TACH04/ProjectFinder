@@ -248,39 +248,86 @@ def check_updates(auto=False):
     """Check for updates. if auto=True, pull and restart without prompt."""
     if not auto:
         console.print("\n[bold blue]📩 Checking for updates from GitHub...[/bold blue]")
-    
+
+    def _show_troubleshooting(error_msg):
+        """Display a user-friendly guide for Git errors."""
+        help_text = ""
+        title = "Update Failed"
+        
+        if "Authentication failed" in error_msg or "password" in error_msg.lower() or "128" in error_msg:
+            title = "🔐 GitHub Authentication Issue"
+            help_text = (
+                "[bold yellow]Reason:[/bold yellow] Your computer lost connection to the GitHub repository.\n\n"
+                "[bold cyan]If using the Terminal:[/bold cyan]\n"
+                "Run [bold white]git pull[/bold white] manually. It will likely ask you to sign in\n"
+                "or enter your Personal Access Token.\n\n"
+                "[bold cyan]If using GitHub Desktop:[/bold cyan]\n"
+                "1. Sign out and [bold green]Sign back in[/bold green] to GitHub in Settings.\n"
+                "2. Try to 'Pull' manually once inside the app."
+            )
+        elif "could not resolve host" in error_msg.lower():
+            title = "🌐 No Internet Connection"
+            help_text = "[bold yellow]Reason:[/bold yellow] I can't reach GitHub.com.\n\nCheck your wifi and try again."
+        else:
+            help_text = f"An unexpected error occurred:\n[dim]{error_msg}[/dim]\n\n[bold yellow]Suggestion:[/bold yellow] Try running 'git pull' manually in your terminal/cmd."
+
+        console.print("\n")
+        console.print(Panel(help_text, title=f"[bold red]{title}[/bold red]", border_style="red", expand=False))
+
+    def _pull_clean():
+        """
+        Force-syncs local repo to match origin/main exactly.
+        This is the 'Nuclear Option' to ensure the client never has conflicts.
+        """
+        try:
+            # 1. Fetch latest data from GitHub
+            subprocess.run(["git", "fetch", "--all"], check=True, capture_output=True)
+            
+            # 2. Hard reset to current remote branch (wipes local code changes, keeps excluded files)
+            # We use origin/main instead of git pull to avoid merge commits/conflicts entirely
+            subprocess.run(["git", "reset", "--hard", "origin/main"], check=True, capture_output=True)
+            
+            # 3. Clean up untracked files (except data/settings)
+            subprocess.run(["git", "clean", "-fd", "--exclude=data/", "--exclude=logs/",
+                            "--exclude=.env", "--exclude=credentials.json",
+                            "--exclude=token.json", "--exclude=user_settings.json"],
+                           capture_output=True)
+            
+            return True, ""
+        except subprocess.CalledProcessError as e:
+            error_output = e.stderr.decode() if e.stderr else str(e)
+            return False, error_output
+
     try:
         if check_update_status():
             if auto:
                 console.print(Panel("[bold magenta]🚀 Update Available! Installing...[/bold magenta]", border_style="magenta"))
-                # Stash local changes before pulling to avoid conflicts
-                subprocess.run(["git", "stash"], capture_output=True)
-                subprocess.run(["git", "pull"], check=True)
-                # Try to restore stashed changes (non-critical)
-                subprocess.run(["git", "stash", "pop"], capture_output=True)
-                console.print("[bold green]✅ Updated successfully! Restarting...[/bold green]")
-                time.sleep(1)
-                # Restart the script
-                os.execv(sys.executable, [sys.executable] + sys.argv)
-            else:
-                console.print(Panel("[bold magenta]⚠ Update Available![/bold magenta]\nYour local version is behind the remote repository.", border_style="magenta"))
-                if Confirm.ask("Do you want to pull updates now?"):
-                    # Stash local changes before pulling
-                    subprocess.run(["git", "stash"], capture_output=True)
-                    subprocess.run(["git", "pull"], check=True)
-                    # Try to restore stashed changes
-                    subprocess.run(["git", "stash", "pop"], capture_output=True)
+                success, error = _pull_clean()
+                if success:
                     console.print("[bold green]✅ Updated successfully! Restarting...[/bold green]")
                     time.sleep(1)
                     os.execv(sys.executable, [sys.executable] + sys.argv)
-                    return True # Updated
+                else:
+                    _show_troubleshooting(error)
+            else:
+                console.print(Panel("[bold magenta]⚠ Update Available![/bold magenta]\nYour local version is behind the remote repository.", border_style="magenta"))
+                if Confirm.ask("Do you want to pull updates now?"):
+                    success, error = _pull_clean()
+                    if success:
+                        console.print("[bold green]✅ Updated successfully! Restarting...[/bold green]")
+                        time.sleep(1)
+                        os.execv(sys.executable, [sys.executable] + sys.argv)
+                        return True
+                    else:
+                        _show_troubleshooting(error)
         else:
             if not auto:
                 console.print("\n[bold green]✅ You are up to date![/bold green]")
     except Exception as e:
         if not auto:
-            console.print(f"[bold red]❌ Error checking updates:[/bold red] {e}")
-    
+            error_msg = str(e)
+            _show_troubleshooting(error_msg)
+
     if not auto:
         console.input("\n[dim]Press Enter to return to menu...[/dim]")
     return False
