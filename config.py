@@ -129,6 +129,11 @@ PORTALS = {
         "url": "https://vendors.planetbids.com/portal/75302/bo/bo-search",
         "type": "planetbids"
     },
+    "cmsa": {
+        "name": "Central Marin Sanitation Agency",
+        "url": "https://vendors.planetbids.com/portal/63909/bo/bo-search",
+        "type": "planetbids"
+    },
     "arizona_app": {
         "name": "Arizona Procurement Portal",
         "url": "https://app.az.gov/page.aspx/en/rfp/request_browse_public",
