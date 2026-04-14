@@ -124,6 +124,11 @@ PORTALS = {
         "url": "https://vendors.planetbids.com/portal/46991/bo/bo-search",
         "type": "planetbids"
     },
+    "sunnyvale": {
+        "name": "City of Sunnyvale",
+        "url": "https://vendors.planetbids.com/portal/75302/bo/bo-search",
+        "type": "planetbids"
+    },
     "arizona_app": {
         "name": "Arizona Procurement Portal",
         "url": "https://app.az.gov/page.aspx/en/rfp/request_browse_public",

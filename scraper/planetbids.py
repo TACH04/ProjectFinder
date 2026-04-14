@@ -58,10 +58,12 @@ class PlanetBidsScraper(BaseScraper):
         
         # Extract projects
         print("  Extracting projects...")
+        
         projects = self._extract_projects(portal_key, url)
         
         print(f"  ✓ Found {len(projects)} active projects")
         return projects
+
 
     def _extract_projects(self, portal_key: str, portal_url: str) -> List[Project]:
         """Extract project data from the results table"""
